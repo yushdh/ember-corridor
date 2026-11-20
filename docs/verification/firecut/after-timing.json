@@ -1,0 +1,25 @@
+{
+  "attack": "L",
+  "samples": 350,
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "width": 1280,
+  "height": 720,
+  "levels": [
+    3,
+    3,
+    3,
+    3
+  ],
+  "vsync": true,
+  "guards": 2,
+  "flip_ms": {
+    "median": 16.74,
+    "p95": 17.625,
+    "max": 18.267
+  },
+  "update_draw_submit_ms": {
+    "median": 2.884,
+    "p95": 3.508,
+    "max": 4.893
+  }
+}

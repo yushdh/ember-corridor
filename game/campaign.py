@@ -47,6 +47,11 @@ class CampaignWindow(QuayWindow):
         self.mode = "title"
         super().__init__()
         self.extra = load_clips("foundry")
+        impact = self.extra["fire-impact"].frames
+        self.battle_view.fire_impacts = {
+            1: tuple(f.right for f in impact),
+            -1: tuple(f.left for f in impact),
+        }
         self.fx = []
         with Image.open(ASSETS / "foundry/effects.png") as sheet:
             for row, (width, height) in enumerate(((143, 31), (111, 30), (134, 30), (46, 112))):
@@ -100,6 +105,7 @@ class CampaignWindow(QuayWindow):
             )
         }
         self.seal_tag = tag("潮印  Q", 91, FOAM)
+        self.flame_tag = tag("弯刃  ·  按住 L 蓄焰，松开斩击", 181, GOLD)
         self.boss_tags = [
             tag("守钟人 · 铜潮     一阶" if i == 0 else "守钟人 · 铜潮     二阶", 161, GOLD) for i in range(2)
         ]
@@ -173,6 +179,14 @@ class CampaignWindow(QuayWindow):
         if self.mode == "play":
             super().on_update(dt)
 
+    def clear_input(self):
+        super().clear_input()
+        if (
+            isinstance(getattr(self, "combat", None), FoundryEncounter)
+            and self.combat.flame.charge >= 0
+        ):
+            self.combat.flame.reset()
+
     def step_encounter(self, axis, moves, slot):
         self.combat.step(
             self.walker,
@@ -180,6 +194,8 @@ class CampaignWindow(QuayWindow):
             **moves,
             attack=arcade.key.J in self.edges,
             skill=arcade.key.Q in self.edges,
+            flame_press=arcade.key.L in self.edges,
+            flame_hold=arcade.key.L in self.keys,
             slot=slot,
         )
         if self.combat.hp:
@@ -187,19 +203,76 @@ class CampaignWindow(QuayWindow):
 
     def sync_pose(self):
         super().sync_pose()
-        if isinstance(self.combat, FoundryEncounter) and self.combat.cast_age >= 0:
+        if not isinstance(self.combat, FoundryEncounter):
+            return
+        if self.combat.flame.busy:
+            frame = self.extra["firecut"].frames[self.combat.flame.frame]
+        elif self.combat.cast_age >= 0:
             frame = self.extra["cast"].frame(self.combat.cast_age / 120)
-            dx, dy = self.battle_view.offset()
-            w = self.walker
-            position(
-                self.actor,
-                frame,
-                w.x,
-                w.y,
-                w.facing,
-                round(self.scroll) - dx,
-                round(self.lift) - dy,
-            )
+        else:
+            return
+        dx, dy = self.battle_view.offset()
+        w = self.walker
+        position(
+            self.actor, frame, w.x, w.y, w.facing, round(self.scroll) - dx, round(self.lift) - dy
+        )
+
+    def draw_weapon_glow(self, scroll, lift):
+        flame = self.combat.flame
+        if not flame.busy:
+            return
+        frame = self.extra["firelight"].frames[flame.frame]
+        w = self.walker
+        tex = frame.right if w.facing > 0 else frame.left
+        ax, ay = frame.anchor
+        x = round(w.x) - (ax if w.facing > 0 else tex.width - ax)
+        y = round(w.y) + ay - tex.height
+        rect = arcade.LBWH(x - scroll, y - lift, tex.width, tex.height)
+        # Slice the native-pixel glow at solid faces. A raised platform only
+        # masks the band it occupies, leaving flames above its top visible.
+        solids = [
+            s
+            for s in self.combat.surfaces
+            if not s.one_way
+            and s.top > w.y
+            and s.left < x + tex.width
+            and x < s.right
+            and s.bottom < y + tex.height
+        ]
+        if not solids:
+            arcade.draw_texture_rect(tex, rect, pixelated=True)
+            return
+        levels = sorted(
+            {y, y + tex.height}
+            | {max(y, min(y + tex.height, v)) for s in solids for v in (s.top, s.bottom)}
+        )
+        vx, vy, vw, vh = self.camera.viewport.lbwh_int
+        scale = vw // 640
+        old = self.ctx.scissor
+        try:
+            for low, high in zip(levels, levels[1:]):
+                left, right = x, x + tex.width
+                for s in solids:
+                    if s.top <= low or high <= s.bottom:
+                        continue
+                    if w.x <= s.left:
+                        right = min(right, s.left)
+                    elif w.x >= s.right:
+                        left = max(left, s.right)
+                    else:
+                        right = left
+                left, right = max(0, left - scroll), min(640, right - scroll)
+                bottom, top = max(0, low - lift), min(360, high - lift)
+                if left < right and bottom < top:
+                    self.ctx.scissor = (
+                        vx + left * scale,
+                        vy + bottom * scale,
+                        (right - left) * scale,
+                        (top - bottom) * scale,
+                    )
+                    arcade.draw_texture_rect(tex, rect, pixelated=True)
+        finally:
+            self.ctx.scissor = old
 
     def draw_world_effects(self, scroll, lift):
         c = self.combat
@@ -259,6 +332,8 @@ class CampaignWindow(QuayWindow):
             return
         blit(self.room_tags[self.index], 184, 306)
         blit(self.seal_tag, 11, 281)
+        if c.weapon == "light" and c.hp:
+            blit(self.flame_tag, 11, 257)
         arcade.draw_lbwh_rectangle_filled(
             64,
             288,

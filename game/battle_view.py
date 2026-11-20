@@ -152,6 +152,7 @@ class Particle:
     life: int
     maximum: int
     opacity: int
+    animation: tuple = ()
 
 
 def warning_marks(kind):
@@ -227,6 +228,8 @@ class BattleView:
         self.last_event = 0
         self.shake = 0
         self.shake_size = 0
+        self.fire_impacts = {}
+        self.last_fire_impact = None
         self.kick_direction = 1
         self.flash = {}
         self.focus = None
@@ -239,6 +242,7 @@ class BattleView:
         self.particle_list.clear()
         self.projectiles.clear()
         self.last_event = self.shake = 0
+        self.last_fire_impact = None
         self.flash.clear()
         self.focus = None
 
@@ -259,12 +263,12 @@ class BattleView:
             )
             self.players.append((cue, cue.play(volume=0.155 * self.levels[2] * gain)))
 
-    def particle(self, tex, x, y, vx, vy, life, alpha=255):
+    def particle(self, tex, x, y, vx, vy, life, alpha=255, animation=()):
         if len(self.particles) >= 16 * self.levels[3]:
             return
         sprite = arcade.Sprite(tex)
         self.particle_list.append(sprite)
-        self.particles.append(Particle(sprite, x, y, vx, vy, life, life, alpha))
+        self.particles.append(Particle(sprite, x, y, vx, vy, life, life, alpha, animation))
 
     def tick(self, c, w, old_action):
         self.shake = max(0, self.shake - 1)
@@ -275,6 +279,10 @@ class BattleView:
                 p.sprite.remove_from_sprite_lists()
                 self.particles.remove(p)
             else:
+                if p.animation:
+                    p.sprite.texture = p.animation[
+                        (p.maximum - p.life) * len(p.animation) // p.maximum
+                    ]
                 p.x += p.vx
                 p.y += p.vy
                 if p.vx:
@@ -307,7 +315,7 @@ class BattleView:
 
     def event(self, ev):
         k = ev["kind"]
-        if k in ("seal", "sweep", "vent", "phase", "gate"):
+        if k in ("seal", "sweep", "vent", "phase", "gate", "ignite", "firecut"):
             self.sound(k)
         elif k == "warn":
             self.sound(ev["enemy"])
@@ -316,15 +324,33 @@ class BattleView:
         elif k == "swing":
             self.sound("maul" if ev["action"] == "breaker" else "sabre")
         elif k in ("hit", "hurt", "death", "evade"):
-            heavy = ev.get("action") == "breaker"
+            fire = ev.get("action") == "firecut"
+            heavy = fire or ev.get("action") == "breaker"
             facing = ev.get("facing", 1)
             if k != "evade":
-                self.sound(("crush" if heavy else "hit") if k == "hit" else "hurt")
-                self.shake, self.shake_size = (16, 3) if heavy else (11, 1)
+                if fire:
+                    if ev["attack_id"] != self.last_fire_impact:
+                        self.sound("fire_hit")
+                        self.last_fire_impact = ev["attack_id"]
+                else:
+                    self.sound(("crush" if heavy else "hit") if k == "hit" else "hurt")
+                self.shake, self.shake_size = (18, 4) if fire else (16, 3) if heavy else (11, 1)
                 self.kick_direction = facing
                 if k == "hit":
-                    self.flash[ev["enemy"]] = 3 * self.levels[1]
-                if self.levels[1]:
+                    self.flash[ev["target"]] = 3 * self.levels[1]
+                if fire and self.levels[1] and facing in self.fire_impacts:
+                    frames = self.fire_impacts[facing]
+                    self.particle(
+                        frames[0],
+                        ev["x"] + 8 * facing,
+                        ev["y"] + 2,
+                        0,
+                        0,
+                        12,
+                        140 + 36 * self.levels[1],
+                        frames,
+                    )
+                elif self.levels[1]:
                     self.particle(
                         self.effects["burst"], ev["x"], ev["y"], 0, 0, 5 + self.levels[1], 210
                     )
@@ -348,7 +374,7 @@ class BattleView:
     def offset(self):
         if not self.shake or not self.levels[0]:
             return 0, 0
-        duration = 16 if self.shake_size == 3 else 11
+        duration = {4: 18, 3: 16}.get(self.shake_size, 11)
         age = duration - self.shake
         size = self.shake_size * self.levels[0] / 2 * (self.shake / duration) ** 1.4
         return (
@@ -384,7 +410,7 @@ class BattleView:
                     lift,
                 )
                 self.trail.visible = True
-        for e, sp in zip(c.foes, self.enemies):
+        for target_index, (e, sp) in enumerate(zip(c.foes, self.enemies)):
             if e.kind == "bell":
                 i = e.pose_index()
             elif e.state == "warn":
@@ -397,7 +423,7 @@ class BattleView:
                 )
             frames = (
                 self.flashes[e.kind]
-                if self.flash.get(e.kind, 0) > 0 and e.kind in self.flashes
+                if self.flash.get(target_index, 0) > 0 and e.kind in self.flashes
                 else self.clips[e.kind].frames
             )
             position(sp, frames[i], e.x, e.y, e.facing, scroll, lift)

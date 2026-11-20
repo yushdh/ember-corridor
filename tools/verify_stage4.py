@@ -242,16 +242,15 @@ class Route:
             if c.weapon != "heavy":
                 self.tap("2")
             if e and not c.attack and c.cast_age < 0 and not c.hurt:
+                if isinstance(e, Bellkeeper) and e.state == "warn" and e.age >= e.windup - 46:
+                    # A late hammer wind-up leaves the driver committed when the bell lands.
+                    # Roll through the sweep or leave the locked steam column at release.
+                    if e.age >= e.windup - 14 and p.support and not p.recharge:
+                        self.tap("k")
+                    return
                 # Let both telegraphs finish at least once in each phase.
                 study = isinstance(e, Bellkeeper) and (("vent", e.phase) not in self.seen_phases)
                 if study:
-                    if (
-                        close
-                        and e.state == "warn"
-                        and e.move_name == "sweep"
-                        and e.age > e.windup - 22
-                    ):
-                        self.tap("k")
                     return
                 if (
                     not c.cooldown

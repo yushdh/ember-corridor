@@ -1,6 +1,7 @@
 """Hand-built rooms and encounter rules for the drowned bell foundry."""
 from dataclasses import dataclass
 from .combat import Enemy, EnemySpec, Encounter, wall_entry
+from .flame import FlameCut
 from .terrain import FLOOR, Surface
 
 
@@ -157,6 +158,7 @@ class FoundryEncounter(Encounter):
         self.room = room
         self.valve_open = room.valve is None
         self.cast_age = -1
+        self.flame = FlameCut()
         self.cooldown = 0
         self.wave_length = 0
         if last:
@@ -168,6 +170,11 @@ class FoundryEncounter(Encounter):
         if isinstance(e, Bellkeeper):
             e.advance(self, w)
         else:
+            if e.knockback:
+                e.move(e.knockback)
+                e.knockback *= 0.78
+                if abs(e.knockback) < 0.12:
+                    e.knockback = 0.0
             super().step_enemy(w, e)
 
     def pulse(self, w):
@@ -180,7 +187,7 @@ class FoundryEncounter(Encounter):
         )
         l, r = sorted((w.x, w.x + w.facing * self.wave_length))
         self.emit("seal", w.x, w.y + 32, facing=w.facing)
-        for e in self.foes:
+        for target_index, e in enumerate(self.foes):
             a, b, z, t = e.rect
             if not e.hp or z < l or a > r or t < origin[1] - 15 or b > origin[1] + 15:
                 continue
@@ -192,37 +199,49 @@ class FoundryEncounter(Encounter):
                 e.enter("dead")
             elif e.kind != "bell":
                 e.enter("hurt")
-            self.emit("hit", *target, enemy=e.kind, action="seal", hp=e.hp, facing=w.facing)
+            self.emit(
+                "hit",
+                *target,
+                enemy=e.kind,
+                target=target_index,
+                action="seal",
+                hp=e.hp,
+                facing=w.facing
+            )
         self.bolts[:] = [
             b for b in self.bolts if not (l <= b.x <= r and abs(b.y - origin[1]) <= 15)
         ]
 
-    def step(self, w, axis, *, skill=False, **moves):
+    def step(self, w, axis, *, skill=False, flame_press=False, flame_hold=False, **moves):
         if self.hp and not self.freeze:
+            self.flame.update(self, w, axis, flame_press, flame_hold)
             self.cooldown = max(0, self.cooldown - 1)
             if self.cast_age >= 0:
                 self.cast_age += 1
                 if self.cast_age >= sum(CAST_TICKS):
                     self.cast_age = -1
-            elif skill and not (self.cooldown or self.hurt or self.attack or w.tucked):
+            elif skill and not (
+                self.flame.busy or self.cooldown or self.hurt or self.attack or w.tucked
+            ):
                 if axis:
                     w.facing = 1 if axis > 0 else -1
                 self.cast_age, self.cooldown = 0, COOLDOWN
                 self.buffer = 0
             if self.cast_age == RELEASE:
                 self.pulse(w)
-        if self.cast_age >= 0:
+        if self.cast_age >= 0 or self.flame.busy:
             axis = 0
             moves.update(attack=False, jump=False, roll=False, slot=None, drop=False)
         super().step(w, axis, **moves)
         if self.hurt or not self.hp:
             self.cast_age = -1
+            self.flame.reset()
 
     def near(self, w, point):
         return abs(w.x - point[0]) <= 42 and abs(w.y - point[1]) <= 24
 
     def interact(self, w):
-        if not self.hp or self.hurt or self.cast_age >= 0 or self.attack:
+        if not self.hp or self.hurt or self.cast_age >= 0 or self.attack or self.flame.busy:
             return
         if not self.valve_open and self.near(w, self.room.valve):
             self.valve_open = True

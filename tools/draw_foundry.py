@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT))
 from game.foundry import ROOMS, CAST_TICKS
 from draw_structures import structures
 from draw_walker import draw_frame
+from draw_flame import bake_flame
 
 OUT = ROOT / "assets/foundry"
 INK = "#202d39"
@@ -431,6 +432,7 @@ def generate():
         d.polygon([(x - 4, y), (x, y - 5), (x + 5, y), (x, y + 4)], fill=TEAL, outline=INK)
         cells.append((im, wrist))
     bake("cast", (96, 96), (48, 80), cells, CAST_TICKS, {2: ["release"]})
+    bake_flame(bake)
     (OUT / "clips.json").write_text(json.dumps(clips, indent=2), encoding="utf-8")
 
 

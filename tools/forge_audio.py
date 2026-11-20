@@ -24,6 +24,9 @@ CUES = {
     "vent": (0.61, 440, 830, 0.24, 2.4, 0.53),
     "phase": (0.84, 159, 80, 0.09, 2.4, 0.74),
     "gate": (0.48, 466, 699, 0.06, 3.0, 0.44),
+    "ignite": (0.27, 485, 1210, 0.28, 2.9, 0.38),
+    "firecut": (0.41, 348, 66, 0.82, 3.9, 0.15),
+    "fire_hit": (0.36, 193, 54, 0.41, 4.1, 0.32),
 }
 
 
@@ -49,8 +52,8 @@ def generate():
                     (0.86 if name == "sabre" else 0.56) * colored
                     + (0.08 if name == "sabre" else 0.26) * math.sin(phase)
                 )
-            elif name in ("hit", "crush"):
-                heavy = name == "crush"
+            elif name in ("hit", "crush", "fire_hit"):
+                heavy = name != "hit"
                 attack = math.exp(-t / 0.009) * (0.7 * colored + 0.2 * math.sin(phase * 1.7))
                 body = (
                     math.exp(-t / (0.075 if heavy else 0.037))
@@ -63,6 +66,10 @@ def generate():
                 )
                 ring = min(1, ring_t / 0.007) * math.exp(-ring_t / (0.085 if heavy else 0.044))
                 mixed = (attack + body + 0.20 * ring * bell) * min(1, t / 0.002, (1 - u) * 25)
+                if name == "fire_hit":
+                    hiss = math.exp(-t / 0.093) * colored * (0.65 + 0.35 * math.cos(91 * t))
+                    strike = math.sin(math.tau * 1450 * t) * math.exp(-t / 0.019)
+                    mixed += min(1, t / 0.001, (1 - u) * 20) * (0.72 * hiss + 0.3 * strike)
             samples.append(round(20500 * max(-1.4, min(1.4, mixed))))
         with wave.open(str(OUT / (name + ".wav")), "wb") as wav:
             wav.setparams((1, 2, 22050, 0, "NONE", "not compressed"))

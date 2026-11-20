@@ -223,8 +223,9 @@ class QuayWindow(arcade.Window):
         self.camera.use()
         self.scene.draw(pixelated=True)
         if self.combat:
-            self.battle_view.enemies.draw(pixelated=True)
             dx, dy = self.battle_view.offset()
+            self.draw_weapon_glow(round(self.scroll) - dx, round(self.lift) - dy)
+            self.battle_view.enemies.draw(pixelated=True)
             self.battle_view.warnings(self.combat, round(self.scroll) - dx, round(self.lift) - dy)
             self.draw_world_effects(round(self.scroll) - dx, round(self.lift) - dy)
             self.battle_view.trails.draw(pixelated=True)
@@ -246,4 +247,7 @@ class QuayWindow(arcade.Window):
         super().on_close()
 
     def draw_world_effects(self, scroll, lift):
+        pass
+
+    def draw_weapon_glow(self, scroll, lift):
         pass

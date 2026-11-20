@@ -44,6 +44,7 @@ class Enemy:
     age: int = 0
     spent: bool = False
     aim: tuple = (-1.0, 0.0)
+    knockback: float = 0.0
 
     def __post_init__(self):
         self.hp = self.spec.hp
@@ -176,7 +177,7 @@ class Encounter:
         if wall_entry((w.x, w.y + 30), a, self.surfaces) <= 1:
             return
         solid = wall_entry(a, b, self.surfaces)
-        for e in self.foes:
+        for target_index, e in enumerate(self.foes):
             if e.hp <= 0 or id(e) in self.victims:
                 continue
             l, bot, r, top = e.rect
@@ -208,6 +209,7 @@ class Encounter:
                 x,
                 y,
                 enemy=e.kind,
+                target=target_index,
                 action=name,
                 attack_id=self.serial,
                 hp=e.hp,

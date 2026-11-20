@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "assets": [
     {
       "path": "assets/quay/atmosphere.png",
@@ -336,7 +336,7 @@
     },
     {
       "path": "assets/foundry/clips.json",
-      "purpose": "施印与守钟人图集切片、锚点、挂点及事件",
+      "purpose": "施印、蓄焰斩、命中火花与守钟人图集切片、锚点、挂点及事件",
       "source": "tools/draw_foundry.py（复用 tools/draw_structures.py 与 tools/draw_walker.py）",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
@@ -382,6 +382,60 @@
     {
       "path": "assets/combat/audio/gate.wav",
       "purpose": "绞盘和过门",
+      "source": "tools/forge_audio.py",
+      "author": "本项目，Codex 按动作编写 Python 合成程序",
+      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+    },
+    {
+      "path": "assets/foundry/firecut.png",
+      "purpose": "弯刃蓄焰斩的十四帧人物姿势",
+      "source": "tools/draw_flame.py，由 tools/draw_foundry.py 导出",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+    },
+    {
+      "path": "assets/foundry/firelight.png",
+      "purpose": "与腕部对齐的蓄能、火弧与余焰",
+      "source": "tools/draw_flame.py，由 tools/draw_foundry.py 导出",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+    },
+    {
+      "path": "assets/foundry/fire-impact.png",
+      "purpose": "接触点四帧定向爆火",
+      "source": "tools/draw_flame.py，由 tools/draw_foundry.py 导出",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+    },
+    {
+      "path": "assets/combat/audio/ignite.wav",
+      "purpose": "满蓄点火提示",
+      "source": "tools/forge_audio.py",
+      "author": "本项目，Codex 按动作编写 Python 合成程序",
+      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+    },
+    {
+      "path": "assets/combat/audio/firecut.wav",
+      "purpose": "出刀破风和燃烧声",
+      "source": "tools/forge_audio.py",
+      "author": "本项目，Codex 按动作编写 Python 合成程序",
+      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+    },
+    {
+      "path": "assets/combat/audio/fire_hit.wav",
+      "purpose": "火刃命中时的低频撞击、金属锐响和火花尾音",
       "source": "tools/forge_audio.py",
       "author": "本项目，Codex 按动作编写 Python 合成程序",
       "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
