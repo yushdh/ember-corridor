@@ -24,7 +24,7 @@ def run(project, output, baseline):
             self.contacts = 0
             self.previous = None
             self.measuring = False
-            super().__init__()
+            super().__init__(classic=True)
             self.on_key_press(arcade.key.ENTER, 0)
 
         def on_update(self, dt):

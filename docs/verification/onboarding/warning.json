@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "hit_tick": 38,
+      "warn_tick": 128,
+      "particles": 0,
+      "trail": false,
+      "badges": 2
+    }
+  ],
+  "learned": [
+    "attack"
+  ],
+  "shown": [
+    "roll"
+  ],
+  "zones": []
+}

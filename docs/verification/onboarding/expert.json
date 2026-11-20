@@ -1,0 +1,16 @@
+{
+  "events": [],
+  "learned": [
+    "attack",
+    "jump",
+    "move",
+    "roll"
+  ],
+  "shown": [],
+  "zones": [
+    "attack",
+    "jump",
+    "move",
+    "roll"
+  ]
+}

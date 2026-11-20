@@ -8,8 +8,8 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from game.attacks import STRIKES
-from game.combat import TYPES
-from draw_walker import draw_frame, INK
+from game.combat import FORK_HEIGHT, FORK_REACH, TYPES
+from draw_walker import draw_frame, draw_sabre, INK
 
 OUT = ROOT / "assets/combat"
 SIZE = (160, 128)
@@ -63,12 +63,7 @@ def weapon(im, hand, tip, heavy):
         for s in (5, 10, 15):
             d.line([p(s, -2), p(s - 1, 2)], fill="#543c3b")
     else:
-        poly(
-            [(-5, -1), (3, -2), (length - 5, -2), (length, 0), (length - 8, 4), (5, 3), (-5, 2)],
-            "#ca9154",
-        )
-        d.line([p(5, 1), p(length - 8, 2), p(length - 1, 0)], fill="#fff1b5")
-        d.line([p(2, -5), p(2, 5)], fill="#c5965e", width=2)
+        draw_sabre(d, hand, tip)
 
 
 def at_body(body):
@@ -90,9 +85,11 @@ def strike_frame(name, i):
         "breaker": ((1, -3, -6, 3, 8, 7, 2), (3, 4, 6, 1, 10, 9, 3), (2, 4, 5, 7, 9, 8, 3)),
     }
     lean, bob, spread = (values[i] for values in poses[name])
+    # Pivot over the rear heel during preparation; transfer to the lead knee on contact.
+    drive = (0, -2, -4, 3, 5, 2, 0)[i]
     pose = (
-        (54 + spread, 65 + bob // 2),
-        (54 + spread, 79),
+        (54 + spread + drive, 65 + bob // 2),
+        (54 + spread + max(0, drive // 2), 79),
         (40 - spread // 2, 64 + bob // 2),
         (36 - spread, 79),
         (48 + hx, 80 - hy),
@@ -158,7 +155,10 @@ def heavy_move(action, i):
     hand = (hand[0] + 32, hand[1] + 22)
     if action != "roll":
         back = Image.new("RGBA", SIZE)
-        weapon(back, hand, (hand[0] + 19, hand[1] - 29), True)
+        angles = {"idle": (56, 57, 58, 58, 57, 56), "run": (44, 41, 46, 54, 60, 62, 57, 49),
+                  "jump": (44, 51, 57), "fall": (59, 51, 43), "land": (37, 43, 51)}
+        angle = math.radians(angles[action][i])
+        weapon(back, hand, (hand[0] + round(36*math.cos(angle)), hand[1] - round(36*math.sin(angle))), True)
         back.alpha_composite(im)
         im = back
     return im, hand
@@ -190,7 +190,69 @@ def save_rows(filename, rows, size, anchor):
     sheet.save(OUT / filename)
 
 
+def tide_fork(i):
+    im = Image.new("RGBA", (120, 96))
+    d = ImageDraw.Draw(im)
+
+    def pixel(point):
+        x, y = point
+        return (round(56 + x), round(81 - y))
+
+    def plate(points, color):
+        d.polygon([pixel(p) for p in points], fill=color, outline=INK)
+
+    def stroke(points, color, width):
+        d.line([pixel(p) for p in points], fill=color, width=width, joint="curve")
+
+    # Torso, boot positions, lead grip and outer tine in sole-relative coordinates.
+    x, h, back, front, hand, tip = (
+        (0, 43, -9, 9, (11, 26), (26, 54)),
+        (1, 42, -9, 9, (12, 25), (29, 52)),
+        (2, 42, -14, 13, (13, 24), (33, 50)),
+        (3, 44, -3, 5, (12, 27), (25, 55)),
+        (-3, 39, -13, 12, (7, 22), (33, 17)),
+        (-6, 35, -16, 13, (4, 17), (32, 9)),
+        (8, 30, -18, 19, (25, 12), (FORK_REACH, FORK_HEIGHT)),
+        (4, 34, -14, 16, (14, 15), (41, 21)),
+        (-6, 38, -13, 7, (3, 27), (12, 54)),
+        (-19, 14, -25, 13, (-1, 7), (31, 4)),
+    )[i]
+    for boot, side in ((back, -1), (front, 1)):
+        leg = [(x + side * 3, h - 20), (boot + 4, max(7, h // 4)), (boot, 4)]
+        stroke(leg, INK, 8)
+        stroke(leg, "#586763" if side == 1 else "#39484d", 5)
+        plate([(boot - 4, 7), (boot + 2, 7), (boot + 7, 2), (boot + 6, 0), (boot - 5, 0)], "#4b4943")
+    plate([(x-9,h-7),(x+7,h-8),(x+9,h-21),(x+3,h-28),(x-3,h-24),(x-13,h-25)], "#60745c")
+    stroke([(x-5,h-9),(x+3,h-19),(x-4,h-23)], "#d2b878", 2)
+    plate([(x-6,h+1),(x+7,h+1),(x+8,h-7),(x+3,h-11),(x-5,h-7)], "#4a5551")
+    stroke([(x+3,h-3),(x+7,h-3)], "#ffdc9a", 2)
+    plate([(x-14,h),(x-7,h+5),(x-3,h+9),(x+4,h+8),(x+8,h+3),(x+13,h+1),(x+10,h-1),(x-10,h-2)], "#9c8758")
+    stroke([(x-11,h),(x-2,h+3),(x+9,h+1)], "#dec58a", 1)
+    hx, hy = hand
+    tx, ty = tip
+    length = math.hypot(tx-hx, ty-hy)
+    ux, uy = (tx-hx)/length, (ty-hy)/length
+
+    def along(distance, normal=0):
+        return (tx + distance*ux - normal*uy, ty + distance*uy + normal*ux)
+
+    shaft = [along(-length-20), along(-11)]
+    stroke(shaft, INK, 5)
+    stroke(shaft, "#ad8c63", 2)
+    plate([along(-17, 1), along(-14, 4), along(0, 2), along(-10, 1),
+           along(-11, -1), along(-1, -3), along(-14, -3)], "#a2bcb2")
+    stroke([along(-13, 3), along(-1, 2)], "#e6edce", 1)
+    for side, grip in ((-1, along(-length-10)), (1, hand)):
+        arm = [(x + side*5, h-10), (x + side*7, h-18), grip]
+        stroke(arm, INK, 6)
+        stroke(arm, "#708578" if side == 1 else "#495955", 4)
+        stroke([grip, (grip[0]+1,grip[1]+1)], "#e2bc87", 3)
+    return im, pixel(hand)
+
+
 def foe(kind, i):
+    if kind == "fork":
+        return tide_fork(i)
     im = Image.new("RGBA", (120, 96))
     d = ImageDraw.Draw(im)
     # All mobs face right. These offsets are relative to the sole and use y-up.
@@ -412,14 +474,17 @@ def trail(name, i):
     end = rule.angles[i]
     prior = rule.angles[i - 1]
     if name == "thrust":
-        for k in (0, 5, 10):
+        _, tip = rule.blade(i)
+        tx, ty = SOLE[0] + tip[0], SOLE[1] - tip[1]
+        for offset in (-1, 1):
             d.polygon(
                 [
-                    (center[0] - 14, center[1] + k - 5),
-                    (center[0] + 40 - k, center[1]),
-                    (center[0] - 3, center[1] + k - 3),
+                    (center[0] + 9, center[1] + offset * 8),
+                    (tx - 15, ty + offset * 6),
+                    (tx, ty),
+                    (tx - 12, ty + offset * 4),
                 ],
-                fill=(255, 216, 131, 160 - k * 8),
+                fill=(255, 210, 126, 180),
             )
         return im, SOLE
     heavy = name == "breaker"
@@ -448,7 +513,13 @@ def trail(name, i):
         d.polygon(
             [point(j / 20, radius) for j in range(21)]
             + [
-                point(j / 20, radius - width * math.sin(math.pi * j / 38) ** 1.3)
+                point(
+                    j / 20,
+                    radius
+                    - width
+                    * math.sin(math.pi * j / 38) ** 1.3
+                    * (0.45 if j in (7, 8, 14) and width > 3 else 1),
+                )
                 for j in range(20, -1, -1)
             ],
             fill=color,

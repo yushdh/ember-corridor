@@ -6,7 +6,7 @@ from contextlib import ExitStack
 from pathlib import Path
 
 import arcade
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
 ASSETS = Path(__file__).resolve().parents[1] / "assets"
 
@@ -81,35 +81,3 @@ def font_face():
     if face is None:
         raise RuntimeError("需要中文字体。请启用 Windows 中文补充字体并重新启动游戏。")
     return str(face)
-
-
-def ui_texture(paused=False):
-    face = font_face()
-
-    def font(size):
-        return ImageFont.truetype(str(face), size)
-
-    im = Image.new("RGBA", (640, 360))
-    d = ImageDraw.Draw(im)
-    if paused:
-        d.rectangle((227, 144, 413, 210), fill=(21, 35, 44, 245), outline="#aa9b80")
-        d.text((275, 151), "渡口暂停", font=font(20), fill="#e4d2af")
-        d.text((265, 184), "按 Esc 继续行走", font=font(13), fill="#b4c4bd")
-        return arcade.Texture(im)
-    # Two small inscriptions keep the playable silhouette unobstructed.
-    d.rectangle((12, 12, 130, 50), fill=(19, 32, 42, 228))
-    d.rectangle((12, 12, 13, 50), fill="#cfab78")
-    d.text((21, 15), "余 烬 回 廊", font=font(10), fill="#a8b9b5")
-    d.text((20, 28), "盐炉渡口", font=font(17), fill="#f0e4c9")
-    labels = (("A/D", "移动"), ("Space", "跳跃"), ("S+Space", "下穿"), ("K", "翻滚"), ("Esc", "暂停"))
-    x = 15
-    for key, label in labels:
-        key_width = round(d.textlength(key, font=font(11))) + 9
-        d.rectangle((x, 333, x + key_width, 349), fill="#263843", outline="#82918f")
-        d.text((x + 4, 333), key, font=font(11), fill="#e0dfc9")
-        x += key_width + 4
-        d.text(
-            (x, 332), label, font=font(12), fill="#d6ded2", stroke_width=1, stroke_fill="#20333d"
-        )
-        x += 34
-    return arcade.Texture(im)

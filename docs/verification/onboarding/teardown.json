@@ -1,0 +1,13 @@
+{
+  "events": [
+    "visible_before_room_change",
+    "cleared_on_room_change",
+    "visible_before_lethal_hit",
+    "cleared_on_death"
+  ],
+  "learned": [],
+  "shown": [
+    "move"
+  ],
+  "zones": []
+}

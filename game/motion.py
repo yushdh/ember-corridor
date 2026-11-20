@@ -7,6 +7,8 @@ MAX_STEPS = 12
 BODY_HALF_WIDTH = 11
 STAND_HEIGHT, TUCK_HEIGHT = 64, 42
 RUN_SPEED, ROLL_SPEED = 154, 324
+MAX_STAMINA = 100.0
+RUN_DRAIN, REST_GAIN, WALK_SPEED = 16.0, 27.0, 102
 JUMP_SPEED, RELEASE_SPEED, GRAVITY = 444, 202, 1160
 GRACE_TICKS = BUFFER_TICKS = 12
 ROLL_TICKS, ROLL_RECHARGE = 42, 78
@@ -41,6 +43,8 @@ class Walker:
     recharge: int = 0
     landing: int = 0
     tucked: bool = False
+    stamina: float = MAX_STAMINA
+    winded: bool = False
 
     @property
     def invulnerable(self):
@@ -136,13 +140,22 @@ class Walker:
         if self.roll_age >= 0:
             self.speed = ROLL_SPEED * self.facing
         else:
-            target = axis * (75 if self.tucked else RUN_SPEED)
+            target = axis * (75 if self.tucked else WALK_SPEED if self.winded else RUN_SPEED)
             accel = (1170 if axis else 1580) if self.support else (740 if axis else 260)
             self.speed += max(-accel * STEP, min(accel * STEP, target - self.speed))
+        old_x = self.x
         self.move_x(self.speed * STEP, surfaces)
         self.vy = max(-720, self.vy - GRAVITY * STEP)
         walked_off = self.support is not None
         self.move_y(self.vy * STEP, surfaces)
+        running = axis * (self.x - old_x) > 0 and previous_support and self.support and not self.tucked
+        if running and not self.winded:
+            self.stamina = max(0.0, self.stamina - RUN_DRAIN * STEP)
+            self.winded = self.stamina == 0
+        elif self.support and not self.tucked:
+            self.stamina = min(MAX_STAMINA, self.stamina + REST_GAIN * STEP)
+            if self.stamina >= 30:
+                self.winded = False
         self.grace = GRACE_TICKS if walked_off and not self.support else max(0, self.grace - 1)
         self.jump_buffer = max(0, self.jump_buffer - 1)
         self.landing = max(0, self.landing - 1)

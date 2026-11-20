@@ -34,8 +34,8 @@ def engine_annex():
     b.rectangle((0, 190, 255, 252), fill="#415b65")
     for x in range(-36, 256, 79):
         b.rounded_rectangle((x, 198, x + 59, 272), 28, fill=(0, 0, 0, 0))
-        b.arc((x - 2, 196, x + 61, 254), 180, 360, fill="#6b7e7e", width=2)
-    b.rectangle((0, 188, 255, 191), fill="#738481")
+        b.arc((x - 2, 196, x + 61, 254), 180, 360, fill="#596f75", width=2)
+    b.rectangle((0, 188, 255, 191), fill="#65767b")
     b.line((0, 181, 255, 181), fill="#526971")
     for x in range(0, 256, 16):
         b.line((x, 181, x, 187), fill="#455d65")

@@ -1,0 +1,42 @@
+{
+  "route": {
+    "version": 2,
+    "seed": 17,
+    "attempts": 1,
+    "fallback": false,
+    "templates": [
+      "gate",
+      "gallery-west",
+      "pump-steps",
+      "sluice-twins",
+      "bell"
+    ]
+  },
+  "visited": [
+    "gate",
+    "gallery-west",
+    "pump-steps",
+    "sluice-twins",
+    "bell"
+  ],
+  "victory_seconds": 56.375,
+  "restarts": 2,
+  "combat_audio": [
+    "crush",
+    "fork",
+    "gate",
+    "hit",
+    "hook",
+    "hurt",
+    "land",
+    "maul",
+    "phase",
+    "ram",
+    "rivet",
+    "roll",
+    "seal",
+    "shot",
+    "sweep",
+    "vent"
+  ]
+}

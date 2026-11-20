@@ -1,0 +1,45 @@
+{
+  "route": {
+    "version": 1,
+    "seed": 17,
+    "attempts": 4,
+    "fallback": true,
+    "templates": [
+      "gate",
+      "pump",
+      "sluice",
+      "gallery",
+      "bell"
+    ]
+  },
+  "visited": [
+    "gate",
+    "pump",
+    "sluice",
+    "gallery",
+    "bell"
+  ],
+  "victory_seconds": 58.49166666666667,
+  "restarts": 2,
+  "events": [
+    "bell_release",
+    "death",
+    "evade",
+    "gate",
+    "hit",
+    "hurt",
+    "phase",
+    "seal",
+    "shot",
+    "sweep",
+    "swing",
+    "vent",
+    "warn",
+    "windup"
+  ],
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "framebuffer": [
+    1280,
+    720
+  ]
+}

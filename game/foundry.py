@@ -2,7 +2,15 @@
 from dataclasses import dataclass
 from .combat import Enemy, EnemySpec, Encounter, wall_entry
 from .flame import FlameCut
+from .gear import Loadout
 from .terrain import FLOOR, Surface
+
+ENTRY = (75, FLOOR.top)
+BELL_SPAWN = (810, FLOOR.top)
+
+
+def crate_point(room):
+    return room.door[0] - 102, room.door[1]
 
 
 @dataclass(frozen=True)
@@ -52,7 +60,7 @@ ROOMS = (
     ),
     Room(
         "司钟吊廊",
-        "登上吊廊，以 E 扳动绞盘",
+        "登上吊廊，扳动绞盘",
         (
             FLOOR,
             block("压舱座", 370, 530, 146),
@@ -75,7 +83,7 @@ class Bellkeeper(Enemy):
     spec = EnemySpec("守钟人 · 铜潮", 296, 25, 99, 430, 118, 76, 16, 89, 21)
 
     def __init__(self):
-        super().__init__("bell", 810, FLOOR.top, (246, 1098))
+        super().__init__("bell", *BELL_SPAWN, (246, 1098))
         self.phase = 1
         self.move_name = "sweep"
         self.turn = 0
@@ -152,7 +160,7 @@ RELEASE = sum(CAST_TICKS[:2])
 
 
 class FoundryEncounter(Encounter):
-    def __init__(self, room, last=None):
+    def __init__(self, room, last=None, *, shell_known=False):
         guards = [Enemy(*config) for config in room.guards] if room.guards else [Bellkeeper()]
         super().__init__(guards, room.surfaces)
         self.room = room
@@ -161,10 +169,37 @@ class FoundryEncounter(Encounter):
         self.flame = FlameCut()
         self.cooldown = 0
         self.wave_length = 0
+        self.loadout = last.loadout if last else Loadout(shell_known)
+        self.crate_taken = False
         if last:
             self.hp = min(100, last.hp + 18)
             self.weapon = last.weapon
             self.cooldown = last.cooldown
+
+    @property
+    def seal_period(self):
+        return COOLDOWN - 72 * self.loadout.rank("tide")
+
+    def melee_damage(self, base):
+        return base + 6 * self.loadout.rank("tooth")
+
+    def incoming_damage(self, base):
+        return max(1, base - 3 * self.loadout.rank("shell"))
+
+    @property
+    def crate(self):
+        if self.room.guards and self.cleared and not self.crate_taken:
+            return crate_point(self.room)
+        return None
+
+    def claim(self, w, item):
+        if self.crate is None or not self.hp or not self.near(w, self.crate):
+            return False
+        self.loadout.fit(item)
+        self.cooldown = min(self.cooldown, self.seal_period)
+        self.crate_taken = True
+        self.emit("fit", w.x, w.y, item=item, rank=self.loadout.rank(item))
+        return True
 
     def step_enemy(self, w, e):
         if isinstance(e, Bellkeeper):
@@ -225,7 +260,7 @@ class FoundryEncounter(Encounter):
             ):
                 if axis:
                     w.facing = 1 if axis > 0 else -1
-                self.cast_age, self.cooldown = 0, COOLDOWN
+                self.cast_age, self.cooldown = 0, self.seal_period
                 self.buffer = 0
             if self.cast_age == RELEASE:
                 self.pulse(w)
@@ -243,6 +278,8 @@ class FoundryEncounter(Encounter):
     def interact(self, w):
         if not self.hp or self.hurt or self.cast_age >= 0 or self.attack or self.flame.busy:
             return
+        if self.crate and self.near(w, self.crate):
+            return "crate"
         if not self.valve_open and self.near(w, self.room.valve):
             self.valve_open = True
             self.emit("gate", w.x, w.y)

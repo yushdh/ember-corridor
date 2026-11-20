@@ -23,6 +23,29 @@ def tick(actor, count, axis=0, **keys):
 
 
 class MovementTests(unittest.TestCase):
+    def test_running_exhaustion_and_recovery(self):
+        w = Walker(x=35)
+        for _ in range(760):
+            w.step(1, surfaces=(FLOOR,))
+        self.assertTrue(w.winded)
+        self.assertLess(w.speed, 154)
+        for _ in range(165):
+            w.step(0, surfaces=(FLOOR,))
+        self.assertFalse(w.winded)
+        self.assertGreater(w.stamina, 30)
+
+    def test_stamina_cost_requires_ground_displacement(self):
+        w = Walker(x=100)
+        for _ in range(120):
+            w.step(1, surfaces=(FLOOR,))
+        self.assertAlmostEqual(w.stamina, 84)
+        w.step(1, jump=True, held=True, surfaces=(FLOOR,))
+        self.assertAlmostEqual(w.stamina, 84)
+        w = Walker(x=100, stamina=70)
+        wall = Surface("wall", 111, 121, GROUND_Y, GROUND_Y + 100)
+        w.step(1, surfaces=(FLOOR,wall))
+        self.assertGreater(w.stamina, 70)
+
     def test_hold_and_release(self):
         def height(hold_ticks):
             w = Walker()

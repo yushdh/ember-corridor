@@ -2,6 +2,7 @@
 import json
 import sys
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import arcade
 import pyglet
@@ -15,9 +16,9 @@ from pixel_check import check_pixels
 
 
 class Capture(CampaignWindow):
-    def __init__(self, out):
+    def __init__(self, out, *, save_dir):
         self.ready = False
-        super().__init__()
+        super().__init__(classic=True, save_dir=save_dir)
         self.out = out
         out.mkdir(parents=True, exist_ok=True)
         self.frames = []
@@ -115,6 +116,7 @@ class Capture(CampaignWindow):
 
 
 if __name__ == "__main__":
-    window = Capture(ROOT / "docs/verification/firecut")
-    arcade.run()
-    window.save()
+    with TemporaryDirectory() as test_profile:
+        window = Capture(ROOT / "docs/verification/firecut", save_dir=test_profile)
+        arcade.run()
+        window.save()

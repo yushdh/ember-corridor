@@ -4,6 +4,7 @@ import ctypes
 import json
 import platform
 import sys
+from tempfile import TemporaryDirectory
 from pathlib import Path
 from time import monotonic
 import arcade
@@ -13,6 +14,8 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from game.campaign import CampaignWindow
 from game.foundry import Bellkeeper, RELEASE
+from game.motion import GRAVITY, JUMP_SPEED
+from game.terrain import GROUND_Y
 from pixel_check import check_pixels
 
 
@@ -141,9 +144,7 @@ class Route:
             self.tap("r")
             self.run = 2
             return
-        if self.run == 2:
-            if w.index != 0:
-                raise AssertionError("victory restart")
+        if self.run == 2 and self.check_defeat_restart():
             if not c.hp and c.death_age > 55:
                 self.snap("death")
                 self.tap("r")
@@ -182,15 +183,10 @@ class Route:
             e = None
         if e:
             direction = 1 if e.x >= p.x else -1
-            # Approach the elevated hanging guard via the stone pedestal below it.
             target_x = e.x - direction * 36
-            if w.index == 3 and e.y == 203 and p.y < 140 and p.x > 529:
-                target_x = 456
             target_y = e.y
         else:
             target_x, target_y = c.room.door if c.valve_open else c.room.valve
-            if not c.valve_open and p.y < 141 and p.x >= 530:
-                target_x = 455
             if abs(p.x - target_x) <= 25 and abs(p.y - target_y) <= 20:
                 self.hold(set())
                 if not c.valve_open:
@@ -198,6 +194,11 @@ class Route:
                 if self.counter % 4 == 0:
                     self.tap("e")
                 return
+        # Climb the template's intermediate landing when its upper deck needs two jumps.
+        for sx, sy in w.route.rooms[w.index].steps:
+            if p.y < sy - 3 and target_y - GROUND_Y > JUMP_SPEED ** 2 / (2 * GRAVITY):
+                target_x, target_y = sx, sy
+                break
         delta = target_x - p.x
         close = e and abs(e.x - p.x) <= 60 and abs(p.y - e.y) < 37
         axis = 1 if delta > 3 else -1 if delta < -3 else 0
@@ -262,6 +263,10 @@ class Route:
                 elif close:
                     self.tap("j")
 
+    def check_defeat_restart(self):
+        assert self.w.index == 0, "victory restart"
+        return True
+
     def save(self):
         assert self.finished and self.run == 3 and self.paused_once
         kinds = {e["kind"] for e in self.events}
@@ -298,7 +303,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("docs/verification/stage4"))
     args = parser.parse_args()
-    window = CampaignWindow()
+    test_profile = TemporaryDirectory()
+    window = CampaignWindow(classic=True, save_dir=test_profile.name)
     route = Route(window, args.output)
     route.gpu = pyglet.gl.gl_info.get_renderer()
     pyglet.clock.schedule_interval(route.drive, 1 / 60)

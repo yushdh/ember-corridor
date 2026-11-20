@@ -1,0 +1,31 @@
+{
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "poses": {
+    "after": 16,
+    "jump": 72,
+    "counter": 152
+  },
+  "standing_hp": 84,
+  "jumping_hp": 100,
+  "counter_enemy_hp": 40,
+  "warning_audio_playing": true,
+  "frames_seen": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "samples": 188,
+  "update_draw_finish_ms_median": 1.58,
+  "update_draw_finish_ms_p95": 6.29
+}

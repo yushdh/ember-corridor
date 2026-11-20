@@ -108,7 +108,7 @@ class FlameCut:
                 if hit is None or hit >= wall:
                     continue
                 self.victims.add(id(enemy))
-                enemy.hp = max(0, enemy.hp - DAMAGE)
+                enemy.hp = max(0, enemy.hp - c.melee_damage(DAMAGE))
                 if not enemy.hp:
                     enemy.enter("dead")
                 elif enemy.kind != "bell":

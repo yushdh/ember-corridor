@@ -75,6 +75,14 @@ def room_image(i, room):
         fill = ("#404d59", "#394f58", "#343e4f", "#413e48")[i - 1]
         spandrel = Image.new("RGBA", (1280, 266), fill)
         arch = ImageDraw.Draw(spandrel)
+        stone = tuple(bytes.fromhex(fill[1:]))
+        for y in range(266):
+            shade = round(5 * math.cos(y / 27) - 10 * y / 266)
+            arch.line((0, y, 1280, y), fill=tuple(c + shade for c in stone))
+        for row in range(0, 266, 21):
+            for joint in range(-41 + row % 2 * 35, 1280, 72):
+                arch.line((joint, row, joint + 69, row), fill=tuple(c - 5 for c in stone))
+                arch.line((joint, row, joint, row + 19), fill=tuple(c - 7 for c in stone))
         for x in range(-65, 1280, 183 if i != 4 else 224):
             width = 145 if i != 4 else 178
             arch.rounded_rectangle(
@@ -88,6 +96,34 @@ def room_image(i, room):
                 width=3,
             )
             arch.rectangle((x - 11, 142, x - 2, 264), fill="#475761")
+            # A fanlight of sea glass framed by individual copper-tipped arch stones.
+            r = width / 2
+            cx, cy = x + r, 68 + i * 3 + r
+            def polar(radius, degrees):
+                a = math.radians(degrees)
+                return round(cx + radius * math.cos(a)), round(cy + radius * math.sin(a))
+
+            for n in range(15):
+                a = 180 + 12 * n
+                arch.polygon([polar(r + 2, a), polar(r + 9, a + 0.7),
+                              polar(r + 9, a + 11.3), polar(r + 2, a + 12)],
+                             fill=("#646e70", "#54646a", "#5d686a")[n % 3], outline="#43535b")
+                arch.line((polar(r + 8, a + 2), polar(r + 8, a + 8)), fill="#978777")
+            for n in range(12):
+                a = 180 + 15 * n
+                pane = [(63, 133, 139, 162), (82, 124, 155, 155), (112, 135, 145, 137),
+                        (151, 128, 104, 152)][(n + i) % 4]
+                arch.polygon([polar(r - 2, a), polar(r - 2, a + 15),
+                              polar(r - 15, a + 15), polar(r - 21, a + 7), polar(r - 15, a)],
+                             fill=pane, outline="#54676d")
+            arch.line((cx, cy - r - 9, cx - 4, cy - r - 2, cx, cy - r + 7,
+                       cx + 4, cy - r - 2, cx, cy - r - 9), fill="#b49d77", width=2)
+            # A tide-height rose carved into the pier above the springing line.
+            px, py = x - 18, 85
+            for radius, color in ((15, "#495963"), (12, "#938474"), (9, "#536c72")):
+                arch.ellipse((px-radius, py-radius, px+radius, py+radius), outline=color)
+            arch.polygon([(px, py-11), (px+4, py), (px, py+11), (px-4, py)], fill="#839997")
+            arch.line((px, py+16, px, 167), fill="#707779")
         im.alpha_composite(spandrel)
         for y in (26, 33, 50):
             d.line((0, y, 1280, y), fill="#626665", width=2)
@@ -96,10 +132,6 @@ def room_image(i, room):
     if i == 0:
         for x in (171, 592, 996):
             d.line((x, 260, x, 125), fill="#4a5b5f", width=4)
-            d.polygon(
-                [(x, 127), (x + 31, 132), (x + 42, 129), (x + 32, 141), (x + 13, 137), (x, 140)],
-                fill="#946e5b",
-            )
             d.line((x - 7, 150, x + 8, 150), fill="#87877c")
     elif i == 1:
         for x in (195, 638, 1042):
@@ -108,7 +140,6 @@ def room_image(i, room):
             )
             d.ellipse((x - 24, 123, x + 23, 168), fill="#304651", outline="#89918a", width=3)
             d.arc((x - 17, 130, x + 16, 160), 197, 341, fill="#c3af83", width=2)
-            d.line((x, 146, x + 10, 137), fill=GOLD, width=2)
             d.line((x + 38, 188, x + 64, 188, x + 70, 195, x + 70, 249), fill="#69736e", width=6)
             for k in range(3):
                 d.line((x - 28, 180 + k * 7, x + 26, 180 + k * 7), fill="#617675", width=2)
@@ -133,8 +164,12 @@ def room_image(i, room):
             d.line((x - 12, 20, x + 12, 20), fill="#a48b68", width=3)
             bell(d, x, 109, r, "#675e58", "#9a856c")
             d.line((x - 3, 109 + r, x + 4, 244), fill="#594f4a", width=2)
-    # Art and collision share the hand-authored surfaces.
-    im.alpha_composite(structures(room.surfaces))
+    return im
+
+
+def room_front(room):
+    im = structures(room.surfaces)
+    d = ImageDraw.Draw(im)
     for x, y in [room.door]:
         base = 360 - y
         d.rounded_rectangle(
@@ -374,11 +409,24 @@ def effects():
     return sheet
 
 
+def generate_rooms():
+    from game.routes import ALTERNATES
+
+    fronts = Image.new("RGBA", (1280, 360 * len(ROOMS)))
+    for i, room in enumerate(ROOMS):
+        room_image(i, room).save(OUT / f"room-{i+1}.png")
+        fronts.paste(room_front(room), (0, i * 360))
+    fronts.save(OUT / "room-fronts.png")
+    alternate_fronts = Image.new("RGBA", (1280, 360 * len(ALTERNATES)))
+    for i, template in enumerate(ALTERNATES):
+        alternate_fronts.paste(room_front(template.room), (0, i * 360))
+    alternate_fronts.save(OUT / "route-fronts.png")
+
+
 def generate():
     OUT.mkdir(exist_ok=True)
     effects().save(OUT / "effects.png")
-    for i, room in enumerate(ROOMS):
-        room_image(i, room).save(OUT / f"room-{i+1}.png")
+    generate_rooms()
     clips = {}
 
     def bake(name, size, anchor, cells, ticks, events):

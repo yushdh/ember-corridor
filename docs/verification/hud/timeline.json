@@ -1,0 +1,132 @@
+[
+  {
+    "time": 0.0,
+    "mode": "title",
+    "paused": false,
+    "title": false,
+    "lesson": null,
+    "stamina": 100.0,
+    "hp": 100,
+    "x": 75
+  },
+  {
+    "time": 0.6,
+    "mode": "play",
+    "paused": false,
+    "title": true,
+    "lesson": "move",
+    "stamina": 100.0,
+    "hp": 100,
+    "x": 75.0
+  },
+  {
+    "time": 3.333,
+    "mode": "play",
+    "paused": false,
+    "title": true,
+    "lesson": null,
+    "stamina": 100.0,
+    "hp": 100,
+    "x": 75.0
+  },
+  {
+    "time": 3.4,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": null,
+    "stamina": 100.0,
+    "hp": 100,
+    "x": 75.0
+  },
+  {
+    "time": 6.567,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": null,
+    "stamina": 100.0,
+    "hp": 100,
+    "x": 75.0
+  },
+  {
+    "time": 7.733,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": "jump",
+    "stamina": 81.33,
+    "hp": 100,
+    "x": 245.2
+  },
+  {
+    "time": 8.133,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": null,
+    "stamina": 74.93,
+    "hp": 100,
+    "x": 306.8
+  },
+  {
+    "time": 8.267,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": "attack",
+    "stamina": 72.8,
+    "hp": 100,
+    "x": 327.3
+  },
+  {
+    "time": 8.4,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": "roll",
+    "stamina": 70.67,
+    "hp": 100,
+    "x": 347.8
+  },
+  {
+    "time": 8.767,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": null,
+    "stamina": 64.8,
+    "hp": 100,
+    "x": 404.3
+  },
+  {
+    "time": 8.867,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": null,
+    "stamina": 63.2,
+    "hp": 100,
+    "x": 419.7
+  },
+  {
+    "time": 10.067,
+    "mode": "play",
+    "paused": false,
+    "title": false,
+    "lesson": null,
+    "stamina": 94.47,
+    "hp": 87,
+    "x": 430.6
+  },
+  {
+    "time": 10.1,
+    "mode": "play",
+    "paused": true,
+    "title": false,
+    "lesson": null,
+    "stamina": 94.47,
+    "hp": 87,
+    "x": 430.6
+  }
+]

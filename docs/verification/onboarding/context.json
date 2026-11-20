@@ -1,0 +1,47 @@
+{
+  "events": [
+    [
+      0.0,
+      "move"
+    ],
+    [
+      0.5,
+      null
+    ],
+    [
+      1.483,
+      "jump"
+    ],
+    [
+      1.883,
+      null
+    ],
+    [
+      2.0,
+      "attack"
+    ],
+    [
+      2.15,
+      "roll"
+    ],
+    [
+      2.517,
+      null
+    ]
+  ],
+  "learned": [
+    "move"
+  ],
+  "shown": [
+    "attack",
+    "jump",
+    "move",
+    "roll"
+  ],
+  "zones": [
+    "attack",
+    "jump",
+    "move",
+    "roll"
+  ]
+}

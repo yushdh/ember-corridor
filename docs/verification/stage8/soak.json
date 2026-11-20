@@ -1,0 +1,67 @@
+{
+  "samples": [
+    {
+      "cycle": 1,
+      "private_mib": 365.66,
+      "working_mib": 206.68,
+      "handlers": 9,
+      "foes": 2,
+      "particles": 0,
+      "projectiles": 0,
+      "voices": 0
+    },
+    {
+      "cycle": 5,
+      "private_mib": 783.8,
+      "working_mib": 209.64,
+      "handlers": 9,
+      "foes": 2,
+      "particles": 0,
+      "projectiles": 0,
+      "voices": 0
+    },
+    {
+      "cycle": 10,
+      "private_mib": 785.95,
+      "working_mib": 213.79,
+      "handlers": 9,
+      "foes": 2,
+      "particles": 0,
+      "projectiles": 0,
+      "voices": 0
+    },
+    {
+      "cycle": 20,
+      "private_mib": 786.23,
+      "working_mib": 214.25,
+      "handlers": 9,
+      "foes": 2,
+      "particles": 0,
+      "projectiles": 0,
+      "voices": 0
+    },
+    {
+      "cycle": 30,
+      "private_mib": 787.5,
+      "working_mib": 215.73,
+      "handlers": 9,
+      "foes": 2,
+      "particles": 0,
+      "projectiles": 0,
+      "voices": 0
+    },
+    {
+      "cycle": 40,
+      "private_mib": 599.55,
+      "working_mib": 214.22,
+      "handlers": 9,
+      "foes": 2,
+      "particles": 0,
+      "projectiles": 0,
+      "voices": 0
+    }
+  ],
+  "released": 80,
+  "backend": "Windows GetProcessMemoryInfo",
+  "method": "Injected contacts; production death clock, R and room transition"
+}

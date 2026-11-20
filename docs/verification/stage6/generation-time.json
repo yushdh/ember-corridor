@@ -1,0 +1,15 @@
+{
+  "samples_per_pass": 64,
+  "seeds": [
+    0,
+    63
+  ],
+  "cold": {
+    "median_ms": 19.305,
+    "p95_ms": 20.844
+  },
+  "warm": {
+    "median_ms": 0.013,
+    "p95_ms": 0.017
+  }
+}

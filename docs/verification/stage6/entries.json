@@ -1,0 +1,144 @@
+[
+  {
+    "args": [
+      "--seed",
+      "17"
+    ],
+    "initial_levels": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "route": {
+      "version": 1,
+      "seed": 17,
+      "attempts": 1,
+      "fallback": false,
+      "templates": [
+        "gate",
+        "gallery-west",
+        "pump-steps",
+        "sluice-twins",
+        "bell"
+      ]
+    }
+  },
+  {
+    "args": [
+      "--seed",
+      "17"
+    ],
+    "initial_levels": [
+      2,
+      2,
+      2,
+      3
+    ],
+    "route": {
+      "version": 1,
+      "seed": 17,
+      "attempts": 1,
+      "fallback": false,
+      "templates": [
+        "gate",
+        "gallery-west",
+        "pump-steps",
+        "sluice-twins",
+        "bell"
+      ]
+    }
+  },
+  {
+    "args": [
+      "--seed",
+      "18"
+    ],
+    "initial_levels": [
+      2,
+      2,
+      2,
+      0
+    ],
+    "route": {
+      "version": 1,
+      "seed": 18,
+      "attempts": 1,
+      "fallback": false,
+      "templates": [
+        "gate",
+        "gallery-west",
+        "pump",
+        "sluice",
+        "bell"
+      ]
+    }
+  },
+  {
+    "args": [
+      "--classic"
+    ],
+    "initial_levels": [
+      2,
+      2,
+      2,
+      1
+    ],
+    "route": {
+      "version": 1,
+      "seed": null,
+      "attempts": 0,
+      "fallback": false,
+      "templates": [
+        "gate",
+        "pump",
+        "sluice",
+        "gallery",
+        "bell"
+      ]
+    }
+  },
+  {
+    "args": [
+      "--practice"
+    ],
+    "started": true
+  },
+  {
+    "args": [
+      "--skirmish"
+    ],
+    "started": true
+  },
+  {
+    "args": [],
+    "death_restart": [
+      {
+        "version": 1,
+        "seed": 2907221159,
+        "attempts": 1,
+        "fallback": false,
+        "templates": [
+          "gate",
+          "sluice",
+          "gallery",
+          "pump",
+          "bell"
+        ]
+      },
+      {
+        "version": 1,
+        "seed": 1569808202,
+        "attempts": 1,
+        "fallback": false,
+        "templates": [
+          "gate",
+          "sluice",
+          "pump",
+          "gallery-west",
+          "bell"
+        ]
+      }
+    ]
+  }
+]

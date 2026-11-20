@@ -1,0 +1,104 @@
+{
+  "run": {
+    "frame": 16,
+    "x": 199.1333333333333,
+    "y": 94,
+    "scroll": 0,
+    "facing": 1,
+    "foes": [
+      [
+        "idle",
+        62
+      ],
+      [
+        "idle",
+        62
+      ]
+    ]
+  },
+  "follow": {
+    "frame": 99,
+    "x": 412.16666666666976,
+    "y": 94,
+    "scroll": 58.166666666669755,
+    "facing": 1,
+    "foes": [
+      [
+        "active",
+        62
+      ],
+      [
+        "idle",
+        62
+      ]
+    ]
+  },
+  "cut": {
+    "frame": 5,
+    "x": 334.0,
+    "y": 94,
+    "scroll": 0,
+    "facing": 1,
+    "foes": [
+      [
+        "hurt",
+        46
+      ],
+      [
+        "walk",
+        62
+      ]
+    ]
+  },
+  "liftcut": {
+    "frame": 18,
+    "x": 339.0,
+    "y": 94,
+    "scroll": 0,
+    "facing": 1,
+    "foes": [
+      [
+        "hurt",
+        27
+      ],
+      [
+        "walk",
+        62
+      ]
+    ]
+  },
+  "thrust": {
+    "frame": 35,
+    "x": 348.0,
+    "y": 94,
+    "scroll": 0,
+    "facing": 1,
+    "foes": [
+      [
+        "dead",
+        0
+      ],
+      [
+        "hurt",
+        32
+      ]
+    ]
+  },
+  "after-combo": {
+    "frame": 95,
+    "x": 366.0,
+    "y": 94,
+    "scroll": 12.0,
+    "facing": 1,
+    "foes": [
+      [
+        "dead",
+        0
+      ],
+      [
+        "dead",
+        0
+      ]
+    ]
+  }
+}

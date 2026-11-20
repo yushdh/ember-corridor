@@ -8,15 +8,15 @@ OUT = Path(__file__).resolve().parents[1] / "assets" / "quay"
 W, H = 640, 360
 
 
-def sky():
+def sky(curtain=None, beacon_phase=0):
     rng = random.Random(417)
     im = Image.new("RGB", (W, H))
     d = ImageDraw.Draw(im)
     stops = (
-        (0, (29, 37, 57)),
-        (60, (57, 65, 82)),
-        (116, (96, 107, 114)),
-        (152, (151, 143, 129)),
+        (0, (20, 30, 54)),
+        (60, (54, 68, 99)),
+        (116, (108, 100, 119)),
+        (152, (157, 130, 125)),
         (209, (106, 137, 140)),
         (360, (75, 104, 115)),
     )
@@ -26,6 +26,9 @@ def sky():
                 (0, y, W, y),
                 fill=tuple(round(v + (w - v) * (y - lo) / (hi - lo)) for v, w in zip(a, b)),
             )
+    cloud_colors = [im.getpixel((0, y)) for y in range(H)]
+    if curtain is not None:
+        im.paste(curtain, (0, 0), curtain)
     # Moon behind long wind-sheared clouds.
     veil = Image.new("RGBA", im.size)
     halo = ImageDraw.Draw(veil)
@@ -38,9 +41,9 @@ def sky():
         fill="#afb1a7",
     )
     d.polygon([(304, 76), (310, 69), (319, 70), (322, 73), (318, 79), (312, 82)], fill="#b2b4a7")
-    for _ in range(98):
+    for _ in range(55):
         x, y = rng.randrange(-70, 640), rng.randrange(16, 138)
-        v = im.getpixel((0, y))
+        v = cloud_colors[y]
         color = tuple(min(255, n + 5) for n in v)
         width = rng.randrange(18, 74)
         d.polygon(
@@ -54,6 +57,13 @@ def sky():
             ],
             fill=color,
         )
+    # Two banks above the estuary. Low contrast keeps their roofline behind the hoist.
+    for base, tone, offset in ((121, "#797789", 0), (137, "#777b89", 1.6)):
+        ridge = [
+            (x, round(base + 8 * math.sin(x / 55 + offset) + 4 * math.sin(x / 18 + offset)))
+            for x in range(-8, W + 9, 8)
+        ]
+        d.polygon(ridge + [(W, 201), (0, 201)], fill=tone)
     # A distant furnace dome breaks up the repeated rectangular roofs.
     d.ellipse((178, 94, 241, 147), fill="#798c91")
     d.rectangle((177, 119, 242, 177), fill="#798c91")
@@ -62,8 +72,35 @@ def sky():
     d.line((209, 78, 209, 71), fill="#839195")
     for x in (186, 196, 208, 221, 231):
         d.line((209, 96, x, 118), fill="#8c9c9a")
+    # A salt beacon on the far bank. A rotating lens catches the mist above the roofs.
+    bx, by = 394, 82
+    cone = Image.new("RGBA", im.size)
+    beam = ImageDraw.Draw(cone)
+    sweep = math.cos(beacon_phase)
+    reach = round(124 * abs(sweep))
+    for distance in range(1, reach + 1):
+        u = distance / reach
+        x = bx + (distance if sweep > 0 else -distance)
+        y = by + round(distance * (.035 + .065 * math.sin(beacon_phase)))
+        height = 1 + round(10 * u)
+        for dy in range(-height, height + 1):
+            alpha = round(66 * (1 - u) ** .65 * (1 - abs(dy) / (height + 1)) * abs(sweep))
+            beam.point((x, y + dy), fill=(248, 208, 146, alpha))
+    im.paste(cone, (0, 0), cone)
+    d.polygon([(bx-5,92),(bx+5,92),(bx+10,151),(bx-11,151)],fill="#637482")
+    d.polygon([(bx-5,92),(bx-1,92),(bx-3,147),(bx-8,147)],fill="#a19690")
+    for yy in (99,114,129):
+        d.line((bx-6,yy,bx+6,yy+1),fill="#515e70",width=2)
+        d.line((bx-6,yy+2,bx+5,yy+3),fill="#97989a")
+    d.rectangle((bx-8,86,bx+8,90),fill="#526576")
+    d.rectangle((bx-5,77,bx+5,85),fill="#c1a78c")
+    d.rectangle((bx-2,78,bx+2,83),fill="#f1d0a2")
+    d.line((bx-4,77,bx-4,86),fill="#707b84")
+    d.line((bx+4,77,bx+4,86),fill="#707b84")
+    d.polygon([(bx-8,76),(bx-3,72),(bx,68),(bx+3,72),(bx+8,76)],fill="#627482")
+    d.line((bx,69,bx,64),fill="#9a9495")
     for depth, (base, body, lit) in enumerate(
-        [(193, "#829698", "#95a6a0"), (214, "#637e87", "#79918f")]
+        [(193, "#808994", "#969396"), (214, "#626f80", "#81818a")]
     ):
         x = -7
         while x < W:
@@ -80,9 +117,14 @@ def sky():
                 d.line((ax - 3, top, ax + 2, top), fill=lit)
             for wx in range(x + 4, x + w - 1, 8):
                 d.line((wx, y + 6, wx, y + 10), fill=lit)
+            if depth and w > 32:
+                for wx in (x + 5, x + 9, x + 16):
+                    d.rectangle((wx, y + 12, wx + 1, y + 14), fill="#bd9380")
             x += w + rng.randrange(1, 8)
     # Mist at the waterline and broken horizontal reflections.
-    d.rectangle((0, 210, W, 289), fill="#476573")
+    for y in range(210, 290):
+        t = (y - 210) / 80
+        d.line((0, y, W, y), fill=(round(80 - 34 * t), round(101 - 28 * t), round(112 - 24 * t)))
     for i in range(275):
         x, y = rng.randrange(W), rng.randrange(212, 289)
         d.line(
@@ -100,38 +142,6 @@ def midground():
         d.line(points, fill=edge, width=width + 3, joint="curve")
         d.line(points, fill=main, width=width, joint="curve")
 
-    # Ruined tide engine with an exposed spoked wheel.
-    cx, cy, r = 492, 166, 69
-    for i in range(32):
-        a = i * math.tau / 32
-
-        def radial(dist, offset):
-            return (
-                round(cx + dist * math.cos(a + offset)),
-                round(cy + dist * math.sin(a + offset)),
-            )
-
-        d.polygon(
-            [
-                radial(r - 3, -0.066),
-                radial(r + 5, -0.047),
-                radial(r + 5, 0.047),
-                radial(r - 3, 0.066),
-            ],
-            fill="#394f59",
-        )
-    for width, inset, color in [(8, 0, "#364953"), (2, 1, "#58666c"), (3, 9, "#465761")]:
-        d.ellipse(
-            (cx - r + inset, cy - r + inset, cx + r - inset, cy + r - inset),
-            outline=color,
-            width=width,
-        )
-    for i in range(12):
-        a = i * math.tau / 12 + 0.16
-        u, v = round(cx + math.cos(a) * 61), round(cy + math.sin(a) * 61)
-        pipe([(cx, cy), (u, v)], 4, "#52616a", "#41525e")
-    d.ellipse((cx - 12, cy - 12, cx + 12, cy + 12), fill="#485860", outline="#636e71", width=2)
-    d.ellipse((cx - 3, cy - 3, cx + 3, cy + 3), fill="#78817b")
     # Stone pumping house with a flared stack, ridges and arched furnace mouths.
     for offset, height in [(565, 35), (603, 57)]:
         x = offset
@@ -163,8 +173,8 @@ def midground():
     b.rectangle((0, 190, 640, 252), fill="#415b65")
     for x in range(-28, 640, 79):
         b.rounded_rectangle((x, 198, x + 59, 272), radius=28, fill=(0, 0, 0, 0))
-        b.arc((x - 2, 196, x + 61, 254), 180, 360, fill="#6b7e7e", width=2)
-    b.rectangle((0, 188, 640, 191), fill="#738481")
+        b.arc((x - 2, 196, x + 61, 254), 180, 360, fill="#596f75", width=2)
+    b.rectangle((0, 188, 640, 191), fill="#65767b")
     for x in range(0, 640, 16):
         b.line((x, 181, x, 187), fill="#455d65")
     b.line((0, 181, W, 181), fill="#526971")
@@ -223,6 +233,11 @@ def deck():
     for radius, alpha in ((27, 10), (20, 16), (14, 27), (9, 39)):
         d.ellipse(
             (81 - radius, 223 - radius, 81 + radius, 223 + radius), fill=(231, 166, 92, alpha)
+        )
+    for half, opacity in ((24, 12), (16, 16), (9, 20)):
+        d.polygon(
+            [(78, 225), (84, 225), (81 + half, 265), (81 - half, 265)],
+            fill=(237, 181, 113, opacity),
         )
     d.polygon(
         [
@@ -306,6 +321,17 @@ def deck():
         d.line(
             (x, y, x + rng.randrange(3, 22), y), fill=rng.choice(("#2a4b56", "#35565e", "#294651"))
         )
+    # Recessed drain lips discharge into the animated foreground pools.
+    for x in (170, 470):
+        d.rounded_rectangle(
+            (x - 9, 314, x + 8, 331), radius=5, fill="#263844", outline="#686b63", width=2
+        )
+        d.rectangle((x - 6, 320, x + 5, 330), fill="#192b36")
+        for u in (-3, 1, 4):
+            d.line((x + u, 318, x + u, 327), fill="#586661")
+        d.line((x - 7, 330, x + 6, 330), fill="#718581")
+    for x, width in ((61, 9), (75, 13), (92, 7)):
+        d.line((x, 267, x + width, 267), fill="#b99972")
     return im
 
 
@@ -361,6 +387,10 @@ def atmosphere():
             )
             d.line((x - r, y, x - 1, y + 1, x + 2, y), fill=(164, 162, 155, alpha // 2))
         d = ImageDraw.Draw(fire)
+        # Firelight catches the stone jamb and sill locally as the flame opens.
+        strength = (20, 25, 31, 39, 46, 40, 34, 28, 23, 21, 26, 24)[i]
+        for r, alpha in ((15, strength // 3), (10, strength // 2), (6, strength)):
+            d.ellipse((24 - r, 18 - r // 2, 24 + r, 22 + r // 2), fill=(242, 141, 79, alpha))
         for dx, phase in ((-2, 0), (2, 5)):
             age = (i + phase) % 12
             h = (4, 6, 8, 7, 10, 9, 7, 5, 4, 6, 5, 3)[age]
@@ -373,6 +403,10 @@ def atmosphere():
         if i % 6 > 1:
             d.point((22 + i // 6, 15 - i % 6), fill="#ce915f")
         d = ImageDraw.Draw(foam)
+        drop = (i * i) // 9
+        d.line((24, 3 + drop, 24, 5 + drop), fill=(156, 186, 180, 130))
+        if i >= 8:
+            d.arc((24 - i + 6, 18, 24 + i - 6, 23), 12, 165, fill=(168, 195, 188, 150))
         for phase, cx, cy in ((0, 17, 17), (6, 31, 22)):
             age = (i + phase) % 12
             radius = 2 + age

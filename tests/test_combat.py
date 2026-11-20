@@ -5,9 +5,9 @@ from pathlib import Path
 from PIL import Image
 
 from game.attacks import STRIKES
-from game.combat import Encounter, Enemy, Bolt
+from game.combat import Encounter, Enemy, Bolt, FORK_HEIGHT, FORK_REACH
 from game.motion import Walker
-from game.terrain import GROUND_Y
+from game.terrain import GROUND_Y, Surface
 
 
 class CombatTests(unittest.TestCase):
@@ -60,6 +60,39 @@ class CombatTests(unittest.TestCase):
                                 self.assertTrue(before[0] <= event["x"] <= before[2])
                                 self.assertTrue(before[1] <= event["y"] <= before[3])
 
+    def test_fork_locked_direction_and_first_active_tick(self):
+        for facing in (-1, 1):
+            c = Encounter([Enemy("fork", 300, GROUND_Y, (240, 360))])
+            e = c.foes[0]
+            w = Walker(x=e.x + facing * 48)
+            c.step_enemy(w, e)
+            self.assertEqual((e.state, e.facing), ("warn", facing))
+            w.x = e.x - facing * 45
+            for _ in range(e.spec.windup - 1):
+                c.step_enemy(w, e)
+            self.assertEqual((e.facing, c.hp, e.state), (facing, 100, "warn"))
+            c.step_enemy(w, e)
+            self.assertEqual((c.hp, e.state), (100, "active"))
+            w.x = e.x + facing * 48
+            for _ in range(e.spec.active):
+                c.step_enemy(w, e)
+            self.assertEqual((e.state, c.hp), ("recover", 84))
+            self.assertEqual([v["y"] for v in c.events if v["kind"] == "hurt"],
+                             [GROUND_Y + FORK_HEIGHT])
+
+    def test_fork_reach_jump_and_wall(self):
+        wall = Surface("stop", 320, 324, GROUND_Y, GROUND_Y + 55)
+        for gap, rise, surfaces, hp in (
+            (FORK_REACH + 11, 0, (), 84), (FORK_REACH + 12, 0, (), 100),
+            (46, FORK_HEIGHT + 1, (), 100), (46, 0, (wall,), 100)
+        ):
+            with self.subTest(gap=gap, rise=rise, wall=bool(surfaces)):
+                e = Enemy("fork", 300, GROUND_Y, (240, 360), facing=1)
+                c = Encounter([e], surfaces)
+                e.enter("active")
+                c.step_enemy(Walker(x=e.x + gap, y=e.y + rise), e)
+                self.assertEqual(c.hp, hp)
+
     def test_effective_frames_and_instance_dedup(self):
         self.step(attack=True)
         self.step(sum(STRIKES["cut"].ticks[:3]) - 1)
@@ -70,6 +103,18 @@ class CombatTests(unittest.TestCase):
         hits = [e for e in self.c.events if e["kind"] == "hit"]
         self.assertEqual([(e["frame"], e["attack_id"]) for e in hits], [(3, 1)])
         self.assertEqual(self.e.hp, 46)
+
+    def test_knockback_waits_for_contact_hold_to_end(self):
+        contact_x = self.e.x
+        self.step(attack=True)
+        while not self.c.freeze:
+            self.step()
+        self.assertEqual(self.e.hp, 46)
+        while self.c.freeze:
+            self.assertEqual(self.e.x, contact_x)
+            self.step()
+        self.step()
+        self.assertEqual(self.e.x, contact_x + 3)
 
     def test_duplicate_species_are_individual_targets(self):
         second = Enemy("hook", 370, GROUND_Y, (260, 519))

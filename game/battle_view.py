@@ -4,11 +4,12 @@ import math
 import random
 
 import arcade
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 from .attacks import STRIKES
-from .combat import MAX_HP, TYPES, wall_entry
-from .resources import ASSETS, font_face, load_clips
+from .combat import FORK_HEIGHT, FORK_REACH, MAX_HP, TYPES, wall_entry
+from .resources import ASSETS, load_clips
+from .ui import blit, panel, tag, label, draw_stamina, GOLD, PALE, FOAM
 
 
 def position(sprite, frame, x, y, facing, scroll, lift):
@@ -18,75 +19,6 @@ def position(sprite, frame, x, y, facing, scroll, lift):
         round(x) - scroll + facing * (sprite.texture.width // 2 - ax),
         round(y) - lift + ay - sprite.texture.height // 2,
     )
-
-
-def interface(weapon=None, foe=None, notice=None, campaign=False):
-    im = Image.new("RGBA", (640, 360))
-    d = ImageDraw.Draw(im)
-    face = font_face()
-
-    def word(x, y, value, size, color):
-        d.text((x, y), value, font=ImageFont.truetype(face, size), fill=color)
-
-    pale, muted, gold = "#ede2c9", "#adbfbb", "#d9aa6a"
-    if weapon:
-        d.polygon(
-            [(10, 10), (163, 10), (171, 18), (171, 52), (10, 52)],
-            fill=(24, 37, 46, 242),
-            outline="#70817d",
-        )
-        d.line((12, 13, 12, 49), fill=gold, width=2)
-        d.polygon([(19, 29), (30, 16), (42, 29), (30, 43)], fill="#263e4a", outline="#c59b66")
-        if weapon == "light":
-            d.polygon([(24, 36), (27, 28), (38, 19), (33, 29)], fill="#f6cb82")
-        else:
-            d.line((24, 37, 35, 23), fill="#d1a879", width=2)
-            d.polygon([(28, 21), (33, 17), (40, 23), (37, 29)], fill="#b7d7d0", outline="#789197")
-        word(49, 12, "遗迹行者" if campaign else "盐炉渡口", 13, pale)
-        word(108, 15, "余烬弯刃" if weapon == "light" else "潮砧重锤", 10, gold)
-        word(49, 32, "体力", 10, muted)
-        d.rectangle((76, 36, 159, 42), fill="#182730", outline="#72847f")
-        labels = (
-            ("A/D", "移动"),
-            ("Space", "跳"),
-            ("S+Space", "下穿"),
-            ("J", "攻击"),
-            ("K", "翻滚"),
-            ("1/2", "换武器"),
-            ("Esc", "暂停"),
-        )
-        x = 12
-        for key, label in labels + ((("Q", "潮印"), ("E", "交互")) if campaign else ()):
-            f = ImageFont.truetype(face, 11)
-            width = round(d.textlength(key, font=f)) + 8
-            d.rectangle((x, 332, x + width, 348), fill="#253944", outline="#82918b")
-            word(x + 4, 332, key, 11, pale)
-            x += width + 4
-            d.text((x, 331), label, font=f, fill=pale, stroke_width=1, stroke_fill="#25333f")
-            x += round(d.textlength(label, font=f)) + 12
-    if foe:
-        d.polygon(
-            [(515, 11), (628, 11), (628, 41), (508, 41), (508, 18)],
-            fill=(29, 40, 46, 236),
-            outline="#887e70",
-        )
-        word(520, 14, TYPES[foe].title, 12, pale)
-        d.rectangle((521, 33, 617, 36), fill="#393c42")
-    if notice:
-        if notice == "pause":
-            d.rectangle((208, 94, 432, 248), fill=(22, 35, 44, 249), outline="#ac9475")
-            word(223, 102, "渡口暂停", 18, pale)
-            word(346, 110, "Esc 继续", 11, muted)
-            for i, label in enumerate(("F1   镜头震动", "F2   命中闪光", "F3   音量", "F4   粒子密度")):
-                word(225, 140 + i * 24, label, 13, pale)
-        elif notice == "dead":
-            d.rectangle((213, 121, 427, 198), fill=(25, 34, 42, 247), outline="#b49370")
-            word(276, 132, "炉火熄灭", 21, pale)
-            word(252, 170, "按 R 回到盐炉渡口", 13, gold)
-        else:
-            d.rectangle((435, 12, 628, 41), fill=(25, 42, 49, 245), outline="#8b9b89")
-            word(445, 17, "岸线已清理   R 重新交锋", 13, pale)
-    return arcade.Texture(im)
 
 
 def effect_texture(kind, sector=0):
@@ -155,14 +87,62 @@ class Particle:
     animation: tuple = ()
 
 
+def contact_frames(heavy):
+    """A shearing nick opens into splinters; the hammer flattens a wider copper rim."""
+    frames = []
+    for phase in range(3):
+        im = Image.new("RGBA", (48, 36))
+        d = ImageDraw.Draw(im)
+        x, y = 24, 18
+        if heavy:
+            # A flattened rim breaks along the forward face of the hammer.
+            front = (5, 12, 18)[phase]
+            height = (8, 13, 15)[phase]
+            rim = [(x + front - 6, y - height), (x + front, y - height + 4),
+                   (x + front + 2, y - 1), (x + front, y + 5),
+                   (x + front - 5, y + height)]
+            d.line(rim, fill=("#fff0bc", "#dfaa78", "#9d795f")[phase], width=2)
+            d.line(rim[1:3], fill=("#e3f4dc", "#badcd2", "#8eaca7")[phase])
+        for dx, dy in ((18, -7), (12, 8), (-7, -10)) if heavy else ((13, -13), (18, -3), (-7, 7)):
+            size = (0.55, 0.86, 1.0)[phase]
+            bx, by = x + round(dx * phase * 0.25), y + round(dy * phase * 0.25)
+            d.polygon(
+                [
+                    (bx - 2, by + 1),
+                    (bx, by - 2),
+                    (x + round(dx * size), y + round(dy * size)),
+                    (bx + 2, by + 2),
+                ],
+                fill=("#fff0b9", "#ffca80", "#d7915e")[phase],
+            )
+        if phase == 0:
+            d.polygon(
+                [
+                    (x - 6, y),
+                    (x - 1, y - 2),
+                    (x, y - 8),
+                    (x + 2, y - 1),
+                    (x + 8, y),
+                    (x + 1, y + 2),
+                    (x - 1, y + 6),
+                ],
+                fill="#fff5d1",
+            )
+        frames.append(arcade.Texture(im))
+    return {1: tuple(frames), -1: tuple(f.flip_left_right() for f in frames)}
+
+
 def warning_marks(kind):
     ink = "#192530"
-    edge = {"hook": "#edb079", "rivet": "#8fd9cd", "ram": "#f2aa76"}[kind]
+    edge = {"hook": "#edb079", "rivet": "#8fd9cd", "ram": "#f2aa76", "fork": "#b6e0ad"}[kind]
     icon = Image.new("RGBA", (16, 16))
     d = ImageDraw.Draw(icon)
     d.polygon([(4, 0), (11, 0), (15, 4), (15, 9), (8, 15), (0, 10), (0, 4)], fill=ink, outline=edge)
     if kind == "hook":
         d.line((5, 7, 5, 9, 8, 10, 11, 7, 11, 3), fill=edge, width=2)
+    elif kind == "fork":
+        d.line((3, 9, 7, 9, 11, 5), fill=edge, width=2)
+        d.line((7, 9, 12, 9), fill=edge, width=2)
     elif kind == "rivet":
         d.rectangle((5, 3, 10, 8), outline=edge)
         d.line((2, 6, 5, 6), fill=edge)
@@ -180,35 +160,30 @@ def warning_marks(kind):
         d.rectangle((1, 2, 7, 5), fill=ink)
         d.rectangle((2, 3, 6, 4 if kind == "hook" else 3), fill=edge)
     tex = arcade.Texture(dash)
-    return arcade.Texture(icon), tex, tex.flip_left_right()
+    ready = icon.copy()
+    accent = ImageDraw.Draw(ready)
+    for x in (1, 11):
+        accent.rectangle((x, 11, x + 3, 14), fill=ink)
+        accent.line((x + 1, 12, x + 2, 13), fill="#ffefc3", width=2)
+    return (arcade.Texture(icon), arcade.Texture(ready)), tex, tex.flip_left_right()
 
 
 class BattleView:
-    def __init__(self, movement):
+    def __init__(self, movement, foes):
         self.clips = load_clips("combat")
         self.movement = movement
         self.levels = [2, 2, 2, 2]  # shake, flashes, volume, particles; 0..3
         self.flashes = {}
         for kind in TYPES:
-            variants = []
-            for frame in self.clips[kind].frames:
-                base = frame.right.image.convert("RGBA")
-                # Keep the ink outline, visor slit and deep folds during a contact flash.
-                mask = base.convert("L").point(lambda value: max(0, min(145, (value - 36) * 2)))
-                lit = Image.composite(
-                    Image.new("RGBA", base.size, (255, 225, 162, 255)), base, mask
-                )
-                lit.putalpha(base.getchannel("A"))
-                tex = arcade.Texture(lit)
-                variants.append(replace(frame, right=tex, left=tex.flip_left_right()))
-            self.flashes[kind] = variants
+            self.prepare_flash(kind)
+        self.contacts = {heavy: contact_frames(heavy) for heavy in (False, True)}
         self.enemies = arcade.SpriteList()
         self.marks = {kind: warning_marks(kind) for kind in TYPES}
         self.warning_list = arcade.SpriteList()
         self.warning_count = 0
         self.warning_badges = []
-        for kind in TYPES:
-            self.enemies.append(arcade.Sprite(self.clips[kind].frames[0].right))
+        for enemy in foes:
+            self.enemies.append(arcade.Sprite(self.clips[enemy.kind].frames[0].right))
         self.trail = arcade.Sprite(self.clips["trail_cut"].frames[3].right)
         self.trails = arcade.SpriteList()
         self.trails.append(self.trail)
@@ -218,9 +193,18 @@ class BattleView:
         self.effects = {k: effect_texture(k) for k in ("chip", "mist", "bolt", "burst")}
         self.sparks = [effect_texture("spark", i) for i in range(12)]
         self.rng = random.Random(19)
-        self.plates = {k: interface(weapon=k) for k in ("light", "heavy")}
-        self.tags = {k: interface(foe=k) for k in TYPES}
-        self.notices = {k: interface(notice=k) for k in ("dead", "clear", "pause")}
+        self.weapon_names = {"light": "余烬短刃", "heavy": "潮砧重锤"}
+        self.plates = {k: panel((184, 48), [(40, 0, "耐力", 11, PALE),
+                                             (40, 24, "生命", 11, FOAM)], style="hud",
+                                fill="#12212de6", emblem=k) for k in self.weapon_names}
+        self.tags = {k: tag(spec.title, 108) for k, spec in TYPES.items()}
+        self.status_weapon = None
+        self.weapon_until = 0
+        self.echo_hp = MAX_HP
+        self.previous_hp = MAX_HP
+        self.hp_delay = 0
+        self.notices = {"dead": tag("炉火熄灭    R  重新交锋", 171, GOLD),
+                        "clear": tag("岸线已清理    R  重新交锋", 180)}
         self.sounds = {
             p.stem: arcade.load_sound(p) for p in sorted((ASSETS / "combat/audio").glob("*.wav"))
         }
@@ -229,10 +213,25 @@ class BattleView:
         self.shake = 0
         self.shake_size = 0
         self.fire_impacts = {}
-        self.last_fire_impact = None
+        self.last_impact = None
         self.kick_direction = 1
         self.flash = {}
         self.focus = None
+
+    def prepare_flash(self, kind):
+        variants = []
+        for strength in (42, 132):
+            frames = []
+            for frame in self.clips[kind].frames:
+                base = frame.right.image.convert("RGBA")
+                # Edge highlights take the heat; keep the deeper folds of armour visible.
+                mask = base.convert("L").point(lambda v: round(strength * min(1, max(0, (v - 48) / 108)) ** 1.35))
+                lit = Image.composite(Image.new("RGBA", base.size, (255, 217, 155)), base, mask)
+                lit.putalpha(base.getchannel("A"))
+                tex = arcade.Texture(lit)
+                frames.append(replace(frame, right=tex, left=tex.flip_left_right()))
+            variants.append(frames)
+        self.flashes[kind] = variants
 
     def reset(self):
         for sound, player in self.players:
@@ -241,8 +240,9 @@ class BattleView:
         self.particles.clear()
         self.particle_list.clear()
         self.projectiles.clear()
+        self.weapon_until = 0
         self.last_event = self.shake = 0
-        self.last_fire_impact = None
+        self.last_impact = None
         self.flash.clear()
         self.focus = None
 
@@ -271,6 +271,17 @@ class BattleView:
         self.particles.append(Particle(sprite, x, y, vx, vy, life, life, alpha, animation))
 
     def tick(self, c, w, old_action):
+        if self.status_weapon != c.weapon:
+            self.weapon_until = c.tick + 195 if self.status_weapon is not None else 0
+            self.status_weapon = c.weapon
+        if self.previous_hp != c.hp:
+            self.echo_hp = self.previous_hp
+            self.previous_hp = c.hp
+            self.hp_delay = 28
+        if self.hp_delay:
+            self.hp_delay -= 1
+        else:
+            self.echo_hp += min(0.45, max(-0.45, c.hp - self.echo_hp))
         self.shake = max(0, self.shake - 1)
         self.flash = {k: n - 1 for k, n in self.flash.items() if n > 1}
         for p in self.particles[:]:
@@ -307,11 +318,23 @@ class BattleView:
                     11 + j,
                     140,
                 )
-        if w.action == "roll" and w.roll_age in (6, 23) and not c.freeze:
+        if (
+            w.action == "roll"
+            and not c.freeze
+            and (w.roll_age == 8 or (self.levels[3] == 3 and w.roll_age == 24))
+        ):
             clip = self.clips["hammer_roll"] if c.weapon == "heavy" else self.movement["roll"]
             f = clip.frame(w.age)
             tex = f.right if w.facing > 0 else f.left
-            self.particle(tex, w.x, w.y + f.anchor[1] - tex.height // 2, 0, 0, 9, 62)
+            self.particle(
+                tex,
+                w.x,
+                w.y + f.anchor[1] - tex.height // 2,
+                0,
+                0,
+                6,
+                63 if w.roll_age == 8 else 31,
+            )
 
     def event(self, ev):
         k = ev["kind"]
@@ -328,12 +351,13 @@ class BattleView:
             heavy = fire or ev.get("action") == "breaker"
             facing = ev.get("facing", 1)
             if k != "evade":
-                if fire:
-                    if ev["attack_id"] != self.last_fire_impact:
-                        self.sound("fire_hit")
-                        self.last_fire_impact = ev["attack_id"]
+                if k == "hit":
+                    instance = (ev["action"], ev.get("attack_id", ev["tick"]))
+                    if instance != self.last_impact:
+                        self.sound("fire_hit" if fire else "crush" if heavy else "hit")
+                        self.last_impact = instance
                 else:
-                    self.sound(("crush" if heavy else "hit") if k == "hit" else "hurt")
+                    self.sound("hurt")
                 self.shake, self.shake_size = (18, 4) if fire else (16, 3) if heavy else (11, 1)
                 self.kick_direction = facing
                 if k == "hit":
@@ -350,25 +374,32 @@ class BattleView:
                         140 + 36 * self.levels[1],
                         frames,
                     )
+                elif k == "hit" and self.levels[1]:
+                    frames = self.contacts[heavy][facing]
+                    self.particle(frames[0], ev["x"], ev["y"], 0, 0, 9, 235, frames)
                 elif self.levels[1]:
                     self.particle(
                         self.effects["burst"], ev["x"], ev["y"], 0, 0, 5 + self.levels[1], 210
                     )
-            for i in range((4 if heavy else 2) * self.levels[3]):
+            for i in range((3 if heavy else 2) * self.levels[3]):
                 chip = heavy and i % 3 == 2
                 angle = self.rng.uniform(0.35, 1.36) if chip else self.rng.uniform(-0.32, 0.77)
-                if i % 5 == 4:
+                if i % 5 == 4 and ev.get("action") != "thrust":
                     angle = math.pi - angle
+                elif not chip:
+                    angle += {"liftcut": 0.55, "breaker": -0.42, "thrust": -0.14}.get(
+                        ev.get("action"), 0
+                    )
                 speed = self.rng.uniform(0.45, 1.05) if chip else self.rng.uniform(1.25, 2.55)
                 vx, vy = facing * speed * math.cos(angle), speed * math.sin(angle)
                 sector = round(math.atan2(vy, vx) * 12 / math.tau) % 12
                 self.particle(
                     self.effects["chip"] if chip else self.sparks[sector],
-                    ev["x"] + vx,
-                    ev["y"] + vy,
+                    ev["x"],
+                    ev["y"],
                     vx,
                     vy,
-                    14 if chip else 8 + i % 6,
+                    10 if chip else 5 + i % 4,
                 )
 
     def offset(self):
@@ -422,7 +453,7 @@ class BattleView:
                     e.state, (e.age // 34) % 2
                 )
             frames = (
-                self.flashes[e.kind]
+                self.flashes[e.kind][int(self.flash[target_index] > self.levels[1])]
                 if self.flash.get(target_index, 0) > 0 and e.kind in self.flashes
                 else self.clips[e.kind].frames
             )
@@ -445,7 +476,7 @@ class BattleView:
             default=None,
         )
 
-    def warnings(self, c, scroll, lift):
+    def warnings(self, c, scroll, lift, walker=None):
         self.warning_count = 0
         placed = []
         self.warning_badges.clear()
@@ -453,7 +484,8 @@ class BattleView:
             if e.state != "warn" or e.kind == "bell":
                 continue
             x, y = round(e.x) - scroll, round(e.y) - lift
-            icon, right, left = self.marks[e.kind]
+            icons, right, left = self.marks[e.kind]
+            icon = icons[int(e.age * 3 >= e.spec.windup * 2)]
             dash = right if e.facing > 0 else left
             top = y + e.spec.height + 12
             while any(abs(x - px) < 17 and abs(top - py) < 17 for px, py in placed):
@@ -465,11 +497,20 @@ class BattleView:
                 end = (muzzle[0] + 190 * e.aim[0], muzzle[1] + 190 * e.aim[1])
                 distance = min(1, wall_entry(muzzle, end, c.surfaces)) * 190
                 for n in range(12, round(distance), 10):
-                    self.place_warning(
-                        dash,
-                        x + e.facing * 21 + round(e.aim[0] * n),
-                        y + 30 + round(e.aim[1] * n),
-                    )
+                    px = x + e.facing * 21 + round(e.aim[0] * n)
+                    py = y + 30 + round(e.aim[1] * n)
+                    if walker is not None and walker.action != "roll":
+                        face_x = round(walker.x) - scroll + 5 * walker.facing
+                        face_y = round(walker.y) - lift + 50
+                        if abs(px - face_x) < 16 and abs(py - face_y) < 12:
+                            continue
+                    self.place_warning(dash, px, py)
+            elif e.kind == "fork":
+                origin = (e.x, e.y + FORK_HEIGHT)
+                tip = (e.x + e.facing * FORK_REACH, origin[1])
+                reach = FORK_REACH * min(1, wall_entry(origin, tip, c.surfaces))
+                for n in range(22, round(reach) - 2, 11):
+                    self.place_warning(dash, x + n * e.facing, y + FORK_HEIGHT)
             elif e.kind == "ram":
                 room = e.patrol[1] - e.x if e.facing > 0 else e.x - e.patrol[0]
                 for n in range(26, min(130, round(room) + 29), 16):
@@ -495,26 +536,28 @@ class BattleView:
         sprite.visible = True
         self.warning_count += 1
 
-    def draw_hud(self, c, show_result=True):
-        rect = arcade.LBWH(0, 0, 640, 360)
-        arcade.draw_texture_rect(self.plates[c.weapon], rect, pixelated=True)
-        bar = arcade.draw_lbwh_rectangle_filled
-        if c.hp:
-            bar(77, 318, max(1, round(82 * c.hp / MAX_HP)), 4, (220, 159, 95))
+    def draw_hud(self, c, stamina, show_result=True):
+        blit(self.plates[c.weapon], 10, 301)
+        box = arcade.draw_lbwh_rectangle_filled
+        draw_stamina(stamina)
+        box(80, 312, 96, 5, (52, 66, 72))
+        hp = round(96*c.hp/MAX_HP)
+        echo = round(96*self.echo_hp/MAX_HP)
+        if echo > hp:
+            box(80+hp, 312, echo-hp, 5, (240, 187, 132))
+        if hp:
+            box(80, 312, hp, 5, (187, 109, 85))
+        if hp > echo:
+            box(80+echo, 312, hp-echo, 5, (178, 216, 178))
+        if self.weapon_until > c.tick:
+            blit(label(self.weapon_names[c.weapon], 10, 73, GOLD), 81, 334,
+                 min(255, (self.weapon_until-c.tick)*7))
         if self.focus and c.hp and self.focus.kind in self.tags:
             e = self.focus
-            arcade.draw_texture_rect(self.tags[e.kind], rect, pixelated=True)
-            bar(522, 324, max(1, round(95 * e.hp / e.spec.hp)), 2, (219, 153, 123))
-        if not show_result:
-            return
-        if not c.hp and c.death_age > 40:
-            arcade.draw_texture_rect(self.notices["dead"], rect, pixelated=True)
-        elif c.cleared:
-            arcade.draw_texture_rect(self.notices["clear"], rect, pixelated=True)
-
-    def draw_pause(self):
-        arcade.draw_texture_rect(self.notices["pause"], arcade.LBWH(0, 0, 640, 360), pixelated=True)
-        for row, level in enumerate(self.levels):
-            for i in range(3):
-                color = (219, 174, 109) if i < level else (61, 78, 82)
-                arcade.draw_lbwh_rectangle_filled(360 + 13 * i, 207 - row * 24, 9, 5, color)
+            blit(self.tags[e.kind], 523, 328)
+            box(530, 328, 86, 3, (43, 48, 54))
+            box(530, 328, max(1, round(86*e.hp/e.spec.hp)), 3, (216, 147, 107))
+        if show_result and not c.hp and c.death_age > 40:
+            blit(self.notices["dead"], 236, 172)
+        elif show_result and c.cleared:
+            blit(self.notices["clear"], 232, 172)

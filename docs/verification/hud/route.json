@@ -1,0 +1,28 @@
+{
+  "rooms": [
+    "gate",
+    "gallery-west",
+    "pump-steps",
+    "sluice-twins",
+    "bell"
+  ],
+  "seconds": 56.55,
+  "restarts": 2,
+  "paused": true,
+  "events": [
+    "bell_release",
+    "death",
+    "evade",
+    "gate",
+    "hit",
+    "hurt",
+    "phase",
+    "seal",
+    "shot",
+    "sweep",
+    "swing",
+    "vent",
+    "warn",
+    "windup"
+  ]
+}

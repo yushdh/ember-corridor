@@ -1,0 +1,11 @@
+{
+  "seeds": [
+    0,
+    4095
+  ],
+  "samples": 4096,
+  "distinct": 48,
+  "fallbacks": 0,
+  "min_frequency": 64,
+  "max_frequency": 110
+}

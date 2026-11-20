@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import platform
 import sys
+from tempfile import TemporaryDirectory
 from time import monotonic
 from PIL import Image
 
@@ -21,7 +22,8 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output", type=Path, default=ROOT / "docs/verification/stage3")
 OUT = parser.parse_args().output
 OUT.mkdir(parents=True, exist_ok=True)
-window = QuayWindow()
+test_profile = TemporaryDirectory()
+window = QuayWindow(save_dir=test_profile.name)
 frames = []
 rounds = []
 captured = set()

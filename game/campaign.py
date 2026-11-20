@@ -1,51 +1,39 @@
 """The five-room run, its entrance, room interactions and ending."""
 from functools import lru_cache
+import json
+from secrets import randbits
 
 import arcade
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
-from .battle_view import interface, position
-from .foundry import Bellkeeper, COOLDOWN, FoundryEncounter, RELEASE, ROOMS
+from .battle_view import position
+from .foundry import Bellkeeper, ENTRY, FoundryEncounter, RELEASE, ROOMS
+from .gear import INSERTS
 from .motion import Walker
-from .resources import ASSETS, font_face, load_clips
-from .window import QuayWindow
+from .profile import atomic_write
+from .routes import ALTERNATES, CLASSIC, generate
+from .resources import ASSETS, load_clips
+from .window import QuayWindow, save_notice
 
 
-def panel(size, lines, *, border="#9a896e"):
-    im = Image.new("RGBA", size)
-    d = ImageDraw.Draw(im)
-    width, height = size
-    d.polygon(
-        [(0, 7), (7, 0), (width - 8, 0), (width - 1, 7), (width - 1, height - 1), (0, height - 1)],
-        fill=(22, 34, 43, 244),
-        outline=border,
-    )
-    for x, y, text, point, color in lines:
-        d.text((x, y), text, font=ImageFont.truetype(font_face(), point), fill=color)
-    return arcade.Texture(im)
-
-
-GOLD = "#e1b679"
-FOAM = "#9fcec2"
-PALE = "#eee4ca"
-
-
-def tag(text, width, color=PALE):
-    return panel((width, 21), [(7, 1, text, 12, color)])
-
-
-def blit(texture, x, y):
-    arcade.draw_texture_rect(
-        texture, arcade.LBWH(x, y, texture.width, texture.height), pixelated=True
-    )
+from .ui import panel, tag, blit, label, GOLD, FOAM, PALE
 
 
 class CampaignWindow(QuayWindow):
     skirmish_result = False
 
-    def __init__(self):
+    def __init__(self, *, save_dir=None, seed=None, classic=False):
         self.mode = "title"
-        super().__init__()
+        self.fixed_seed = seed
+        self.classic = classic
+        super().__init__(save_dir=save_dir)
+        with Image.open(ASSETS / "foundry/inserts.png") as sheet:
+            self.inserts = {
+                key: arcade.Texture(sheet.crop((32 * i, 0, 32 * i + 32, 32)))
+                for i, key in enumerate((*INSERTS, "crate"))
+            }
+        self.gear_badge = None
+        self.recipe_tag = tag("永久炉谱   /   覆炉甲片已解锁", 179, GOLD)
         self.extra = load_clips("foundry")
         impact = self.extra["fire-impact"].frames
         self.battle_view.fire_impacts = {
@@ -64,60 +52,80 @@ class CampaignWindow(QuayWindow):
                     ]
                 )
         self.battle_view.clips["bell"] = self.extra["bell"]
-        self.battle_view.plates = {
-            k: interface(weapon=k, campaign=True) for k in ("light", "heavy")
-        }
+        self.battle_view.prepare_flash("bell")
         self.room_images = [
             arcade.load_texture(ASSETS / "foundry" / f"room-{n+1}.png") for n in range(len(ROOMS))
         ]
-        self.room_tags = [
-            panel(
-                (231, 44),
-                [
-                    (9, 2, f"潮钟线   {i+1} / {len(ROOMS)}", 10, FOAM),
-                    (9, 15, r.name, 16, PALE),
-                    (92, 19, r.goal, 10, GOLD),
-                ],
-            )
-            for i, r in enumerate(ROOMS)
-        ]
-        self.title = panel(
-            (356, 154),
-            [
-                (22, 13, "盐炉渡口   /   潮钟线", 13, FOAM),
-                (20, 33, "余烬回廊", 33, PALE),
-                (22, 85, "潮水即将倒灌。穿过四道厂门，在熔庭敲响退潮钟。", 12, GOLD),
-                (22, 119, "Enter  开始行走", 15, PALE),
-                (166, 122, "Q  施放潮印     E  操作机关", 11, FOAM),
-            ],
-        )
+        self.fronts = {t.key: texture for t, texture in zip(CLASSIC, self.room_fronts)}
+        with Image.open(ASSETS / "foundry/route-fronts.png") as sheet:
+            for i, template in enumerate(ALTERNATES):
+                self.fronts[template.key] = arcade.Texture(sheet.crop((0, i*360, 1280, (i+1)*360)))
+        self.controls.open_menu("title")
         self.hints = {
             key: tag(label, width)
             for key, label, width in (
-                ("open", "E  开门过境    ·    恢复 18 体力", 187),
+                ("open", "E  开门过境    ·    恢复 18 生命", 187),
                 ("locked", "门锁未解    ·    清除本室守卫", 179),
                 ("valve", "E  扳动绞盘", 88),
                 ("need_valve", "绞盘未开    ·    登上吊廊", 161),
                 ("valve_open", "绞盘已开启", 85),
                 ("ring", "E  敲响退潮钟", 103),
                 ("forward", "守卫已清除   ·   前往东门 →", 165),
-                ("climb", "前往上层绞盘   ·   E 操作", 157),
+                ("climb", "前往上层绞盘", 101),
+                ("crate", "E  打开炉料匣", 99),
+                ("salvage", "东门料槽已落匣   →", 132),
             )
         }
-        self.seal_tag = tag("潮印  Q", 91, FOAM)
-        self.flame_tag = tag("弯刃  ·  按住 L 蓄焰，松开斩击", 181, GOLD)
+        self.seal_tag = label("潮印", 10, 30, FOAM)
         self.boss_tags = [
             tag("守钟人 · 铜潮     一阶" if i == 0 else "守钟人 · 铜潮     二阶", 161, GOLD) for i in range(2)
         ]
         self.death_panel = panel(
             (226, 76), [(17, 7, "潮声吞没了脚步", 20, PALE), (17, 42, "R  从退潮门廊重新出发", 13, GOLD)]
         )
+        self.prepare_run()
+
+    def prepare_run(self):
+        seed = None if self.classic else self.fixed_seed
+        if seed is None and not self.classic:
+            seed = randbits(32)
+        self.guidance.reset(self.store.data.learned)
+        self.route = generate(seed)
+        label = "手工潮钟线" if seed is None else f"潮图种子  {seed}"
+        if self.route.fallback:
+            label += "   ·   备用航线"
+        self.seed_tag = tag(label, 220, FOAM)
+        self.route_notice = ""
+        self.seed_text = label
+        self.visited_regions = set()
+        self.battle_view.status_weapon = None
+        self.battle_view.echo_hp = self.battle_view.previous_hp = 100
+        self.battle_view.hp_delay = 0
         self.start_room(0)
 
+    def record_run(self):
+        try:
+            atomic_write(self.store.directory / "last-route.json",
+                         json.dumps(self.route.record(), indent=2).encode("utf8"))
+        except OSError:
+            self.route_notice = "潮图记录写入失败，可在暂停页抄下种子"
+
     def start_room(self, index, last=None):
+        self.guidance.clear()
         self.index = index
-        self.combat = FoundryEncounter(ROOMS[index], last)
-        self.walker = Walker(x=75)
+        template = self.route.rooms[index]
+        self.combat = FoundryEncounter(template.room, last, shell_known=self.store.data.shell_known)
+        old_walker = self.walker
+        self.walker = Walker(x=ENTRY[0], y=ENTRY[1])
+        if last is not None:
+            self.walker.stamina, self.walker.winded = old_walker.stamina, old_walker.winded
+        region = template.room.name
+        self.region_age = 0.0 if region not in self.visited_regions else 3.0
+        self.visited_regions.add(region)
+        self.region_title = panel((196, 43), [(98, 5, region, 23, PALE)], style="chapter", fill="#101f29be")
+        self.objective_text = self.objective()
+        self.entering_objective = True
+        self.objective_age = 0.0
         self.scroll = self.lift = 0
         self.battle_view.reset()
         self.battle_view.enemies.clear()
@@ -125,32 +133,70 @@ class CampaignWindow(QuayWindow):
             self.battle_view.enemies.append(
                 arcade.Sprite(self.battle_view.clips[e.kind].frames[0].right)
             )
-        self.structure_layer.texture = self.room_images[index]
+        self.structure_layer.texture = self.room_images[template.theme]
+        self.room_front.texture = self.fronts[template.key]
+        for i, sprites in enumerate(self.room_decor):
+            for sprite in sprites:
+                sprite.visible = i == template.theme
         self.clear_input()
         self.paused = False
         if last is None:
             self.elapsed_ticks = 0
             self.kills = 0
+            self.gear_badge = None
+            self.gear_until = 0
+            self.recipe_until = 0
         self.sync_pose()
 
-    def on_key_press(self, key, modifiers):
+    def press_game(self, key, modifiers):
+        if self.mode == "forge":
+            options = self.combat.loadout.options
+            buttons = (arcade.key.KEY_1, arcade.key.KEY_2, arcade.key.KEY_3)[: len(options)]
+            if key in (arcade.key.UP, arcade.key.DOWN):
+                self.forge_focus = (self.forge_focus + (1 if key == arcade.key.DOWN else -1)) % len(options)
+                return
+            if key in (arcade.key.ENTER, arcade.key.RETURN):
+                key = buttons[self.forge_focus]
+            if key == arcade.key.ESCAPE:
+                self.mode = "play"
+            elif key in buttons:
+                item = options[buttons.index(key)]
+                if self.combat.claim(self.walker, item):
+                    self.gear_badge = tag(
+                        f"{INSERTS[item].name}   /   {self.combat.loadout.rank(item)} 阶", 108, GOLD
+                    )
+                    self.gear_until = self.elapsed_ticks + 240
+                    if not self.store.data.shell_known:
+                        self.store.update(unlock=True)
+                        self.recipe_until = self.elapsed_ticks + 360
+                    self.battle_view.sound("gate")
+                self.mode = "play"
+            else:
+                return
+            self.clear_input()
+            return
         if self.mode == "title":
             if key in (arcade.key.ENTER, arcade.key.RETURN):
                 self.mode = "play"
+                self.record_run()
                 self.clear_input()
             return
         if self.mode == "won" or (not self.combat.hp and key == arcade.key.R):
             if key == arcade.key.R:
                 self.mode = "play"
-                self.start_room(0)
+                self.prepare_run()
+                self.record_run()
             return
         if key == arcade.key.R:
             return
         if key == arcade.key.E and not self.paused and key not in self.keys:
             result = self.combat.interact(self.walker)
+            if result == "crate":
+                self.open_forge()
+                return
             if result == "exit":
                 self.kills += len(self.combat.foes)
-                if self.index == len(ROOMS) - 1:
+                if self.index == len(self.route.rooms) - 1:
                     seconds = self.elapsed_ticks // 120
                     self.result = panel(
                         (302, 140),
@@ -168,16 +214,58 @@ class CampaignWindow(QuayWindow):
                         ],
                     )
                     self.mode = "won"
+                    self.guidance.clear()
                     self.clear_input()
                 else:
                     self.start_room(self.index + 1, self.combat)
                 self.battle_view.sound("gate")
                 return
-        super().on_key_press(key, modifiers)
+        super().press_game(key, modifiers)
+
+    def open_forge(self):
+        self.forge_focus = 0
+        self.forge_note = ("甲片炉谱已收录" if self.store.data.shell_known
+                           else "首次装配解锁甲片炉谱，下次出发可用")
+        self.guidance.clear()
+        self.mode = "forge"
+        self.clear_input()
 
     def on_update(self, dt):
-        if self.mode == "play":
+        if self.mode == "play" and not self.paused and not self.closed:
             super().on_update(dt)
+            if self.combat.hp:
+                self.region_age += dt
+                current = self.objective()
+                if current != self.objective_text:
+                    self.objective_text, self.objective_age = current, 0.0
+                    self.entering_objective = False
+                elif self.region_age >= 2.8:
+                    self.objective_age += dt
+
+    def objective(self):
+        c = self.combat
+        alive = sum(e.hp > 0 for e in c.foes)
+        if alive:
+            if c.room.valve:
+                valve = "绞盘已开启" if c.valve_open else "扳动上层绞盘"
+                return f"{valve}   ·   守卫 {len(c.foes)-alive}/{len(c.foes)}"
+            return f"{c.room.goal}   {len(c.foes)-alive}/{len(c.foes)}"
+        if not c.valve_open:
+            return "登上吊廊，扳动绞盘"
+        if self.index == len(self.route.rooms) - 1:
+            return "敲响退潮钟"
+        return "前往东门" if c.crate_taken else "领取炉料或前往东门"
+
+    def draw_menu(self, root):
+        c = self.combat
+        build = c.loadout
+        item = build.equipped
+        self.controls.draw_menu(root, self.battle_view.levels,
+            location=f"{c.room.name}   ·   {self.index+1}/{len(self.route.rooms)}",
+            objective=self.objective(), seed=self.seed_text, hp=c.hp, stamina=self.walker.stamina,
+            weapon=self.battle_view.weapon_names[c.weapon],
+            equipment=f"{INSERTS[item].name}  {build.rank(item)} 阶" if item else "",
+            recipe=self.store.data.shell_known)
 
     def clear_input(self):
         super().clear_input()
@@ -284,6 +372,9 @@ class CampaignWindow(QuayWindow):
             box(x - 17, y, 34, 49, (24, 37, 44))
             box(x + 12, y + 2, 3, 43, (114, 171, 158))
             box(x - 15, y + 1, 30, 2, (190, 186, 145))
+        if c.crate:
+            x, y = c.crate
+            blit(self.inserts["crate"], x - scroll - 16, y - lift - 2)
         for e in c.foes:
             if not isinstance(e, Bellkeeper) or e.state not in ("warn", "active"):
                 continue
@@ -325,22 +416,50 @@ class CampaignWindow(QuayWindow):
     def on_draw(self):
         super().on_draw()
         c = self.combat
+        notice = self.store.notice or self.route_notice
+        message = save_notice(notice) if notice else None
         if self.mode == "title":
-            blit(self.title, 177, 134)
+            self.draw_menu("title")
+            if message:
+                blit(message, 123, 62)
+            return
+        if self.mode == "forge":
+            blit(panel((390, 360), style="scrim", fill="#101c27fa"), 0, 0)
+            blit(label("东门料槽", 12, 120, GOLD), 28, 308)
+            blit(label("装配炉芯", 27, 170), 26, 264)
+            blit(label("选择一件炉件，本局生效", 12, 200, FOAM), 29, 238)
+            for i, item in enumerate(c.loadout.options):
+                y = 192 - i*47
+                selected = i == self.forge_focus
+                if selected:
+                    blit(panel((305, 40), style="focus", fill="#514638ed"), 28, y-9)
+                blit(self.inserts[item], 43, y-6)
+                rank = c.loadout.ranks.get(item, 0)
+                blit(label(f"{i+1}   {INSERTS[item].name}", 14, 125, GOLD if selected else PALE), 82, y+6)
+                blit(label(f"{rank} 阶 → {rank+1} 阶", 12, 90, FOAM), 206, y+7)
+                blit(label(INSERTS[item].effect, 11, 215), 82, y-9)
+            blit(label(self.forge_note, 11, 270, FOAM), 29, 54)
+            blit(label("↑ ↓  选择    Enter  装配    Esc  稍后再取", 11, 290, FOAM), 29, 28)
             return
         if self.paused:
+            if message:
+                blit(message, 303, 12)
             return
-        blit(self.room_tags[self.index], 184, 306)
-        blit(self.seal_tag, 11, 281)
-        if c.weapon == "light" and c.hp:
-            blit(self.flame_tag, 11, 257)
-        arcade.draw_lbwh_rectangle_filled(
-            64,
-            288,
-            max(1, round(29 * (1 - c.cooldown / COOLDOWN))),
-            4,
-            (131, 208, 187) if not c.cooldown else (139, 133, 114),
-        )
+        if c.hp and self.mode == "play":
+            if self.region_age < 2.8:
+                alpha = min(1, self.region_age / 0.35, (2.8-self.region_age)/0.45)
+                blit(self.region_title, 222, 296, round(alpha*255))
+            elif self.objective_age < 3:
+                alpha = min(1, self.objective_age/0.18, (3-self.objective_age)/0.35)
+                text = (f"{c.room.goal}   ·   {self.index+1}/{len(self.route.rooms)} 室"
+                        if self.entering_objective else self.objective_text)
+                plate = panel((220, 23), [(110, 3, text, 12, PALE)], style="toast")
+                blit(plate, 210, 319, round(255*alpha))
+            blit(self.seal_tag, 50, 291)
+            arcade.draw_lbwh_rectangle_filled(80, 297, 46, 3, (47,61,68))
+            fill = round(46*(1-c.cooldown/c.seal_period))
+            if fill:
+                arcade.draw_lbwh_rectangle_filled(80, 297, fill, 3, (139,184,171))
         w = self.walker
         boss = next((e for e in c.foes if isinstance(e, Bellkeeper)), None)
         if boss and boss.hp and abs(boss.x - w.x) < 475:
@@ -350,7 +469,15 @@ class CampaignWindow(QuayWindow):
                 467, 306, max(1, round(156 * boss.hp / boss.spec.hp)), 4, (220, 155, 90)
             )
         hint = None
-        if c.room.valve and c.near(w, c.room.valve):
+        if self.gear_badge and self.elapsed_ticks < self.gear_until:
+            blit(self.gear_badge, 10, 268, min(255, 6*(self.gear_until-self.elapsed_ticks)))
+        if message:
+            blit(message, 11, 48)
+        elif self.elapsed_ticks < self.recipe_until:
+            blit(self.recipe_tag, 11, 48)
+        if c.crate and c.near(w, c.crate):
+            hint = "crate"
+        elif c.room.valve and c.near(w, c.room.valve):
             hint = "valve_open" if c.valve_open else "valve"
         elif c.near(w, c.room.door):
             hint = (
@@ -359,19 +486,21 @@ class CampaignWindow(QuayWindow):
                 else "need_valve"
                 if not c.valve_open
                 else "ring"
-                if self.index == len(ROOMS) - 1
+                if self.index == len(self.route.rooms) - 1
                 else "open"
             )
         if hint and c.hp and self.mode == "play":
             texture = self.hints[hint]
+            if hint in ("open", "valve", "ring", "crate"):
+                texture = tag(self.binding_label("use") + texture.lines[0][2][1:], texture.width)
             blit(
                 texture,
                 min(630 - texture.width, max(10, round(w.x - self.scroll) - texture.width // 2)),
                 64,
             )
-        elif c.cleared and c.hp and self.mode == "play":
-            blit(self.hints["forward" if c.valve_open else "climb"], 184, 282)
         if self.mode == "won":
             blit(self.result, 163, 110)
+            blit(self.seed_tag, 163, 87)
         elif not c.hp and c.death_age > 40:
             blit(self.death_panel, 207, 159)
+            blit(self.seed_tag, 207, 136)

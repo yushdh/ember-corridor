@@ -96,10 +96,25 @@ def blade_fire(i):
             u = length * (0.29 + 0.13 * k)
             h = width * (1.1 + 0.4 * ((i + k) % 3))
             poly([(u, 2), (u + 8, 5), (u + 17, h), (u + 12, h * 0.25), (u + 21, 3)], "#ff9d39")
-        for _ in range(7):
+        for _ in range(3 if i < RELEASE_FRAME else 7):
             u, v = rng.uniform(18, length), rng.choice((-1, 1)) * rng.uniform(width + 4, width + 14)
             px, py = along(u, v)
             d.line((px, py, px + 2, py - 2), fill=rng.choice(("#ffc766", "#ed7939")))
+    if 3 <= i < RELEASE_FRAME:
+        # On full charge, two bands turn around the hot blade. The far half disappears
+        # behind the metal, leaving a readable silhouette on a held three-frame loop.
+        for band in range(2):
+            path = []
+            for j in range(27):
+                turn = (j / 26 + (i - 3) / 3 + band / 2) * math.tau
+                u = length * (0.24 + 0.66 * j / 26)
+                v = (10 + 4 * math.sin(math.pi * j / 26)) * math.sin(turn)
+                if math.cos(turn) < 0 and abs(v) < width * 0.92:
+                    path = []
+                    continue
+                path.append(along(u, v))
+                if len(path) >= 2:
+                    d.line(path[-2:], fill="#ffc86b" if band else "#ed843e", width=2)
     if i == 3:
         px, py = along(0.85 * length, 0)
         d.polygon(
@@ -130,7 +145,7 @@ def sweep(d, i, rng):
             if path and k == 0:
                 continue
             path.append((gx, gy, tx - gx, ty - gy))
-    fade = 1 if i <= 9 else (0.82, 0.57, 0.34, 0.13)[i - 10]
+    fade = 1 if i <= 9 else (0.67, 0.38, 0.18, 0.06)[i - 10]
     trim = max(0, i - 9) * len(path) // 8
     path = path[trim:]
 
@@ -140,36 +155,44 @@ def sweep(d, i, rng):
 
     n = len(path)
     for inner, outer, col in (
-        (0.62, 1.055, (222, 55, 32, 102)),
-        (0.69, 1.02, (224, 68, 27, 236)),
-        (0.77, 0.995, (255, 126, 33, 249)),
-        (0.91, 0.98, (255, 205, 72, 255)),
+        (0.73, 1.048, (171, 53, 45, 105)),
+        (0.79, 1.015, (196, 66, 35, 220)),
+        (0.81, 0.995, (252, 128, 42, 245)),
+        (0.92, 0.98, (255, 206, 90, 255)),
     ):
         edge = []
         inside = []
         for j in range(n):
             t = j / (n - 1)
             width = (outer - inner) * math.sin(math.pi * t / 2) ** 0.85
+            width *= 0.78 + 0.22 * math.sin(t * 14 + 0.6 * i)
             wav = (0.025 * math.sin(19 * t + i) + 0.018 * math.sin(41 * t)) * (1 - t)
             edge.append(pt(j, outer + wav))
             inside.append(pt(j, outer - width + wav))
         d.polygon(edge + inside[::-1], fill=(*col[:3], round(col[3] * fade)))
-    for j in range(2, n - 3, 4):
-        curl = rng.randint(4, 22) + max(0, i - 9) * 2
+    # Long tongues fold back along the sweep. Hollow centres interrupt the bright band.
+    for fraction, height, span in ((0.24, 17, 4), (0.53, 8, 2), (0.76, 22, 5), (0.91, 6, 2)):
+        j = min(n - 2, max(1, round(fraction * (n - 1))))
+        tail, neck = max(0, j - span), max(0, j - span // 2)
+        curl = height + max(0, i - 9) * 2
         points = [
-            pt(j, 0.87),
-            pt(j + 2, 0.92),
-            pt(j + 2, 1.02, curl // 3),
-            pt(j, 1.03, curl),
-            pt(j - 2, 1.10, curl + 5),
-            pt(j, 1.08, curl // 3),
-            pt(j - 1, 0.95),
+            pt(tail, 0.94),
+            pt(j, 0.90),
+            pt(j + 1, 0.98),
+            pt(j, 1.025, curl // 2),
+            pt(neck, 1.06, curl),
+            pt(tail, 1.055, curl + 2),
+            pt(neck, 1.025, curl // 2),
+            pt(neck, 0.995, curl // 4),
         ]
-        d.polygon(points, fill=(247, 102 + rng.randrange(40), 33, round(230 * fade)))
+        d.polygon(points, fill=(249, 131, 47, round(225 * fade)))
         d.line(
-            [pt(j, 0.91), pt(j + 1, 1.01, curl // 3), pt(j, 1.03, curl - 3)],
-            fill=(255, 210, 89, round(238 * fade)),
+            [pt(j, 0.96), pt(j, 1.015, curl // 3), pt(neck, 1.04, curl - 3)],
+            fill=(255, 216, 113, round(230 * fade)),
             width=2,
+        )
+        d.polygon(
+            [pt(tail, 0.92), pt(neck, 0.952), pt(j, 0.946), pt(neck, 0.965)], fill=(0, 0, 0, 0)
         )
     for j in range(2, n - 2, 7):
         d.line(
@@ -177,7 +200,14 @@ def sweep(d, i, rng):
             fill=(255, 236, 161, round(245 * fade)),
             width=2,
         )
-    for radius in (0.48, 0.59, 1.09):
+    # Two long air gaps break the inner band while the cutting edge stays unbroken.
+    for lo, hi in ((0.22, 0.48), (0.57, 0.78)):
+        sliver = list(range(round(lo*(n-1)), round(hi*(n-1))+1))
+        if len(sliver) > 2:
+            d.polygon([pt(j, 0.85) for j in sliver] +
+                      [pt(j, 0.85 - 0.059 * math.sin(math.pi*k/(len(sliver)-1)))
+                       for k,j in reversed(list(enumerate(sliver)))], fill=(0, 0, 0, 0))
+    for radius in (0.68, 1.06):
         for j in range(0, n - 3, 9):
             d.line(
                 [pt(k, radius) for k in range(j, min(n, j + 5))],

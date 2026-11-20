@@ -1,0 +1,81 @@
+{
+  "victory_seconds": 58.391666666666666,
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "picks": [
+    [
+      1,
+      0,
+      "tooth",
+      1
+    ],
+    [
+      1,
+      1,
+      "tooth",
+      2
+    ],
+    [
+      1,
+      2,
+      "tide",
+      1
+    ],
+    [
+      1,
+      3,
+      "tide",
+      2
+    ],
+    [
+      2,
+      0,
+      "shell",
+      1
+    ]
+  ],
+  "settings": [
+    3,
+    3,
+    2,
+    2
+  ],
+  "victory_and_defeat_reset": true,
+  "hammer_hits": [
+    {
+      "room": 2,
+      "run": 1,
+      "id": 8,
+      "tick": 388,
+      "kind": "hit",
+      "x": 451,
+      "y": 163.28,
+      "enemy": "rivet",
+      "target": 0,
+      "action": "breaker",
+      "attack_id": 1,
+      "hp": 0,
+      "frame": 4,
+      "facing": 1
+    },
+    {
+      "room": 2,
+      "run": 1,
+      "id": 14,
+      "tick": 871,
+      "kind": "hit",
+      "x": 890,
+      "y": 170.72,
+      "enemy": "rivet",
+      "target": 1,
+      "action": "breaker",
+      "attack_id": 2,
+      "hp": 0,
+      "frame": 4,
+      "facing": 1
+    }
+  ]
+}

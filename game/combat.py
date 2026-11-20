@@ -10,6 +10,9 @@ MAX_HP = 100
 LIGHT_CHAIN = ("cut", "liftcut", "thrust")
 BUFFER = 22
 HITSTOP = {"light": 4, "heavy": 9, "hurt": 5}
+FORK_HEIGHT = 9
+FORK_REACH = 60
+MELEE_SEGMENTS = {"hook": (46, 29), "ram": (29, 25), "fork": (FORK_REACH, FORK_HEIGHT)}
 
 
 @dataclass(frozen=True)
@@ -30,6 +33,7 @@ TYPES = {
     "hook": EnemySpec("捞渣钩手", 62, 12, 49, 155, 41, 43, 13, 49, 13),
     "rivet": EnemySpec("盐雾铆弩手", 48, 11, 46, 210, 210, 77, 10, 105, 12),
     "ram": EnemySpec("炉门重卫", 98, 19, 59, 182, 131, 65, 46, 80, 23),
+    "fork": EnemySpec("探潮叉手", 56, 12, 46, 155, 58, 70, 14, 86, 16),
 }
 
 
@@ -45,6 +49,7 @@ class Enemy:
     spent: bool = False
     aim: tuple = (-1.0, 0.0)
     knockback: float = 0.0
+    pending_push: float = 0.0
 
     def __post_init__(self):
         self.hp = self.spec.hp
@@ -192,7 +197,7 @@ class Encounter:
             if contact is None or contact >= solid:
                 continue
             self.victims.add(id(e))
-            e.hp = max(0, e.hp - rule.damage)
+            e.hp = max(0, e.hp - self.melee_damage(rule.damage))
             # Heavy armor resists a light stagger during the committed charge.
             if not e.hp:
                 e.enter("dead")
@@ -217,8 +222,14 @@ class Encounter:
                 facing=w.facing,
             )
             if e.state in ("hurt", "dead"):
-                e.move(w.facing * (10 if name == "breaker" else 3))
+                e.pending_push = w.facing * (10 if name == "breaker" else 3)
             self.freeze = HITSTOP[self.weapon]
+
+    def melee_damage(self, base):
+        return base
+
+    def incoming_damage(self, base):
+        return base
 
     def damage_player(self, w, e, x, y):
         if self.hp <= 0:
@@ -226,7 +237,7 @@ class Encounter:
         if w.invulnerable or self.immune:
             self.emit("evade" if w.invulnerable else "guarded", x, y, enemy=e.kind)
             return
-        self.hp = max(0, self.hp - e.spec.damage)
+        self.hp = max(0, self.hp - self.incoming_damage(e.spec.damage))
         self.interrupt()
         w.clear_transients(self.surfaces)
         self.hurt = 23 if self.hp else 0
@@ -266,12 +277,13 @@ class Encounter:
                 return
             if e.kind == "ram":
                 e.move(e.facing * 2.35)
-            a = (e.x, e.y + (29 if e.kind == "hook" else 25))
-            b = (e.x + e.facing * (46 if e.kind == "hook" else 29), a[1])
+            reach, height = MELEE_SEGMENTS[e.kind]
+            a = (e.x, e.y + height)
+            b = (e.x + e.facing * reach, a[1])
             t = segment_entry(a, b, (w.x - 11, w.y, w.x + 11, w.y + w.height))
             if not e.spent and t is not None and t < wall_entry(a, b, self.surfaces):
                 e.spent = True
-                self.damage_player(w, e, w.x, w.y + w.height / 2)
+                self.damage_player(w, e, a[0] + t * (b[0] - a[0]), a[1])
             return
         if (
             e.state == "warn"
@@ -326,6 +338,11 @@ class Encounter:
         if self.freeze:
             self.freeze -= 1
             return
+        # Hold the victim at the contact point until both combatants resume.
+        for enemy in self.foes:
+            if enemy.pending_push:
+                enemy.move(enemy.pending_push)
+                enemy.pending_push = 0
         self.immune = max(0, self.immune - 1)
         self.hurt = max(0, self.hurt - 1)
         if self.attack:

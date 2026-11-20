@@ -1,9 +1,9 @@
 {
-  "version": 6,
+  "version": 13,
   "assets": [
     {
       "path": "assets/quay/atmosphere.png",
-      "purpose": "烟囱排汽、炉窗火舌和岸边涟漪",
+      "purpose": "烟囱排汽、炉膛跳焰与窗沿反光、排水口滴水与潮圈",
       "source": "tools/draw_quay.py",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
@@ -21,7 +21,7 @@
     },
     {
       "path": "assets/quay/engine.png",
-      "purpose": "旧吊机、水轮、炉房与高架桥",
+      "purpose": "远岸泵房、桥拱和起重架；桥拱遮挡旋转水轮",
       "source": "tools/draw_quay.py",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
@@ -53,7 +53,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。"
+      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
     },
     {
       "path": "assets/walker/run.png",
@@ -62,7 +62,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。"
+      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 收臂两帧下移手腕，近侧膝甲、面甲眉沿和披风折边分别保留暖光与冷光。 刀身随腕角收放，披肩下摆露出深色内衬。"
     },
     {
       "path": "assets/walker/clips.json",
@@ -80,7 +80,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。"
+      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
     },
     {
       "path": "assets/walker/fall.png",
@@ -89,7 +89,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。"
+      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
     },
     {
       "path": "assets/walker/land.png",
@@ -98,7 +98,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。"
+      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
     },
     {
       "path": "assets/walker/roll.png",
@@ -134,20 +134,20 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "以固定像素姿势逐帧绘制，图层分开拼入透明图集；攻击几何与 game/attacks.py 共用。"
+      "processing": "以固定像素姿势逐帧绘制，图层分开拼入透明图集；攻击几何与 game/attacks.py 共用。 轻击共用行走弯刃的刀腹和护手；重锤按步态变换持角，翻滚外侧可见锤面。"
     },
     {
       "path": "assets/combat/trails.png",
-      "purpose": "按武器挥动轨迹单独绘制的刀光、冲刺光带和锤弧",
+      "purpose": "有效姿势的刃尖拖弧、受长度与朝向约束的突刺光带、锤头冷色弧",
       "source": "tools/draw_combat.py（复用 tools/draw_walker.py、tools/roll_pose.py）",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "以固定像素姿势逐帧绘制，图层分开拼入透明图集；攻击几何与 game/attacks.py 共用。"
+      "processing": "以固定像素姿势逐帧绘制，图层分开拼入透明图集；攻击几何与 game/attacks.py 共用。 刺击尾迹在刀尖汇合，手腕两侧留空。"
     },
     {
       "path": "assets/combat/watch.png",
-      "purpose": "三种岸防守卫的行走、预警、攻击、恢复、受创与倒下姿态",
+      "purpose": "四种岸防守卫的行走、预警、攻击、恢复、受创与倒下姿态；探潮叉手双手握叉，贴地突刺",
       "source": "tools/draw_combat.py（复用 tools/draw_walker.py、tools/roll_pose.py）",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
@@ -188,11 +188,11 @@
       "author": "本项目，Codex 按动作编写 Python 合成程序",
       "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。 轻击接触后 8 毫秒叠入短促的下滑金属刮音。"
     },
     {
       "path": "assets/combat/audio/crush.wav",
-      "purpose": "重锤撞击",
+      "purpose": "重锤接触的低频冲量、金属敲击与延迟铜壳颤音",
       "source": "tools/forge_audio.py",
       "author": "本项目，Codex 按动作编写 Python 合成程序",
       "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
@@ -207,6 +207,15 @@
       "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
       "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+    },
+    {
+      "path": "assets/combat/audio/fork.wav",
+      "purpose": "探潮叉手压低长叉时的两声金属轻叩",
+      "source": "tools/forge_audio.py",
+      "author": "本项目，Codex 按动作编写 Python 合成程序",
+      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "振荡器合成错时双音，22050 Hz 单声道 PCM。"
     },
     {
       "path": "assets/combat/audio/hook.wav",
@@ -269,7 +278,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "1280×360 透明后景，包含拱券、机具与固定挂点；可交互设施和平台另存于 room-fronts.png。"
     },
     {
       "path": "assets/foundry/room-2.png",
@@ -278,7 +287,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "1280×360 透明后景，包含拱券、机具与固定挂点；可交互设施和平台另存于 room-fronts.png。"
     },
     {
       "path": "assets/foundry/room-3.png",
@@ -287,7 +296,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "1280×360 透明后景，包含拱券、机具与固定挂点；可交互设施和平台另存于 room-fronts.png。"
     },
     {
       "path": "assets/foundry/room-4.png",
@@ -296,7 +305,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "1280×360 透明后景，包含拱券、机具与固定挂点；可交互设施和平台另存于 room-fronts.png。"
     },
     {
       "path": "assets/foundry/room-5.png",
@@ -305,7 +314,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "1280×360 透明后景，包含拱券、机具与固定挂点；可交互设施和平台另存于 room-fronts.png。"
     },
     {
       "path": "assets/foundry/cast.png",
@@ -399,12 +408,12 @@
     },
     {
       "path": "assets/foundry/firelight.png",
-      "purpose": "与腕部对齐的蓄能、火弧与余焰",
+      "purpose": "与腕部轨迹对齐的蓄能刃芯、回卷焰舌和收势余焰",
       "source": "tools/draw_flame.py，由 tools/draw_foundry.py 导出",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。 满蓄三帧有前后遮挡的双道火带；释放后内弧断开，后摇逐帧熄灭。"
     },
     {
       "path": "assets/foundry/fire-impact.png",
@@ -441,6 +450,69 @@
       "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
       "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+    },
+    {
+      "path": "assets/foundry/inserts.png",
+      "purpose": "赤铜刃齿、回潮轮、覆炉甲片与东门炉料匣图标",
+      "source": "tools/draw_gear.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "按 32×32 逻辑像素绘制四个透明单元，横排导出为 PNG。"
+    },
+    {
+      "path": "assets/quay/tide-sky.png",
+      "purpose": "潮帷天光、繁星与雾中旋转航标",
+      "source": "tools/draw_harbour.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "每帧 640×124，四列八行；与静态天际线在第 124 行衔接。"
+    },
+    {
+      "path": "assets/quay/tide-wheel.png",
+      "purpose": "带铆接兜板、辐条与滴水的潮汐水轮",
+      "source": "tools/draw_harbour.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "每帧 160×160，八列三行；二十四帧转过一个斗距。 月侧轮斗随入射角显出局部湿边反光。"
+    },
+    {
+      "path": "assets/quay/moonwater.png",
+      "purpose": "月色、炉窗与潮光在水面的碎影",
+      "source": "tools/draw_harbour.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "每帧 300×50，六列四行；二十四帧分别改变波纹的宽度和亮度。"
+    },
+    {
+      "path": "assets/quay/workshop.png",
+      "purpose": "门廊风旗、泵房水表、闸水、钟灯飞蛾与熔庭炉灯",
+      "source": "tools/draw_harbour.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "每格 96×80，每室十列两行共二十帧，按房间顺序纵向排列。 钟灯玻璃逐帧折射，底部三段微弱反光收放。"
+    },
+    {
+      "path": "assets/foundry/room-fronts.png",
+      "purpose": "遮住水流和室内灯光的近侧平台、支撑、绞盘与出口",
+      "source": "tools/draw_foundry.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "每室 1280×360，纵向五格，按碰撞数据绘制，在环境动效之后显示。"
+    },
+    {
+      "path": "assets/foundry/route-fronts.png",
+      "purpose": "高架检修桥、双闸涵洞、西侧绞盘的可碰撞前景与门",
+      "source": "tools/draw_foundry.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "三个 1280×360 的变体按顺序纵向排列。平台、门和绞盘均按各模板游戏坐标绘制。"
     }
   ],
   "system_resources": [

@@ -27,6 +27,7 @@ CUES = {
     "ignite": (0.27, 485, 1210, 0.28, 2.9, 0.38),
     "firecut": (0.41, 348, 66, 0.82, 3.9, 0.15),
     "fire_hit": (0.36, 193, 54, 0.41, 4.1, 0.32),
+    "fork": (0.34, 530, 455, 0.12, 3.2, 0.47),
 }
 
 
@@ -45,6 +46,10 @@ def generate():
             envelope = min(1, t / 0.006) * math.exp(-decay * u) * min(1, (1 - u) * 25)
             signal = (1 - noise) * math.sin(phase) + noise * colored + over * math.sin(phase * 2.71)
             mixed = envelope * signal
+            if name == "fork":
+                # Two tine taps as the ferrule is lowered to the stone.
+                echo = max(0, t - 0.13)
+                mixed += 0.52 * min(1, echo / 0.003, (1 - u) * 20) * math.exp(-echo / 0.043) * math.sin(math.tau * 844 * echo)
             if name in ("sabre", "maul"):
                 # Air swells towards release; the head of the maul has a low body.
                 air = math.sin(math.pi * u) ** 1.25
@@ -66,6 +71,20 @@ def generate():
                 )
                 ring = min(1, ring_t / 0.007) * math.exp(-ring_t / (0.085 if heavy else 0.044))
                 mixed = (attack + body + 0.20 * ring * bell) * min(1, t / 0.002, (1 - u) * 25)
+                if name == "hit":
+                    # A short edge scrape follows the dry contact; leave room for the next swing.
+                    scrape = max(0, t - 0.008)
+                    rasp = math.sin(math.tau * (1730 * scrape - 8300 * scrape**2))
+                    mixed = 0.88 * mixed + 0.28 * rasp * min(1, scrape / 0.002) * math.exp(-scrape / 0.020)
+                if name == "crush":
+                    # The shell buckles first. The short bronze rattle arrives after the transient.
+                    delay = max(0, t - 0.045)
+                    rattle = math.sin(math.tau * 636 * delay) + 0.32 * math.sin(
+                        math.tau * 941 * delay
+                    )
+                    mixed = 0.89 * mixed + 0.18 * rattle * min(1, delay / 0.004) * math.exp(
+                        -delay / 0.046
+                    ) * min(1, (1 - u) * 20)
                 if name == "fire_hit":
                     hiss = math.exp(-t / 0.093) * colored * (0.65 + 0.35 * math.cos(91 * t))
                     strike = math.sin(math.tau * 1450 * t) * math.exp(-t / 0.019)

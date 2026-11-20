@@ -1,0 +1,28 @@
+{
+  "events": [
+    [
+      0.167,
+      "move"
+    ],
+    [
+      0.633,
+      null
+    ]
+  ],
+  "learned": [
+    "move"
+  ],
+  "shown": [
+    "move"
+  ],
+  "zones": [
+    "move"
+  ],
+  "persisted_after_replay": [
+    "attack",
+    "jump",
+    "move",
+    "roll"
+  ],
+  "saved_left_key": "H"
+}
