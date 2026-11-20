@@ -1,0 +1,266 @@
+{
+  "os": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.14",
+  "arcade": "3.3.3",
+  "renderer": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "opengl": [
+    4,
+    6
+  ],
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "events": [
+    {
+      "event": "head-stop",
+      "x": 211.62,
+      "y": 107,
+      "vy": 0,
+      "support": null,
+      "action": "fall",
+      "camera": [
+        0,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "tap-apex",
+      "x": 287.28,
+      "y": 121.27,
+      "vy": -10.67,
+      "support": null,
+      "action": "fall",
+      "camera": [
+        0,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "held-apex",
+      "x": 287.28,
+      "y": 177.03,
+      "vy": -10.33,
+      "support": null,
+      "action": "fall",
+      "camera": [
+        0,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "buffer-pressed",
+      "x": 287.28,
+      "y": 110.84,
+      "vy": -387.33,
+      "support": null,
+      "action": "fall",
+      "camera": [
+        0,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "buffer-fired",
+      "x": 287.28,
+      "y": 104.62,
+      "vy": 415.0,
+      "support": null,
+      "action": "jump",
+      "camera": [
+        0,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "jump-through",
+      "x": 397.59,
+      "y": 161.92,
+      "vy": 192.67,
+      "support": null,
+      "action": "jump",
+      "camera": [
+        43.6,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "deck-land",
+      "x": 397.59,
+      "y": 157,
+      "vy": 0,
+      "support": "sling",
+      "action": "land",
+      "camera": [
+        43.6,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "drop-through",
+      "x": 397.59,
+      "y": 152.31,
+      "vy": -118.0,
+      "support": null,
+      "action": "fall",
+      "camera": [
+        43.6,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "wall-roll",
+      "x": 521,
+      "y": 94,
+      "vy": 0,
+      "support": "quay",
+      "action": "roll",
+      "camera": [
+        167.0,
+        0.0
+      ],
+      "invulnerable": true
+    },
+    {
+      "event": "edge-pressed",
+      "x": 485.89,
+      "y": 156.76,
+      "vy": -19.33,
+      "support": null,
+      "action": "fall",
+      "camera": [
+        167.0,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "edge-jump",
+      "x": 491.02,
+      "y": 170.75,
+      "vy": 405.33,
+      "support": null,
+      "action": "jump",
+      "camera": [
+        167.0,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "under-beam",
+      "x": 751.0,
+      "y": 94,
+      "vy": 0,
+      "support": "quay",
+      "action": "roll",
+      "camera": [
+        397.0,
+        0.0
+      ],
+      "invulnerable": true
+    },
+    {
+      "event": "roll-exit",
+      "x": 838.68,
+      "y": 94,
+      "vy": 0,
+      "support": "quay",
+      "action": "run",
+      "camera": [
+        484.7,
+        0.0
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "gallery",
+      "x": 1194.57,
+      "y": 224,
+      "vy": 0,
+      "support": "gallery",
+      "action": "land",
+      "camera": [
+        640,
+        23.8
+      ],
+      "invulnerable": false
+    },
+    {
+      "event": "returned",
+      "x": 285.09,
+      "y": 94,
+      "vy": 0,
+      "support": "quay",
+      "action": "idle",
+      "camera": [
+        47.1,
+        0.0
+      ],
+      "invulnerable": false
+    }
+  ],
+  "equivalent_update_hz": [
+    30,
+    60,
+    144
+  ],
+  "half_second_trace": [
+    [
+      353.5000000000012,
+      94,
+      "run",
+      154.0,
+      false,
+      0
+    ],
+    [
+      430.5000000000028,
+      168.58333333333323,
+      "fall",
+      154.0,
+      false,
+      76.50000000000279
+    ],
+    [
+      507.5000000000044,
+      141.69444444444449,
+      "fall",
+      154.0,
+      false,
+      153.50000000000438
+    ],
+    [
+      521,
+      94,
+      "idle",
+      0,
+      false,
+      167.0
+    ],
+    [
+      453.4999999999988,
+      94,
+      "run",
+      -154.0,
+      false,
+      167.0
+    ],
+    [
+      446.6249999999988,
+      94,
+      "idle",
+      0.0,
+      false,
+      167.0
+    ]
+  ]
+}

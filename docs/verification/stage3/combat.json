@@ -1,0 +1,633 @@
+{
+  "os": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.14",
+  "arcade": "3.3.3",
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "opengl": [
+    4,
+    6
+  ],
+  "capture_size": [
+    1280,
+    720
+  ],
+  "resolutions": [
+    [
+      1280,
+      720
+    ],
+    [
+      1366,
+      768
+    ],
+    [
+      1920,
+      1080
+    ]
+  ],
+  "snaps": [
+    "bolt",
+    "breaker-hit",
+    "clear",
+    "cut-hit",
+    "death",
+    "evade",
+    "hook-warn",
+    "pause",
+    "ram-warn",
+    "rivet-warn"
+  ],
+  "matched_update_hz": [
+    30,
+    60,
+    144
+  ],
+  "sampled_trace": [
+    [
+      "cut",
+      15,
+      100,
+      46,
+      333.0,
+      0
+    ],
+    [
+      "liftcut",
+      10,
+      100,
+      27,
+      338.0,
+      2
+    ],
+    [
+      "thrust",
+      3,
+      100,
+      27,
+      338.0,
+      0
+    ],
+    [
+      "thrust",
+      19,
+      100,
+      0,
+      347.0,
+      0
+    ],
+    [
+      "thrust",
+      39,
+      100,
+      0,
+      347.0,
+      0
+    ],
+    [
+      null,
+      48,
+      100,
+      0,
+      347.0,
+      0
+    ],
+    [
+      null,
+      48,
+      100,
+      0,
+      347.0,
+      0
+    ],
+    [
+      null,
+      48,
+      100,
+      0,
+      347.0,
+      0
+    ],
+    [
+      null,
+      48,
+      100,
+      0,
+      347.0,
+      0
+    ]
+  ],
+  "audio_players_observed": [
+    "crush",
+    "hit",
+    "hook",
+    "hurt",
+    "land",
+    "maul",
+    "ram",
+    "rivet",
+    "roll",
+    "sabre",
+    "shot"
+  ],
+  "restarts": 2,
+  "rounds": [
+    [
+      {
+        "id": 1,
+        "tick": 158,
+        "kind": "warn",
+        "x": 354.72,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 2,
+        "tick": 159,
+        "kind": "windup",
+        "x": 314.18,
+        "y": 126,
+        "action": "cut",
+        "attack_id": 1
+      },
+      {
+        "id": 3,
+        "tick": 170,
+        "kind": "swing",
+        "x": 318.18,
+        "y": 124,
+        "action": "cut",
+        "attack_id": 1
+      },
+      {
+        "id": 4,
+        "tick": 170,
+        "kind": "hit",
+        "x": 339.72,
+        "y": 132.66,
+        "enemy": "hook",
+        "action": "cut",
+        "attack_id": 1,
+        "hp": 46,
+        "frame": 3,
+        "facing": 1
+      },
+      {
+        "id": 5,
+        "tick": 186,
+        "kind": "windup",
+        "x": 318.18,
+        "y": 126,
+        "action": "liftcut",
+        "attack_id": 2
+      },
+      {
+        "id": 6,
+        "tick": 196,
+        "kind": "swing",
+        "x": 323.18,
+        "y": 124,
+        "action": "liftcut",
+        "attack_id": 2
+      },
+      {
+        "id": 7,
+        "tick": 196,
+        "kind": "hit",
+        "x": 342.72,
+        "y": 116.21,
+        "enemy": "hook",
+        "action": "liftcut",
+        "attack_id": 2,
+        "hp": 27,
+        "frame": 3,
+        "facing": 1
+      },
+      {
+        "id": 8,
+        "tick": 215,
+        "kind": "windup",
+        "x": 323.18,
+        "y": 126,
+        "action": "thrust",
+        "attack_id": 3
+      },
+      {
+        "id": 9,
+        "tick": 230,
+        "kind": "swing",
+        "x": 332.18,
+        "y": 124,
+        "action": "thrust",
+        "attack_id": 3
+      },
+      {
+        "id": 10,
+        "tick": 230,
+        "kind": "hit",
+        "x": 351.18,
+        "y": 129.0,
+        "enemy": "hook",
+        "action": "thrust",
+        "attack_id": 3,
+        "hp": 0,
+        "frame": 3,
+        "facing": 1
+      },
+      {
+        "id": 11,
+        "tick": 314,
+        "kind": "warn",
+        "x": 588,
+        "y": 187,
+        "enemy": "rivet"
+      },
+      {
+        "id": 12,
+        "tick": 391,
+        "kind": "shot",
+        "x": 588,
+        "y": 171,
+        "enemy": "rivet"
+      },
+      {
+        "id": 13,
+        "tick": 412,
+        "kind": "hurt",
+        "x": 504.91,
+        "y": 158.58,
+        "enemy": "rivet",
+        "hp": 88
+      },
+      {
+        "id": 14,
+        "tick": 512,
+        "kind": "warn",
+        "x": 588,
+        "y": 187,
+        "enemy": "rivet"
+      },
+      {
+        "id": 15,
+        "tick": 583,
+        "kind": "windup",
+        "x": 542.28,
+        "y": 173,
+        "action": "breaker",
+        "attack_id": 4
+      },
+      {
+        "id": 16,
+        "tick": 589,
+        "kind": "shot",
+        "x": 588,
+        "y": 171,
+        "enemy": "rivet"
+      },
+      {
+        "id": 17,
+        "tick": 602,
+        "kind": "hurt",
+        "x": 542.28,
+        "y": 205.01,
+        "enemy": "rivet",
+        "hp": 76
+      },
+      {
+        "id": 18,
+        "tick": 632,
+        "kind": "windup",
+        "x": 542.28,
+        "y": 173,
+        "action": "breaker",
+        "attack_id": 5
+      },
+      {
+        "id": 19,
+        "tick": 668,
+        "kind": "swing",
+        "x": 548.28,
+        "y": 171,
+        "action": "breaker",
+        "attack_id": 5
+      },
+      {
+        "id": 20,
+        "tick": 668,
+        "kind": "hit",
+        "x": 575.0,
+        "y": 188.76,
+        "enemy": "rivet",
+        "action": "breaker",
+        "attack_id": 5,
+        "hp": 5,
+        "frame": 3,
+        "facing": 1
+      },
+      {
+        "id": 21,
+        "tick": 723,
+        "kind": "windup",
+        "x": 548.28,
+        "y": 173,
+        "action": "breaker",
+        "attack_id": 6
+      },
+      {
+        "id": 22,
+        "tick": 759,
+        "kind": "swing",
+        "x": 554.28,
+        "y": 171,
+        "action": "breaker",
+        "attack_id": 6
+      },
+      {
+        "id": 23,
+        "tick": 765,
+        "kind": "hit",
+        "x": 585.0,
+        "y": 157.97,
+        "enemy": "rivet",
+        "action": "breaker",
+        "attack_id": 6,
+        "hp": 0,
+        "frame": 4,
+        "facing": 1
+      },
+      {
+        "id": 24,
+        "tick": 988,
+        "kind": "warn",
+        "x": 949.12,
+        "y": 153,
+        "enemy": "ram"
+      },
+      {
+        "id": 25,
+        "tick": 1051,
+        "kind": "windup",
+        "x": 897.2,
+        "y": 126,
+        "action": "breaker",
+        "attack_id": 7
+      },
+      {
+        "id": 26,
+        "tick": 1056,
+        "kind": "hurt",
+        "x": 902.6,
+        "y": 126.0,
+        "enemy": "ram",
+        "hp": 53
+      },
+      {
+        "id": 27,
+        "tick": 1085,
+        "kind": "windup",
+        "x": 902.6,
+        "y": 126,
+        "action": "breaker",
+        "attack_id": 8
+      },
+      {
+        "id": 28,
+        "tick": 1121,
+        "kind": "swing",
+        "x": 896.6,
+        "y": 124,
+        "action": "breaker",
+        "attack_id": 8
+      },
+      {
+        "id": 29,
+        "tick": 1121,
+        "kind": "hit",
+        "x": 862.02,
+        "y": 146.78,
+        "enemy": "ram",
+        "action": "breaker",
+        "attack_id": 8,
+        "hp": 55,
+        "frame": 3,
+        "facing": -1
+      },
+      {
+        "id": 30,
+        "tick": 1193,
+        "kind": "windup",
+        "x": 883.0,
+        "y": 126,
+        "action": "breaker",
+        "attack_id": 9
+      },
+      {
+        "id": 31,
+        "tick": 1229,
+        "kind": "swing",
+        "x": 870.12,
+        "y": 124,
+        "action": "breaker",
+        "attack_id": 9
+      },
+      {
+        "id": 32,
+        "tick": 1229,
+        "kind": "hit",
+        "x": 852.02,
+        "y": 136.26,
+        "enemy": "ram",
+        "action": "breaker",
+        "attack_id": 9,
+        "hp": 12,
+        "frame": 3,
+        "facing": -1
+      },
+      {
+        "id": 33,
+        "tick": 1285,
+        "kind": "windup",
+        "x": 870.12,
+        "y": 126,
+        "action": "breaker",
+        "attack_id": 10
+      },
+      {
+        "id": 34,
+        "tick": 1321,
+        "kind": "swing",
+        "x": 864.12,
+        "y": 124,
+        "action": "breaker",
+        "attack_id": 10
+      },
+      {
+        "id": 35,
+        "tick": 1321,
+        "kind": "hit",
+        "x": 849.0,
+        "y": 134.35,
+        "enemy": "ram",
+        "action": "breaker",
+        "attack_id": 10,
+        "hp": 0,
+        "frame": 3,
+        "facing": -1
+      }
+    ],
+    [
+      {
+        "id": 1,
+        "tick": 149,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 2,
+        "tick": 192,
+        "kind": "evade",
+        "x": 334.49,
+        "y": 115.0,
+        "enemy": "hook"
+      },
+      {
+        "id": 3,
+        "tick": 255,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 4,
+        "tick": 298,
+        "kind": "hurt",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 87
+      },
+      {
+        "id": 5,
+        "tick": 366,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 6,
+        "tick": 409,
+        "kind": "hurt",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 74
+      },
+      {
+        "id": 7,
+        "tick": 477,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 8,
+        "tick": 520,
+        "kind": "hurt",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 61
+      },
+      {
+        "id": 9,
+        "tick": 588,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 10,
+        "tick": 631,
+        "kind": "hurt",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 48
+      },
+      {
+        "id": 11,
+        "tick": 699,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 12,
+        "tick": 742,
+        "kind": "hurt",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 35
+      },
+      {
+        "id": 13,
+        "tick": 810,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 14,
+        "tick": 853,
+        "kind": "hurt",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 22
+      },
+      {
+        "id": 15,
+        "tick": 921,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 16,
+        "tick": 964,
+        "kind": "hurt",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 9
+      },
+      {
+        "id": 17,
+        "tick": 1032,
+        "kind": "warn",
+        "x": 353.2,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 18,
+        "tick": 1075,
+        "kind": "death",
+        "x": 334.49,
+        "y": 126.0,
+        "enemy": "hook",
+        "hp": 0
+      }
+    ]
+  ],
+  "reissued_keys": []
+}

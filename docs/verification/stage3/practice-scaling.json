@@ -1,0 +1,62 @@
+{
+  "os": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.14",
+  "arcade": "3.3.3",
+  "renderer": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "opengl": [
+    4,
+    6
+  ],
+  "samples": [
+    {
+      "label": "idle",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "x": 286.0,
+      "facing": 1,
+      "action": "idle"
+    },
+    {
+      "label": "run-right",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "x": 413.82,
+      "facing": 1,
+      "action": "run"
+    },
+    {
+      "label": "run-left",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "x": 251.6,
+      "facing": -1,
+      "action": "run"
+    },
+    {
+      "label": "letterbox",
+      "framebuffer": [
+        1366,
+        768
+      ],
+      "x": 242.16,
+      "facing": -1,
+      "action": "idle"
+    },
+    {
+      "label": "full-hd",
+      "framebuffer": [
+        1920,
+        1080
+      ],
+      "x": 242.16,
+      "facing": -1,
+      "action": "idle"
+    }
+  ]
+}
