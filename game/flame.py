@@ -28,6 +28,8 @@ BLADE = (
 DURATIONS = (16, 18, 20, 6, 6, 6, 3, 4, 4, 4, 6, 7, 8, 7)
 RELEASE_FRAME = 6
 RECOVERY_FRAME = 10
+READY_TICKS = DURATIONS[3:RELEASE_FRAME]
+IGNITION_TICKS = sum(READY_TICKS)
 SWING_ENDS = tuple(accumulate(DURATIONS[RELEASE_FRAME:]))
 
 
@@ -59,6 +61,12 @@ class FlameCut:
     def reset(self):
         self.charge = self.swing = -1
         self.victims.clear()
+
+    def light_pose(self, flashes):
+        age = self.charge - FULL_CHARGE
+        if flashes and 0 <= age < IGNITION_TICKS:
+            return "fire-ignite", self.frame - 3
+        return "firelight", self.frame
 
     def update(self, c, w, axis, pressed, held):
         if self.swing >= 0:

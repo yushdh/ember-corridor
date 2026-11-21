@@ -1,5 +1,11 @@
 # 项目状态 · 2026-11-21
 
+## 蓄焰斩满蓄提示与敌方预警
+
+最新可玩包为 `dist/charge-signal/EmberCorridor-Windows-x64.zip`，已在项目外完整解压，用种子 17 实走五室，复验暂停、胜利和死亡重开。[发行包运行记录](verification/charge-signal/installed/installed.json)
+
+刀光在蓄满时变长，随后用 150 ms 播放一次裂光，再进入持刀循环。点火声换成相隔 64 ms 的两记铜音。六声道占满时，实测点火声和弩手预警可同时播放；短按、静音和关闭闪光也已在真实窗口复核。48 项测试通过。下一步请真人在有弩手的交锋里尝试仅凭声音松手，记录漏听和误判，再决定是否需要调整音色或响度。[同机位画面、前后带声片段及性能条件](verification/charge-signal/README.md)
+
 ## 持械动作与近战反馈 · 2026-11-21
 
 本轮独立 Windows 包为 `dist/quay-strike/EmberCorridor-Windows-x64.zip`。已在项目外解压，以种子 17 走完五室，实测暂停、结算和重开。[归档校验](verification/quay-strike/installed/distribution.json) · [五室运行记录](verification/quay-strike/installed/installed.json)

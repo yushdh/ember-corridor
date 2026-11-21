@@ -1,0 +1,453 @@
+{
+  "shots": {
+    "ignite": {
+      "frame": 27,
+      "charge": 55,
+      "pose": 3,
+      "badges": 0,
+      "scroll": 520
+    },
+    "opening": {
+      "frame": 30,
+      "charge": 61,
+      "pose": 4,
+      "badges": 0,
+      "scroll": 520
+    },
+    "cooling": {
+      "frame": 33,
+      "charge": 67,
+      "pose": 5,
+      "badges": 0,
+      "scroll": 520
+    },
+    "held": {
+      "frame": 36,
+      "charge": 73,
+      "pose": 3,
+      "badges": 0,
+      "scroll": 520
+    },
+    "held-next": {
+      "frame": 45,
+      "charge": 91,
+      "pose": 3,
+      "badges": 0,
+      "scroll": 520
+    },
+    "fire-warning": {
+      "frame": 33,
+      "charge": -1,
+      "pose": 8,
+      "badges": 1,
+      "scroll": 520
+    }
+  },
+  "events": {
+    "cancel": [],
+    "hold": [
+      "ignite",
+      "firecut"
+    ],
+    "overlap": [
+      "warn",
+      "ignite",
+      "firecut",
+      "hit",
+      "shot",
+      "hurt"
+    ],
+    "six-voices": [
+      "ignite",
+      "firecut"
+    ],
+    "muted": [
+      "ignite",
+      "firecut"
+    ]
+  },
+  "sounds": [
+    {
+      "scene": "hold",
+      "name": "ignite",
+      "frame": 81,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 172
+    },
+    {
+      "scene": "hold",
+      "name": "firecut",
+      "frame": 131,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 172
+    },
+    {
+      "scene": "overlap",
+      "name": "rivet",
+      "frame": 172,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 260
+    },
+    {
+      "scene": "overlap",
+      "name": "ignite",
+      "frame": 199,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 260
+    },
+    {
+      "scene": "overlap",
+      "name": "firecut",
+      "frame": 202,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 260
+    },
+    {
+      "scene": "overlap",
+      "name": "fire_hit",
+      "frame": 205,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 260
+    },
+    {
+      "scene": "overlap",
+      "name": "shot",
+      "frame": 215,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 260
+    },
+    {
+      "scene": "overlap",
+      "name": "hurt",
+      "frame": 241,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 260
+    },
+    {
+      "scene": "six-voices",
+      "name": "land",
+      "frame": 287,
+      "played": true,
+      "gain": 0.3069,
+      "stop": 287
+    },
+    {
+      "scene": "six-voices",
+      "name": "roll",
+      "frame": 287,
+      "played": true,
+      "gain": 0.34875,
+      "stop": 339
+    },
+    {
+      "scene": "six-voices",
+      "name": "sabre",
+      "frame": 287,
+      "played": true,
+      "gain": 0.34875,
+      "stop": 339
+    },
+    {
+      "scene": "six-voices",
+      "name": "maul",
+      "frame": 287,
+      "played": true,
+      "gain": 0.39525,
+      "stop": 339
+    },
+    {
+      "scene": "six-voices",
+      "name": "hit",
+      "frame": 287,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 339
+    },
+    {
+      "scene": "six-voices",
+      "name": "crush",
+      "frame": 287,
+      "played": true,
+      "gain": 0.5208,
+      "stop": 339
+    },
+    {
+      "scene": "six-voices",
+      "name": "ignite",
+      "frame": 287,
+      "played": false
+    },
+    {
+      "scene": "six-voices",
+      "name": "rivet",
+      "frame": 287,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 339
+    },
+    {
+      "scene": "six-voices",
+      "name": "firecut",
+      "frame": 296,
+      "played": true,
+      "gain": 0.46499999999999997,
+      "stop": 339
+    },
+    {
+      "scene": "muted",
+      "name": "ignite",
+      "frame": 366,
+      "played": false
+    },
+    {
+      "scene": "muted",
+      "name": "firecut",
+      "frame": 385,
+      "played": false
+    }
+  ],
+  "lights": {
+    "cancel": [
+      [
+        "firelight",
+        0
+      ],
+      [
+        "firelight",
+        1
+      ]
+    ],
+    "hold": [
+      [
+        "firelight",
+        0
+      ],
+      [
+        "firelight",
+        1
+      ],
+      [
+        "firelight",
+        2
+      ],
+      [
+        "firelight",
+        3
+      ],
+      [
+        "firelight",
+        4
+      ],
+      [
+        "firelight",
+        5
+      ],
+      [
+        "firelight",
+        6
+      ],
+      [
+        "firelight",
+        7
+      ],
+      [
+        "firelight",
+        8
+      ],
+      [
+        "firelight",
+        9
+      ],
+      [
+        "firelight",
+        10
+      ],
+      [
+        "firelight",
+        11
+      ],
+      [
+        "firelight",
+        12
+      ],
+      [
+        "firelight",
+        13
+      ]
+    ],
+    "overlap": [
+      [
+        "firelight",
+        0
+      ],
+      [
+        "firelight",
+        1
+      ],
+      [
+        "firelight",
+        2
+      ],
+      [
+        "firelight",
+        3
+      ],
+      [
+        "firelight",
+        6
+      ],
+      [
+        "firelight",
+        7
+      ],
+      [
+        "firelight",
+        8
+      ],
+      [
+        "firelight",
+        9
+      ],
+      [
+        "firelight",
+        10
+      ],
+      [
+        "firelight",
+        11
+      ],
+      [
+        "firelight",
+        12
+      ],
+      [
+        "firelight",
+        13
+      ]
+    ],
+    "six-voices": [
+      [
+        "firelight",
+        0
+      ],
+      [
+        "firelight",
+        1
+      ],
+      [
+        "firelight",
+        2
+      ],
+      [
+        "firelight",
+        3
+      ],
+      [
+        "firelight",
+        4
+      ],
+      [
+        "firelight",
+        5
+      ],
+      [
+        "firelight",
+        6
+      ],
+      [
+        "firelight",
+        7
+      ],
+      [
+        "firelight",
+        8
+      ],
+      [
+        "firelight",
+        9
+      ],
+      [
+        "firelight",
+        10
+      ],
+      [
+        "firelight",
+        11
+      ],
+      [
+        "firelight",
+        12
+      ],
+      [
+        "firelight",
+        13
+      ]
+    ],
+    "muted": [
+      [
+        "firelight",
+        0
+      ],
+      [
+        "firelight",
+        1
+      ],
+      [
+        "firelight",
+        2
+      ],
+      [
+        "firelight",
+        3
+      ],
+      [
+        "firelight",
+        4
+      ],
+      [
+        "firelight",
+        5
+      ],
+      [
+        "firelight",
+        6
+      ],
+      [
+        "firelight",
+        7
+      ],
+      [
+        "firelight",
+        8
+      ],
+      [
+        "firelight",
+        9
+      ],
+      [
+        "firelight",
+        10
+      ],
+      [
+        "firelight",
+        11
+      ],
+      [
+        "firelight",
+        12
+      ],
+      [
+        "firelight",
+        13
+      ]
+    ]
+  }
+}

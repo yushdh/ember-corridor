@@ -1,0 +1,23 @@
+{
+  "archive": "EmberCorridor-Windows-x64.zip",
+  "bytes": 25049261,
+  "sha256": "7a5e51484ba181350243b94503ca985e69aae3c001b6d9a3883648425e12ec15",
+  "normal_launches": [
+    {
+      "volume": 3,
+      "learned": [
+        "move"
+      ],
+      "exit_code": 0
+    },
+    {
+      "volume": 0,
+      "learned": [
+        "move"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "independent_cwd": true,
+  "python_on_path": false
+}

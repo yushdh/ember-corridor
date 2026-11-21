@@ -309,7 +309,8 @@ class CampaignWindow(QuayWindow):
         flame = self.combat.flame
         if not flame.busy:
             return
-        frame = self.extra["firelight"].frames[flame.frame]
+        clip, index = flame.light_pose(self.battle_view.levels[1])
+        frame = self.extra[clip].frames[index]
         w = self.walker
         tex = frame.right if w.facing > 0 else frame.left
         ax, ay = frame.anchor

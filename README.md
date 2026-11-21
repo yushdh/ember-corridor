@@ -6,7 +6,7 @@
 
 [五间厂房的动态实景与同机位前后对照](docs/verification/harbour/comparison.gif) · [开发日志](docs/DEVLOG.md)
 
-[最新实机对照：行者的持械动作、近战命中与蓄焰斩](docs/verification/quay-strike/README.md)。本轮独立 Windows 包位于 `dist/quay-strike/EmberCorridor-Windows-x64.zip`，可用 `tools/build_windows.py --output-dir dist/quay-strike` 复建。
+[蓄满提示与敌方预警的带声实机对照](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)。最新 Windows 包位于 `dist/charge-signal/EmberCorridor-Windows-x64.zip`，可用项目虚拟环境执行 `tools/build_windows.py --output-dir dist/charge-signal` 复建。
 
 ## 在本机开始
 

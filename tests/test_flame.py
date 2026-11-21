@@ -22,6 +22,18 @@ class FlameCutTests(unittest.TestCase):
             c.step(w, 0, flame_hold=True)
         self.assertEqual(c.flame.frame, 3)
 
+    def test_ignition_is_one_shot_while_the_ready_body_loops(self):
+        c, w, _ = self.make()
+        self.charge(c, w)
+        for age in range(54):
+            expected = ("fire-ignite", age // 6) if age < 18 else ("firelight", c.flame.frame)
+            self.assertEqual(c.flame.light_pose(True), expected)
+            self.assertEqual(c.flame.light_pose(False), ("firelight", c.flame.frame))
+            c.step(w, 0, flame_hold=True)
+        self.assertEqual(sum(e["kind"] == "ignite" for e in c.events), 1)
+        c.step(w, 0)
+        self.assertEqual(c.flame.light_pose(True), ("firelight", RELEASE_FRAME))
+
     def test_sweep_hits_once_and_kicks_away_in_both_directions(self):
         for direction in (-1, 1):
             c, w, e = self.make(direction)

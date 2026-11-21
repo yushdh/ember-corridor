@@ -4,7 +4,7 @@ import random
 from PIL import Image, ImageDraw
 from draw_combat import SOLE, at_body, weapon
 from draw_walker import draw_frame
-from game.flame import BLADE, DURATIONS, RELEASE_FRAME, ray
+from game.flame import BLADE, DURATIONS, READY_TICKS, RELEASE_FRAME, ray
 
 FX_SIZE = (256, 232)
 FX_SOLE = (86, 199)
@@ -50,7 +50,7 @@ def body(i):
     return im, (x, y)
 
 
-def blade_fire(i):
+def blade_fire(i, *, ignition=False):
     im = Image.new("RGBA", FX_SIZE)
     d = ImageDraw.Draw(im)
     gx, gy, degrees, length = BLADE[i]
@@ -115,21 +115,22 @@ def blade_fire(i):
                 path.append(along(u, v))
                 if len(path) >= 2:
                     d.line(path[-2:], fill="#ffc86b" if band else "#ed843e", width=2)
-    if i == 3:
-        px, py = along(0.85 * length, 0)
-        d.polygon(
-            [
-                (px - 10, py),
-                (px - 2, py - 2),
-                (px, py - 12),
-                (px + 2, py - 2),
-                (px + 9, py),
-                (px + 2, py + 2),
-                (px, py + 10),
-                (px - 2, py + 2),
-            ],
-            fill="#fff8ce",
-        )
+    if ignition:
+        # A hot seam shoots up the edge, opens into two broken rings and cools.
+        phase = i - 3
+        u = length * (0.82, 0.89, 0.96)[phase]
+        radius = (16, 23, 27)[phase]
+        color = ("#fff2bd", "#ffd484", "#db935b")[phase]
+        for side in (-1, 1):
+            points = [along(u - radius * 0.47, side * radius * 0.45),
+                      along(u - radius * 0.14, side * radius),
+                      along(u + radius * 0.24, side * radius * 0.81)]
+            d.line(points, fill="#ac653e", width=4 if phase < 2 else 2)
+            d.line(points, fill=color, width=2 if phase < 2 else 1)
+        if phase == 0:
+            poly([(u - 19, 0), (u, -3), (length, 0), (u, 3)], "#fff5c5")
+            for side in (-1, 1):
+                poly([(u - 3, side * 3), (u + 1, side * 16), (u + 3, side * 4)], "#fff5c5")
     return im, (x, y)
 
 
@@ -261,8 +262,11 @@ def bake_flame(bake):
     events = {3: ["ignite"], 6: ["release", "active_start"], 10: ["active_end"]}
     bake("firecut", (160, 128), SOLE, [body(i) for i in range(len(BLADE))], DURATIONS, events)
     bake(
-        "firelight", FX_SIZE, FX_SOLE, [blade_fire(i) for i in range(len(BLADE))], DURATIONS, events
+        "firelight", FX_SIZE, FX_SOLE, [blade_fire(i) for i in range(len(BLADE))], DURATIONS,
+        {6: ["release", "active_start"], 10: ["active_end"]}
     )
+    bake("fire-ignite", FX_SIZE, FX_SOLE, [blade_fire(i, ignition=True) for i in range(3, 6)],
+         READY_TICKS, {0: ["ignite"]})
     bake(
         "fire-impact", (72, 64), (28, 34), [impact(i) for i in range(4)], (3, 3, 3, 3), {0: ["hit"]}
     )

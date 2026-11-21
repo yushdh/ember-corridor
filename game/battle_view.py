@@ -208,6 +208,9 @@ class BattleView:
         self.sounds = {
             p.stem: arcade.load_sound(p) for p in sorted((ASSETS / "combat/audio").glob("*.wav"))
         }
+        priorities = {**dict.fromkeys(("hit", "crush", "fire_hit", "hurt"), 1), "ignite": 2,
+                      **dict.fromkeys((*TYPES, "sweep", "vent", "phase"), 3)}
+        self.voice_priority = {sound: priorities.get(name, 0) for name, sound in self.sounds.items()}
         self.players = []
         self.last_event = 0
         self.shake = 0
@@ -248,20 +251,19 @@ class BattleView:
 
     def sound(self, name):
         self.players = [(s, p) for s, p in self.players if s.is_playing(p)]
-        # Reserve a voice for a telegraph when movement and impacts coincide.
-        warnings = (*TYPES, "sweep", "vent", "phase")
-        if len(self.players) >= 6 and name in warnings:
-            for index, (sound, player) in enumerate(self.players):
-                if sound not in (self.sounds.get(k) for k in warnings):
-                    sound.stop(player)
-                    self.players.pop(index)
-                    break
-        if len(self.players) < 6 and self.levels[2]:
-            cue = self.sounds[name]
-            gain = {"sabre": 0.75, "maul": 0.85, "land": 0.66, "roll": 0.75, "crush": 1.12}.get(
-                name, 1
-            )
-            self.players.append((cue, cue.play(volume=0.155 * self.levels[2] * gain)))
+        if not self.levels[2]:
+            return
+        cue = self.sounds[name]
+        if len(self.players) >= 6:
+            lowest = min(self.players, key=lambda voice: self.voice_priority[voice[0]])
+            if self.voice_priority[cue] <= self.voice_priority[lowest[0]]:
+                return
+            lowest[0].stop(lowest[1])
+            self.players.remove(lowest)
+        gain = {"sabre": 0.75, "maul": 0.85, "land": 0.66, "roll": 0.75, "crush": 1.12}.get(
+            name, 1
+        )
+        self.players.append((cue, cue.play(volume=0.155 * self.levels[2] * gain)))
 
     def particle(self, tex, x, y, vx, vy, life, alpha=255, animation=()):
         if len(self.particles) >= 16 * self.levels[3]:

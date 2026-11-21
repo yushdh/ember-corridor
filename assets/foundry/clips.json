@@ -756,9 +756,7 @@
           155
         ],
         "ticks": 6,
-        "events": [
-          "ignite"
-        ]
+        "events": []
       },
       {
         "region": [
@@ -943,6 +941,67 @@
           170
         ],
         "ticks": 7,
+        "events": []
+      }
+    ]
+  },
+  "fire-ignite": {
+    "sheet": "fire-ignite.png",
+    "frames": [
+      {
+        "region": [
+          0,
+          0,
+          256,
+          232
+        ],
+        "anchor": [
+          86,
+          199
+        ],
+        "weapon_socket": [
+          84,
+          155
+        ],
+        "ticks": 6,
+        "events": [
+          "ignite"
+        ]
+      },
+      {
+        "region": [
+          256,
+          0,
+          256,
+          232
+        ],
+        "anchor": [
+          86,
+          199
+        ],
+        "weapon_socket": [
+          84,
+          154
+        ],
+        "ticks": 6,
+        "events": []
+      },
+      {
+        "region": [
+          512,
+          0,
+          256,
+          232
+        ],
+        "anchor": [
+          86,
+          199
+        ],
+        "weapon_socket": [
+          85,
+          155
+        ],
+        "ticks": 6,
         "events": []
       }
     ]

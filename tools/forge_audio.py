@@ -31,6 +31,13 @@ CUES = {
 }
 
 
+def chime(age, pitch):
+    attack = min(1, age / 0.003)
+    tone = math.sin(math.tau * pitch * age)
+    partial = 0.19 * math.sin(math.tau * pitch * 2.63 * age)
+    return attack * math.exp(-age / 0.039) * (tone + partial)
+
+
 def generate():
     OUT.mkdir(parents=True, exist_ok=True)
     for index, (name, (duration, start, end, noise, decay, over)) in enumerate(CUES.items()):
@@ -46,6 +53,10 @@ def generate():
             envelope = min(1, t / 0.006) * math.exp(-decay * u) * min(1, (1 - u) * 25)
             signal = (1 - noise) * math.sin(phase) + noise * colored + over * math.sin(phase * 2.71)
             mixed = envelope * signal
+            if name == "ignite":
+                # Two short bronze notes under the bolt whistle; leave room for the release.
+                tap = max(0, t - 0.064)
+                mixed = (0.60 * chime(t, 368) + 0.73 * chime(tap, 552)) * min(1, (1 - u) * 25)
             if name == "fork":
                 # Two tine taps as the ferrule is lowered to the stone.
                 echo = max(0, t - 0.13)
