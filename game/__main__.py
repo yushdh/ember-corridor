@@ -11,6 +11,7 @@ def main():
     modes.add_argument("--classic", action="store_true", help="使用原版手工五室")
     modes.add_argument("--first-play", action="store_true", help="用独立新档试玩手工五室并在本机记录用时")
     modes.add_argument("--seed", type=int, help="按十进制潮图种子重走同一条路线")
+    parser.add_argument("--fps", type=int, choices=(30, 60), help="指定窗口更新和绘制帧率")
     options = parser.parse_args()
     if options.seed is not None and not 0 <= options.seed <= 0xffffffff:
         parser.error("种子范围为 0 到 4294967295")
@@ -21,6 +22,10 @@ def main():
         QuayWindow(practice=options.practice)
     else:
         CampaignWindow(seed=options.seed, classic=options.classic)
+    if options.fps:
+        window = arcade.get_window()
+        window.set_update_rate(1 / options.fps)
+        window.set_draw_rate(1 / options.fps)
     arcade.run()
 
 

@@ -1,7 +1,9 @@
 """The five-room run, its entrance, room interactions and ending."""
+from collections import deque
 from functools import lru_cache
 import json
 from secrets import randbits
+from time import perf_counter
 
 import arcade
 from PIL import Image
@@ -221,6 +223,11 @@ class CampaignWindow(QuayWindow):
                     self.start_room(self.index + 1, self.combat)
                 self.battle_view.sound("gate")
                 return
+        if key == arcade.key.K and key not in self.keys and self.combat.flame.swing >= 0:
+            direction = int(arcade.key.D in self.keys) - int(arcade.key.A in self.keys)
+            self.swing_rolls.append((perf_counter(), direction or self.walker.facing))
+            self.keys.add(key)
+            return
         super().press_game(key, modifiers)
 
     def open_forge(self):
@@ -242,6 +249,7 @@ class CampaignWindow(QuayWindow):
 
     def on_update(self, dt):
         if self.mode == "play" and not self.paused and not self.closed:
+            self.update_time = perf_counter()
             super().on_update(dt)
             if self.combat.hp:
                 self.region_age += dt
@@ -279,12 +287,20 @@ class CampaignWindow(QuayWindow):
 
     def clear_input(self):
         super().clear_input()
+        self.swing_rolls = deque()
         if isinstance(getattr(self, "combat", None), FoundryEncounter):
             self.combat.flame_roll_direction = 0
             if self.combat.flame.charge >= 0:
                 self.combat.flame.reset()
 
     def step_encounter(self, axis, moves, slot):
+        # A 30 Hz update spans four physics steps. Deliver each tap to the step
+        # in which it arrived, even when the key was released before this update.
+        if self.swing_rolls and not self.combat.freeze:
+            step_end = self.update_time - self.remaining + STEP
+            while self.swing_rolls and self.swing_rolls[0][0] <= step_end:
+                _, axis = self.swing_rolls.popleft()
+                moves["roll"] = True
         self.combat.step(
             self.walker,
             axis,
@@ -295,6 +311,8 @@ class CampaignWindow(QuayWindow):
             flame_hold=arcade.key.L in self.keys,
             slot=slot,
         )
+        if self.combat.hurt or not self.combat.hp:
+            self.swing_rolls.clear()
         if self.combat.hp:
             self.elapsed_ticks += 1
 

@@ -6,11 +6,13 @@
 
 [五间厂房的动态实景与同机位前后对照](docs/verification/harbour/comparison.gif) · [开发日志](docs/DEVLOG.md)
 
-[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-flame-crossfire/EmberCorridor-Windows-x64.zip) · [蓄焰斩下的双敌预警与收招实机对照](docs/verification/flame-crossfire/README.md) · [回钩与弩箭交叉](docs/verification/crossfire/README.md) · [回链绞工单独交锋](docs/verification/return-chain/README.md) · [炉件装配预览与实测](docs/verification/forge-preview/README.md) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
+[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-low-cadence/EmberCorridor-Windows-x64.zip) · [低特效 30 / 60 帧收刀翻滚实录](docs/verification/low-cadence/README.md) · [烈焰与双敌预警](docs/verification/flame-crossfire/README.md) · [回钩与弩箭交叉](docs/verification/crossfire/README.md) · [回链绞工单独交锋](docs/verification/return-chain/README.md) · [炉件装配预览与实测](docs/verification/forge-preview/README.md) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
 
 [栈板下穿、头顶血条与新版刀锤试听](docs/verification/deck-foley/README.md) · [蓄满提示与敌方预警](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)
 
 ## 在本机开始
+
+想在 30 帧下试收刀翻滚，解压后运行 `.\EmberCorridor.exe --seed 17 --fps 30`。源码启动命令为 `.\.venv\Scripts\python.exe -m game --seed 17 --fps 30`。在设置中把闪光与震动调到 0、粒子调到 1；将启动参数里的 30 改为 60 可对照游玩。
 
 想遇到回链绞工，解压后运行 `.\EmberCorridor.exe --seed 17`。离开第一室，在司钟吊廊的西侧绞盘入口可以看见他背上的铜卷筒。等钩齿张开、链条绷直，朝绞工翻滚，趁他垂手收具时转身出刀。[躲过回钩并反击的实机动图](docs/verification/return-chain/duel.gif)
 

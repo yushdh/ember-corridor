@@ -71,11 +71,15 @@ def main():
     modes.add_argument("--return-chain", action="store_true")
     modes.add_argument("--crossfire", action="store_true")
     modes.add_argument("--flame-crossfire", action="store_true")
+    modes.add_argument("--low-cadence", action="store_true")
     args = parser.parse_args()
     out = args.verify_install
     out.mkdir(parents=True, exist_ok=False)
     try:
-        if args.flame_crossfire:
+        if args.low_cadence:
+            from verify_low_cadence import verify as verify_cadence
+            verify_cadence(out)
+        elif args.flame_crossfire:
             from verify_flame_crossfire import verify as verify_flame
             verify_flame(out)
         elif args.crossfire:
