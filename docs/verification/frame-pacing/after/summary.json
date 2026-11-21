@@ -1,0 +1,2253 @@
+{
+  "pairs": 4,
+  "totals": {
+    "on": {
+      "interval": {
+        "median": 33.198,
+        "p95": 36.686,
+        "p99": 37.489,
+        "max": 37.805
+      },
+      "wake_late": {
+        "median": 0.335,
+        "p95": 0.557,
+        "p99": 0.733,
+        "max": 1.118
+      },
+      "work": {
+        "median": 13.119,
+        "p95": 16.234,
+        "p99": 21.088,
+        "max": 29.243
+      },
+      "update": {
+        "median": 1.035,
+        "p95": 2.048,
+        "p99": 2.599,
+        "max": 2.83
+      },
+      "draw": {
+        "median": 6.147,
+        "p95": 8.289,
+        "p99": 12.153,
+        "max": 14.939
+      },
+      "gpu_wait": {
+        "median": 0.345,
+        "p95": 0.681,
+        "p99": 1.644,
+        "max": 2.088
+      },
+      "capture": {
+        "median": 5.585,
+        "p95": 6.696,
+        "p99": 7.165,
+        "max": 11.144
+      },
+      "swap": {
+        "median": 0.059,
+        "p95": 0.181,
+        "p99": 0.248,
+        "max": 0.291
+      },
+      "save": {
+        "median": 0.0,
+        "p95": 0.034,
+        "p99": 0.041,
+        "max": 0.174
+      },
+      "sound": {
+        "median": 0.0,
+        "p95": 0.253,
+        "p99": 0.592,
+        "max": 0.773
+      },
+      "sync_pose": {
+        "median": 0.766,
+        "p95": 1.68,
+        "p99": 2.08,
+        "max": 2.197
+      },
+      "draw_weapon_glow": {
+        "median": 0.497,
+        "p95": 1.422,
+        "p99": 1.567,
+        "max": 1.829
+      },
+      "warnings": {
+        "median": 0.328,
+        "p95": 0.934,
+        "p99": 2.304,
+        "max": 3.489
+      },
+      "over_40ms": 0
+    },
+    "off": {
+      "interval": {
+        "median": 33.34,
+        "p95": 36.289,
+        "p99": 36.997,
+        "max": 37.149
+      },
+      "wake_late": {
+        "median": 0.341,
+        "p95": 0.588,
+        "p99": 0.688,
+        "max": 0.902
+      },
+      "work": {
+        "median": 7.44,
+        "p95": 10.609,
+        "p99": 15.033,
+        "max": 16.746
+      },
+      "update": {
+        "median": 1.037,
+        "p95": 2.044,
+        "p99": 2.609,
+        "max": 2.912
+      },
+      "draw": {
+        "median": 6.018,
+        "p95": 7.997,
+        "p99": 11.829,
+        "max": 13.202
+      },
+      "gpu_wait": {
+        "median": 0.332,
+        "p95": 0.657,
+        "p99": 1.376,
+        "max": 1.614
+      },
+      "capture": {
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.001,
+        "max": 0.001
+      },
+      "swap": {
+        "median": 0.045,
+        "p95": 0.102,
+        "p99": 0.171,
+        "max": 0.315
+      },
+      "save": {
+        "median": 0.0,
+        "p95": 0.032,
+        "p99": 0.039,
+        "max": 0.045
+      },
+      "sound": {
+        "median": 0.0,
+        "p95": 0.251,
+        "p99": 0.582,
+        "max": 0.67
+      },
+      "sync_pose": {
+        "median": 0.75,
+        "p95": 1.539,
+        "p99": 2.032,
+        "max": 2.405
+      },
+      "draw_weapon_glow": {
+        "median": 0.468,
+        "p95": 1.462,
+        "p99": 1.796,
+        "max": 1.821
+      },
+      "warnings": {
+        "median": 0.325,
+        "p95": 0.921,
+        "p99": 2.251,
+        "max": 2.537
+      },
+      "over_40ms": 0
+    }
+  },
+  "runs": [
+    {
+      "run": {
+        "fps_measured": 30.29,
+        "frames": 54,
+        "interval_median_ms": 33.03,
+        "interval_p95_ms": 36.36,
+        "update_draw_sync_median_ms": 7.64,
+        "update_draw_sync_p95_ms": 11.48,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.33
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.84
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {
+          "charge": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "signals": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "swing": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "recovery": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "counter": [
+            0,
+            0,
+            170.43,
+            94
+          ]
+        }
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "on",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    },
+    {
+      "run": {
+        "fps_measured": 30.13,
+        "frames": 54,
+        "interval_median_ms": 33.44,
+        "interval_p95_ms": 36.62,
+        "update_draw_sync_median_ms": 7.42,
+        "update_draw_sync_p95_ms": 12.11,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.07
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.63
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {}
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "off",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    },
+    {
+      "run": {
+        "fps_measured": 30.13,
+        "frames": 54,
+        "interval_median_ms": 33.18,
+        "interval_p95_ms": 36.42,
+        "update_draw_sync_median_ms": 7.32,
+        "update_draw_sync_p95_ms": 11.17,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.54
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.58
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {}
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "off",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    },
+    {
+      "run": {
+        "fps_measured": 30.25,
+        "frames": 54,
+        "interval_median_ms": 33.08,
+        "interval_p95_ms": 36.79,
+        "update_draw_sync_median_ms": 7.49,
+        "update_draw_sync_p95_ms": 11.72,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.16
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.7
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {
+          "charge": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "signals": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "swing": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "recovery": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "counter": [
+            0,
+            0,
+            170.43,
+            94
+          ]
+        }
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "on",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    },
+    {
+      "run": {
+        "fps_measured": 30.13,
+        "frames": 54,
+        "interval_median_ms": 33.23,
+        "interval_p95_ms": 37.0,
+        "update_draw_sync_median_ms": 7.37,
+        "update_draw_sync_p95_ms": 10.89,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.46
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.56
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {
+          "charge": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "signals": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "swing": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "recovery": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "counter": [
+            0,
+            0,
+            170.43,
+            94
+          ]
+        }
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "on",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    },
+    {
+      "run": {
+        "fps_measured": 30.15,
+        "frames": 54,
+        "interval_median_ms": 33.13,
+        "interval_p95_ms": 36.39,
+        "update_draw_sync_median_ms": 7.68,
+        "update_draw_sync_p95_ms": 10.74,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.2
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.84
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {}
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "off",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    },
+    {
+      "run": {
+        "fps_measured": 30.15,
+        "frames": 54,
+        "interval_median_ms": 33.33,
+        "interval_p95_ms": 36.52,
+        "update_draw_sync_median_ms": 7.31,
+        "update_draw_sync_p95_ms": 11.25,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.4
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.84
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {}
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "off",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    },
+    {
+      "run": {
+        "fps_measured": 30.12,
+        "frames": 54,
+        "interval_median_ms": 33.65,
+        "interval_p95_ms": 36.88,
+        "update_draw_sync_median_ms": 7.73,
+        "update_draw_sync_p95_ms": 11.76,
+        "sampled_ticks": {
+          "full_blade": [
+            56,
+            60,
+            64
+          ],
+          "double_warning": [
+            4,
+            8,
+            12,
+            16,
+            20,
+            24,
+            28,
+            32,
+            36,
+            40,
+            44,
+            48,
+            52,
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "open_jaw_and_aim": [
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ],
+          "bow_ready": [
+            56,
+            60,
+            64,
+            68,
+            72,
+            76,
+            80,
+            84
+          ]
+        },
+        "tap": [
+          {
+            "kind": "press",
+            "after_sim_tick": 112,
+            "ms": 953.38
+          },
+          {
+            "kind": "release",
+            "after_sim_tick": 112,
+            "ms": 963.6
+          }
+        ],
+        "rolls": [
+          117
+        ],
+        "hook": [
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "bolt": [
+          126,
+          127,
+          128,
+          129,
+          130
+        ],
+        "particles_peak": 4,
+        "hp": 100,
+        "chain_hp": 52,
+        "events": [
+          {
+            "id": 1,
+            "tick": 1,
+            "kind": "warn",
+            "x": 145,
+            "y": 146,
+            "enemy": "chain"
+          },
+          {
+            "id": 2,
+            "tick": 1,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 3,
+            "tick": 1,
+            "kind": "warn",
+            "x": 198,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 4,
+            "tick": 54,
+            "kind": "ignite",
+            "x": 166.0,
+            "y": 134
+          },
+          {
+            "id": 5,
+            "tick": 64,
+            "kind": "firecut",
+            "x": 174.0,
+            "y": 130,
+            "facing": 1,
+            "attack_id": 1
+          },
+          {
+            "id": 6,
+            "tick": 64,
+            "kind": "hit",
+            "x": 179.0,
+            "y": 148.23,
+            "enemy": "ram",
+            "target": 2,
+            "action": "firecut",
+            "hp": 44,
+            "facing": 1,
+            "attack_id": 1,
+            "frame": 6
+          },
+          {
+            "id": 7,
+            "tick": 88,
+            "kind": "shot",
+            "x": 330,
+            "y": 173,
+            "enemy": "rivet"
+          },
+          {
+            "id": 8,
+            "tick": 179,
+            "kind": "warn",
+            "x": 207.06,
+            "y": 153,
+            "enemy": "ram"
+          },
+          {
+            "id": 9,
+            "tick": 197,
+            "kind": "windup",
+            "x": 181.3,
+            "y": 126,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 10,
+            "tick": 204,
+            "kind": "warn",
+            "x": 330,
+            "y": 189,
+            "enemy": "rivet"
+          },
+          {
+            "id": 11,
+            "tick": 208,
+            "kind": "swing",
+            "x": 170.43,
+            "y": 124,
+            "action": "cut",
+            "attack_id": 2
+          },
+          {
+            "id": 12,
+            "tick": 208,
+            "kind": "hit",
+            "x": 155.43,
+            "y": 130.0,
+            "enemy": "chain",
+            "target": 0,
+            "action": "cut",
+            "attack_id": 2,
+            "hp": 52,
+            "frame": 3,
+            "facing": -1
+          }
+        ],
+        "camera_and_player": {
+          "charge": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "signals": [
+            0,
+            0,
+            166.0,
+            94
+          ],
+          "swing": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "recovery": [
+            0,
+            0,
+            174.0,
+            94
+          ],
+          "counter": [
+            0,
+            0,
+            170.43,
+            94
+          ]
+        }
+      },
+      "camera": {
+        "60": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "64": [
+          0,
+          0,
+          166.0,
+          94
+        ],
+        "84": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "112": [
+          0,
+          0,
+          174.0,
+          94
+        ],
+        "212": [
+          0,
+          0,
+          170.43,
+          94
+        ]
+      },
+      "mode": "on",
+      "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+      "framebuffer": [
+        1280,
+        720
+      ],
+      "arcade": "3.3.3",
+      "os": "Windows-11-10.0.26300-SP0"
+    }
+  ]
+}

@@ -11,4 +11,4 @@
 | 5 | 装备、构筑与存档 | 局内选择与永久解锁形成循环，存档版本、备份与损坏处理可验证 | 本机通过。新增确认前的炉件收益与损失预览，复核四组实际战斗数值、新档首匣和取消操作。[炉件预览验收](verification/forge-preview/README.md) · [原有装配与重开记录](verification/stage5/route.json) |
 | 6 | 模板随机关卡 | 记录种子，复现布局，按真实移动能力检查路径及必要目标，提供备用布局 | 已实走种子 17、6108 及故障注入后的备用路线。6108 留存两次穿闸、泵台及绞盘落脚、四次过门和鸣钟的记录，并补测四块侧台。4096 个生成样本覆盖 48 种布局。[6108 实机验收](verification/stage6/seed-6108/README.md) · [生成与回退](verification/stage6/README.md) |
 | 7 | 内容扩展 | 每批引入有玩法差异的区域、武器或敌人，复核既有流程 | [探潮叉手](verification/stage7/README.md)与[回链绞工](verification/return-chain/README.md)已分别通过本机交锋。已复验[双敌交叉预警](verification/crossfire/README.md)、[蓄焰斩与命中火花](verification/flame-crossfire/README.md)及[低特效 30 / 60 帧下的收招轻按与反击](verification/low-cadence/README.md)。 |
-| 8 | 优化与发行 | 依据性能数据调整体验，目标 Windows 发行包完成实测 | Windows 11 x64 本机通过。最终 ZIP 在项目外解压，普通启动、设置读回、五室、音频、胜负重开及 752 帧性能采样已验证。Windows 10、低配及真人首玩待复核。[发行验收](verification/stage8/README.md) |
+| 8 | 优化与发行 | 依据性能数据调整体验，目标 Windows 发行包完成实测 | Windows 11 x64 本机通过。最终 ZIP 在项目外解压，普通启动、设置读回、五室、音频、胜负重开及 752 帧性能采样已验证。Windows 10、低配及真人首玩待复核。[发行验收](verification/stage8/README.md) · [西侧绞盘 30 帧长帧复核](verification/frame-pacing/README.md) |

@@ -2,6 +2,8 @@
 import json
 import os
 import tempfile
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass, replace
 from pathlib import Path
@@ -81,7 +83,7 @@ def locked(directory):
 
 
 class ProfileStore:
-    def __init__(self, directory=None):
+    def __init__(self, directory=None, *, background_lessons=False):
         self.directory = (
             Path(directory)
             if directory is not None
@@ -95,16 +97,33 @@ class ProfileStore:
         self.pending_settings = {}
         self.pending_learned = set()
         self.pending_bindings = None
+        self.writer = None
+        self.writes = deque()
         try:
-            with locked(self.directory):
-                self.data = self.read()
+            if background_lessons:
+                # Start the worker during the initial load. Starting its Windows
+                # thread at first impact can stall the next graphics submission.
+                self.writer = ThreadPoolExecutor(max_workers=1, thread_name_prefix="lessons")
+                self.data, self.notice = self.writer.submit(self._load).result()
+            else:
+                self.data, self.notice = self._load()
         except (ValueError, OSError) as exc:
             self.report(exc)
+
+    def _load(self):
+        with locked(self.directory):
+            return self._read_profile()
 
     def report(self, exc):
         self.notice = str(exc) if isinstance(exc, ValueError) else "存档读写失败，请检查目录或关闭另一窗口"
 
     def read(self):
+        data, notice = self._read_profile()
+        if notice:
+            self.notice = notice
+        return data
+
+    def _read_profile(self):
         damaged = False
         for path in (self.main, self.backup):
             try:
@@ -119,13 +138,19 @@ class ProfileStore:
                 continue
             if path == self.backup:
                 atomic_write(self.main, raw)
-                self.notice = "已从备份恢复炉谱和设置"
-            return data
+                return data, "已从备份恢复炉谱和设置"
+            return data, ""
         if damaged:
             raise ValueError("存档损坏，原文件已保留，本次仅在内存游玩")
-        return Profile()
+        return Profile(), ""
+
+    def remember(self, learned):
+        self.poll()
+        self.pending_learned.update(learned)
+        self._write(background=True)
 
     def update(self, *, unlock=False, setting=None, learned=(), bindings=None):
+        self.poll(wait=True)
         self.pending_unlock |= unlock
         self.pending_learned.update(learned)
         if bindings is not None:
@@ -133,36 +158,71 @@ class ProfileStore:
         if setting is not None:
             index, value = setting
             self.pending_settings[index] = value
+        self._write(background=False)
+
+    def _write(self, background):
+        # The writer sees only this immutable snapshot. New lessons can arrive
+        # while it is flushing the previous snapshot to disk.
+        settings = tuple(self.pending_settings.items())
+        lessons = frozenset(self.pending_learned)
+        shell = self.pending_unlock
+        keys = self.pending_bindings
 
         def changed(profile):
             levels = list(profile.levels)
-            for index, value in self.pending_settings.items():
+            for index, value in settings:
                 levels[index] = value
             return replace(
                 profile,
-                shell_known=profile.shell_known or self.pending_unlock,
+                shell_known=profile.shell_known or shell,
                 levels=tuple(levels),
-                learned=tuple(sorted(set(profile.learned) | self.pending_learned)),
-                bindings=self.pending_bindings or profile.bindings,
+                learned=tuple(sorted(set(profile.learned) | lessons)),
+                bindings=keys or profile.bindings,
             )
 
-        desired = changed(self.data)
+        self.data = changed(self.data)
+        if background:
+            if self.writer is None:
+                self.writer = ThreadPoolExecutor(max_workers=1, thread_name_prefix="lessons")
+            self.writes.append(self.writer.submit(self._commit, changed))
+        else:
+            self._accept(self._commit(changed))
+
+    def _commit(self, changed):
         try:
             with locked(self.directory):
-                previous = self.read()
+                previous, notice = self._read_profile()
                 current = changed(previous)
                 raw = json.dumps(asdict(current), indent=2).encode("utf8")
                 prev = json.dumps(asdict(previous), indent=2).encode("utf8")
                 # A new installation gets a usable backup on the very first save.
                 atomic_write(self.backup, prev if self.main.exists() else raw)
                 atomic_write(self.main, raw)
-                self.data = current
-                self.pending_unlock = False
-                self.pending_settings.clear()
-                self.pending_learned.clear()
-                self.pending_bindings = None
-                if not self.notice.startswith("已从备份"):
-                    self.notice = ""
+                return current, notice
         except (ValueError, OSError) as exc:
-            self.data = desired
-            self.report(exc)
+            return None, exc
+
+    def _accept(self, result):
+        current, notice = result
+        if current is None:
+            self.report(notice)
+            return
+        self.pending_learned.difference_update(current.learned)
+        self.pending_unlock = False
+        self.pending_settings.clear()
+        self.pending_bindings = None
+        self.data = replace(current, learned=tuple(sorted(set(current.learned) | self.pending_learned)))
+        if notice or not self.notice.startswith("已从备份"):
+            self.notice = notice
+
+    def poll(self, wait=False):
+        while self.writes and (wait or self.writes[0].done()):
+            self._accept(self.writes.popleft().result())
+
+    def close(self):
+        if self.writer is not None:
+            self.poll(wait=True)
+            self.writer.shutdown()
+            self.writer = None
+            if self.pending_learned:
+                self.update()

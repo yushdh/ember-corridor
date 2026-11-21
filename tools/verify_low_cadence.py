@@ -123,7 +123,9 @@ def clip(frames, fps, path, encoder):
         )
 
 
-def replay(w, fps, scene, out, encoder, *, early=False):
+def replay(w, fps, scene, out, encoder, *, early=False, capture=None, trace=None):
+    if capture is None:
+        capture = not early
     base = w.route
     index = next(i for i, t in enumerate(base.rooms) if t.key == "gallery-west")
     if scene == "crossing":
@@ -186,9 +188,12 @@ def replay(w, fps, scene, out, encoder, *, early=False):
         until(origin + tick * STEP)
         start = perf_counter()
         w.on_update(1 / fps)
+        updated = perf_counter()
         w.on_draw()
+        drawn = perf_counter()
         w.ctx.finish()
-        work.append((perf_counter() - start) * 1000)
+        synced = perf_counter()
+        work.append((synced - start) * 1000)
         c = w.combat
         assert c.tick == tick
         assert not any(w.battle_view.flash.values())
@@ -204,7 +209,8 @@ def replay(w, fps, scene, out, encoder, *, early=False):
         if bow.state == "warn" and bow.age * 3 >= bow.spec.windup * 2:
             counts["bow_ready"].append(tick)
         peak = max(peak, len(w.battle_view.particles))
-        if not early:
+        read_start = perf_counter()
+        if capture:
             im = w.ctx.get_framebuffer_image(w.ctx.screen, components=3)
             frames.append(im.resize((640, 360), Image.Resampling.NEAREST))
             for name, snap in snapshots.items():
@@ -222,15 +228,33 @@ def replay(w, fps, scene, out, encoder, *, early=False):
                             ],
                         )
                     )
+        captured = perf_counter()
         w.flip()
-        presents.append(perf_counter())
+        presented = perf_counter()
+        if trace is not None:
+            trace.frame(
+                tick,
+                origin,
+                start,
+                updated,
+                drawn,
+                synced,
+                read_start,
+                captured,
+                presented,
+                presents[-1] if presents else None,
+            )
+        presents.append(presented)
     for key in held:
         w.on_key_release(key, 0)
     stem = f"{scene}-{fps}"
     for name, im, _ in positions:
         im.save(out / f"{stem}-{name}.png")
-    if not early:
-        clip(frames, fps, out / stem, encoder)
+    if capture:
+        if trace is None:
+            clip(frames, fps, out / stem, encoder)
+        else:
+            trace.film(frames, presents, out / stem, encoder)
     intervals = [(b - a) * 1000 for a, b in zip(presents, presents[1:])]
     return dict(
         fps_measured=round(1000 / statistics.mean(intervals), 2),

@@ -72,11 +72,18 @@ def main():
     modes.add_argument("--crossfire", action="store_true")
     modes.add_argument("--flame-crossfire", action="store_true")
     modes.add_argument("--low-cadence", action="store_true")
+    modes.add_argument("--frame-pacing", action="store_true")
     args = parser.parse_args()
     out = args.verify_install
     out.mkdir(parents=True, exist_ok=False)
     try:
-        if args.low_cadence:
+        if args.frame_pacing:
+            from profile_crossing import trial
+            for mode in ("on", "off"):
+                folder = out / mode
+                folder.mkdir()
+                trial(folder, mode, None, False)
+        elif args.low_cadence:
             from verify_low_cadence import verify as verify_cadence
             verify_cadence(out)
         elif args.flame_crossfire:

@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from threading import Event
 import unittest
 from unittest.mock import patch
 
@@ -12,6 +13,48 @@ class ProfileTests(unittest.TestCase):
         temp = TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         self.root = Path(temp.name)
+
+    def test_learning_while_previous_write_is_blocked(self):
+        store = ProfileStore(self.root)
+        entered, release = Event(), Event()
+
+        def slow_write(path, data):
+            entered.set()
+            if not release.wait(5):
+                raise RuntimeError("gameplay waited for the lesson writer")
+            atomic_write(path, data)
+
+        try:
+            with patch("game.profile.atomic_write", side_effect=slow_write):
+                store.remember({"attack"})
+                self.assertTrue(entered.wait(5))
+                store.remember({"roll"})
+                store.poll()
+                self.assertEqual(set(store.data.learned), {"roll", "attack"})
+                release.set()
+                store.update(setting=(0, 0))
+                store.remember({"move"})
+        finally:
+            release.set()
+            store.close()
+        data = ProfileStore(self.root).data
+        self.assertEqual(data.levels[0], 0)
+        self.assertEqual(set(data.learned), {"attack", "roll", "move"})
+
+    def test_failed_lesson_write_retries_and_merges_on_close(self):
+        store = ProfileStore(self.root)
+        try:
+            with patch("game.profile.atomic_write", side_effect=PermissionError):
+                store.remember({"roll"})
+                store.poll(wait=True)
+            self.assertTrue(store.notice)
+            self.assertEqual(store.data.learned, ("roll",))
+            ProfileStore(self.root).update(unlock=True)
+        finally:
+            store.close()
+        reopened = ProfileStore(self.root).data
+        self.assertEqual(reopened.learned, ("roll",))
+        self.assertTrue(reopened.shell_known)
 
     def test_two_windows_merge_updates_and_backup_recovers(self):
         first, second = ProfileStore(self.root), ProfileStore(self.root)

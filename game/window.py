@@ -52,7 +52,7 @@ class QuayWindow(arcade.Window):
         self.clips = load_clips()
         self.combat = None if practice else Encounter()
         self.battle_view = None if practice else BattleView(self.clips, self.combat.foes)
-        self.store = ProfileStore(save_dir)
+        self.store = ProfileStore(save_dir, background_lessons=True)
         self.controls = Controls(self.store)
         self.guidance = Guidance(self.store.data.learned)
         if self.battle_view:
@@ -242,6 +242,7 @@ class QuayWindow(arcade.Window):
         # A final scheduled update can arrive after Arcade closes the GL context.
         if self.closed or self.paused:
             return
+        self.store.poll()
         self.guidance.advance(delta_time)
         self.remaining = min(self.remaining + delta_time, MAX_STEPS * STEP)
         axis = int(arcade.key.D in self.keys) - int(arcade.key.A in self.keys)
@@ -287,7 +288,7 @@ class QuayWindow(arcade.Window):
                     nearby = opportunities(w, self.combat, self.combat.surfaces if self.combat else SURFACES)
                     learned = self.guidance.observe(nearby,completed)
                     if learned - set(self.store.data.learned):
-                        self.store.update(learned=learned)
+                        self.store.remember(learned)
             if not frozen:
                 self.edges.clear()
                 self.drop_request = False
@@ -413,6 +414,11 @@ class QuayWindow(arcade.Window):
         self.world_texture.use(0)
         with self.ctx.enabled_only():
             self.screen_quad.render(self.ctx.utility_textured_quad_program)
+
+    def close(self):
+        if hasattr(self, "store"):
+            self.store.close()
+        super().close()
 
     def on_close(self):
         if self.battle_view:
