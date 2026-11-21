@@ -165,7 +165,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("zip", type=Path)
     parser.add_argument("evidence", type=Path)
-    parser.add_argument("--modes-only", action="store_true")
+    checks = parser.add_mutually_exclusive_group()
+    checks.add_argument("--modes-only", action="store_true")
+    checks.add_argument("--blade-detour", action="store_true",
+                        help="Run the handmade five-room detour for the end-to-end playthrough.")
     args = parser.parse_args()
     out = args.evidence.resolve()
     out.mkdir(parents=True, exist_ok=True)
@@ -198,13 +201,15 @@ def main():
         subprocess.run([exe, "--profile-render", timing], cwd=cwd, env=env, timeout=90, check=True)
         shutil.copyfile(timing, out/"packaged-timing.json")
         report = root/"验收"
-        result = subprocess.run([exe, "--verify-install", report], cwd=cwd, env=env,
+        route_args = ["--blade-detour"] if args.blade_detour else []
+        result = subprocess.run([exe, "--verify-install", report, *route_args], cwd=cwd, env=env,
                                 timeout=240, check=False)
         if result.returncode:
             error = report/"error.txt"
             raise RuntimeError(error.read_text(encoding="utf8") if error.exists() else result.returncode)
         data = json.loads((report/"installed.json").read_bytes())
         assert data["frozen"] and not any(cwd.iterdir())
+        assert data["route"]["seed"] == (None if args.blade_detour else 17)
         for p in report.iterdir():
             shutil.copyfile(p, out/p.name)
         with args.zip.open("rb") as f:

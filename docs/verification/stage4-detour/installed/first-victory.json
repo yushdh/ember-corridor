@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "route": "classic",
+  "source": "automated",
+  "outcome": "won",
+  "wall_ms": 70047,
+  "play_ms": 69750,
+  "forge_ms": 0,
+  "pause_ms": 297,
+  "retry_wait_ms": 0,
+  "attempts": 1,
+  "deaths": 0,
+  "rooms": [
+    {
+      "attempt": 1,
+      "room": "退潮门廊",
+      "engaged_ms": 9266
+    },
+    {
+      "attempt": 1,
+      "room": "铆雨泵房",
+      "engaged_ms": 8953
+    },
+    {
+      "attempt": 1,
+      "room": "沉闸水道",
+      "engaged_ms": 10625
+    },
+    {
+      "attempt": 1,
+      "room": "司钟吊廊",
+      "engaged_ms": 21578
+    },
+    {
+      "attempt": 1,
+      "room": "潮钟熔庭",
+      "engaged_ms": 19328
+    }
+  ],
+  "transitions": [
+    {
+      "at_ms": 0,
+      "attempt": 1,
+      "room": "退潮门廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 9266,
+      "attempt": 1,
+      "room": "铆雨泵房",
+      "state": "play"
+    },
+    {
+      "at_ms": 9281,
+      "attempt": 1,
+      "room": "铆雨泵房",
+      "state": "pause"
+    },
+    {
+      "at_ms": 9531,
+      "attempt": 1,
+      "room": "铆雨泵房",
+      "state": "play"
+    },
+    {
+      "at_ms": 18469,
+      "attempt": 1,
+      "room": "沉闸水道",
+      "state": "play"
+    },
+    {
+      "at_ms": 29094,
+      "attempt": 1,
+      "room": "司钟吊廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 40578,
+      "attempt": 1,
+      "room": "司钟吊廊",
+      "state": "pause"
+    },
+    {
+      "at_ms": 40625,
+      "attempt": 1,
+      "room": "司钟吊廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 50719,
+      "attempt": 1,
+      "room": "潮钟熔庭",
+      "state": "play"
+    },
+    {
+      "at_ms": 70047,
+      "attempt": 1,
+      "room": "潮钟熔庭",
+      "state": "won"
+    }
+  ]
+}

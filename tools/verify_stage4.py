@@ -20,7 +20,7 @@ from pixel_check import check_pixels
 
 
 class Route:
-    def __init__(self, window, out):
+    def __init__(self, window, out, *, blade_detour=False):
         self.w = window
         self.out = out
         out.mkdir(parents=True, exist_ok=True)
@@ -40,6 +40,9 @@ class Route:
         self.paused_once = False
         self.pause_tick = 0
         self.seen_phases = set()
+        self.blade_detour = blade_detour
+        self.unclaimed = set()
+        self.detour = {}
 
     def post(self, key, down):
         vk = {"enter": 13, "space": 32, "esc": 27}.get(key) or ord(key.upper())
@@ -75,6 +78,36 @@ class Route:
     def snap(self, label):
         if label not in self.snaps:
             self.capture(label)
+
+    def detour_target(self, c, p):
+        if "refused" not in self.detour:
+            if c.near(p, c.room.door):
+                self.hold(set())
+                if "pressed" not in self.detour:
+                    assert c.hp and not c.attack and not c.hurt and c.cast_age < 0 and not c.flame.busy
+                    self.snap("locked-door")
+                    self.tap("e")
+                    self.detour["pressed"] = c.tick
+                elif c.tick >= self.detour["pressed"] + 8:
+                    assert self.w.index == 3 and c.cleared and not c.valve_open
+                    self.detour["refused"] = c.tick
+                    self.tap("esc")
+                return None
+            return c.room.door
+        if "locked-objective" not in self.snaps:
+            if self.w.paused:
+                self.snap("locked-objective")
+                self.tap("esc")
+            return None
+        if self.w.paused:
+            return None
+        if "landing" not in self.detour:
+            step = self.w.route.rooms[self.w.index].steps[0]
+            if not (p.support and abs(p.x - step[0]) < 28 and p.y == step[1]):
+                return step
+            self.snap("west-step")
+            self.detour["landing"] = c.tick
+        return c.room.valve
 
     def observe(self):
         w = self.w
@@ -138,6 +171,8 @@ class Route:
             self.tap("enter")
             return
         if w.mode == "won":
+            if self.blade_detour:
+                assert w.kills == 10 and not c.loadout.ranks and not w.store.data.shell_known
             self.snap("victory")
             self.victory_time = w.elapsed_ticks / 120
             self.hold(set())
@@ -179,15 +214,26 @@ class Route:
             return
         enemies = [e for e in c.foes if e.hp]
         e = min(enemies, key=lambda e: abs(e.x - p.x)) if enemies else None
-        if c.room.valve and not c.valve_open and all(g.kind == "ram" for g in enemies):
+        if self.blade_detour:
+            assert c.weapon == "light" and not c.loadout.ranks and not c.crate_taken
+            if c.crate:
+                self.unclaimed.add(w.index + 1)
+            if c.room.valve and c.valve_open:
+                self.snap("valve-open")
+        elif c.room.valve and not c.valve_open and all(g.kind == "ram" for g in enemies):
             e = None
         if e:
             direction = 1 if e.x >= p.x else -1
             target_x = e.x - direction * 36
             target_y = e.y
         else:
-            target_x, target_y = c.room.door if c.valve_open else c.room.valve
-            if abs(p.x - target_x) <= 25 and abs(p.y - target_y) <= 20:
+            target = c.room.door if c.valve_open else c.room.valve
+            if self.blade_detour and not c.valve_open:
+                target = self.detour_target(c, p)
+                if target is None:
+                    return
+            target_x, target_y = target
+            if target in (c.room.door, c.room.valve) and abs(p.x - target_x) <= 25 and abs(p.y - target_y) <= 20:
                 self.hold(set())
                 if not c.valve_open:
                     self.snap("winch")
@@ -240,7 +286,7 @@ class Route:
             keys.add("space")
         self.hold(keys)
         if self.counter % 5 == 0:
-            if c.weapon != "heavy":
+            if not self.blade_detour and c.weapon != "heavy":
                 self.tap("2")
             if e and not c.attack and c.cast_age < 0 and not c.hurt:
                 if isinstance(e, Bellkeeper) and e.state == "warn" and e.age >= e.windup - 46:
@@ -285,6 +331,19 @@ class Route:
             shots=sorted(self.snaps),
             events=self.events,
         )
+        if self.blade_detour:
+            assert self.unclaimed == {1, 2, 3, 4} and "refused" in self.detour
+            gates = [ev for ev in self.events if ev["room"] == 4 and ev["kind"] == "gate"]
+            assert any(ev["tick"] > self.detour["refused"] for ev in gates)
+            actions = {ev["action"] for ev in self.events if ev["kind"] == "hit"}
+            assert "cut" in actions and "breaker" not in actions
+            record = json.loads(self.w.record.path.read_bytes())
+            assert record["source"] == "automated" and record["outcome"] == "won"
+            assert record["attempts"] == 1 and record["forge_ms"] == 0 and record["pause_ms"] > 0
+            assert [row["room"] for row in record["rooms"]] == [t.room.name for t in self.w.route.rooms]
+            report.update(unclaimed_crate_rooms=sorted(self.unclaimed), locked_door=self.detour,
+                          hit_actions=sorted(actions), source="automated")
+            (self.out / "first-victory.json").write_bytes(self.w.record.path.read_bytes())
         (self.out / "run.json").write_text(
             json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
         )
@@ -302,10 +361,16 @@ class Route:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("docs/verification/stage4"))
+    parser.add_argument("--blade-detour", action="store_true",
+                        help="Use the starting blade and seal, leave every crate, and try the locked fourth door.")
     args = parser.parse_args()
     test_profile = TemporaryDirectory()
-    window = CampaignWindow(classic=True, save_dir=test_profile.name)
-    route = Route(window, args.output)
+    if args.blade_detour:
+        from game.first_play import FirstPlayWindow
+        window = FirstPlayWindow(report_root=Path(test_profile.name), source="automated")
+    else:
+        window = CampaignWindow(classic=True, save_dir=test_profile.name)
+    route = Route(window, args.output, blade_detour=args.blade_detour)
     route.gpu = pyglet.gl.gl_info.get_renderer()
     pyglet.clock.schedule_interval(route.drive, 1 / 60)
     arcade.run()

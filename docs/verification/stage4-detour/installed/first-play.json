@@ -1,0 +1,68 @@
+{
+  "source": "automated",
+  "formal_profile_byte_identical": true,
+  "sessions": [
+    {
+      "version": 1,
+      "route": "classic",
+      "source": "unclassified",
+      "outcome": "closed",
+      "wall_ms": 578,
+      "play_ms": 375,
+      "forge_ms": 0,
+      "pause_ms": 203,
+      "retry_wait_ms": 0,
+      "attempts": 1,
+      "deaths": 0,
+      "rooms": [
+        {
+          "attempt": 1,
+          "room": "退潮门廊",
+          "engaged_ms": 375
+        }
+      ],
+      "transitions": [
+        {
+          "at_ms": 0,
+          "attempt": 1,
+          "room": "退潮门廊",
+          "state": "play"
+        },
+        {
+          "at_ms": 375,
+          "attempt": 1,
+          "room": "退潮门廊",
+          "state": "pause"
+        },
+        {
+          "at_ms": 578,
+          "attempt": 1,
+          "room": "退潮门廊",
+          "state": "closed"
+        }
+      ]
+    },
+    {
+      "version": 1,
+      "route": "classic",
+      "source": "unclassified",
+      "outcome": "closed_before_start",
+      "wall_ms": 0,
+      "play_ms": 0,
+      "forge_ms": 0,
+      "pause_ms": 0,
+      "retry_wait_ms": 0,
+      "attempts": 0,
+      "deaths": 0,
+      "rooms": [],
+      "transitions": [
+        {
+          "at_ms": 0,
+          "attempt": 1,
+          "room": "退潮门廊",
+          "state": "closed"
+        }
+      ]
+    }
+  ]
+}

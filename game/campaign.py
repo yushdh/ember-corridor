@@ -67,7 +67,7 @@ class CampaignWindow(QuayWindow):
                 ("open", "E  开门过境    ·    恢复 18 生命", 187),
                 ("locked", "门锁未解    ·    清除本室守卫", 179),
                 ("valve", "E  扳动绞盘", 88),
-                ("need_valve", "绞盘未开    ·    登上吊廊", 161),
+                ("need_valve", "← 回到西侧台座，再跳上绞盘吊台", 203),
                 ("valve_open", "绞盘已开启", 85),
                 ("ring", "E  敲响退潮钟", 103),
                 ("forward", "守卫已清除   ·   前往东门 →", 165),
@@ -251,7 +251,7 @@ class CampaignWindow(QuayWindow):
                 return f"{valve}   ·   守卫 {len(c.foes)-alive}/{len(c.foes)}"
             return f"{c.room.goal}   {len(c.foes)-alive}/{len(c.foes)}"
         if not c.valve_open:
-            return "登上吊廊，扳动绞盘"
+            return "从西侧台座跳上吊台，扳动绞盘"
         if self.index == len(self.route.rooms) - 1:
             return "敲响退潮钟"
         return "前往东门" if c.crate_taken else "领取炉料或前往东门"
