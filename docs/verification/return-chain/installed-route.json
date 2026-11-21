@@ -1,0 +1,71 @@
+{
+  "frozen": true,
+  "os": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.14",
+  "arcade": "3.3.3",
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "assets": 61,
+  "route": {
+    "version": 3,
+    "seed": 17,
+    "attempts": 1,
+    "fallback": false,
+    "templates": [
+      "gate",
+      "gallery-west",
+      "pump-steps",
+      "sluice-twins",
+      "bell"
+    ]
+  },
+  "rooms": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "victory_seconds": 57.40833333333333,
+  "restarts": 2,
+  "paused": true,
+  "audio_driver": "pyglet.media.drivers.xaudio2.adaptation",
+  "playing": [
+    "chain",
+    "crush",
+    "fork",
+    "gate",
+    "hit",
+    "hook",
+    "hurt",
+    "land",
+    "maul",
+    "phase",
+    "ram",
+    "rivet",
+    "roll",
+    "seal",
+    "shot",
+    "sweep",
+    "vent"
+  ],
+  "events": [
+    "bell_release",
+    "death",
+    "evade",
+    "gate",
+    "hit",
+    "hurt",
+    "phase",
+    "seal",
+    "shot",
+    "sweep",
+    "swing",
+    "vent",
+    "warn",
+    "windup"
+  ]
+}

@@ -250,7 +250,58 @@ def tide_fork(i):
     return im, pixel(hand)
 
 
+def chain_warden(i):
+    im = Image.new("RGBA", (120, 96))
+    d = ImageDraw.Draw(im)
+    # Sole-relative key poses: hood, far/near boot and winch gauntlet.
+    x, h, far, near, hx, hy = (
+        (0,48,-8,9,13,34), (1,47,-8,9,14,33),
+        (2,46,-14,13,15,32), (-1,49,-3,5,11,36),
+        (-4,47,-13,11,13,53), (4,43,-15,14,13,53),
+        (-7,41,-16,12,13,53), (6,35,-12,15,16,16),
+        (-6,43,-13,6,5,28), (-19,14,-24,13,0,8)
+    )[i]
+
+    def pt(xy):
+        return (56 + xy[0], 81 - xy[1])
+
+    def plate(points, fill):
+        d.polygon([pt(p) for p in points], fill=fill, outline=INK)
+
+    def seam(points, fill, width=1):
+        d.line([pt(p) for p in points], fill=fill, width=width)
+
+    for foot, side, color in ((far,-1,"#445466"), (near,1,"#65727a")):
+        leg = [(x+4*side,h-23),(foot+side*3,12),(foot,4)]
+        seam(leg,INK,10)
+        seam(leg,color,6)
+        plate([(foot-5,7),(foot+2,7),(foot+8,2),(foot+7,0),(foot-5,0)], "#795c50")
+    plate([(x-10,h-9),(x+6,h-8),(x+11,h-19),(x+7,h-30),
+           (x-1,h-27),(x-9,h-31),(x-13,h-23)], "#596574")
+    seam([(x-8,h-13),(x+4,h-23),(x+8,h-21)], "#cda36d", 3)
+    # Two concentric bronze flanges around the dark cable drum.
+    cx, cy = pt((x-12,h-12))
+    d.ellipse((cx-9,cy-9,cx+8,cy+9),fill="#ae7757",outline=INK,width=2)
+    d.ellipse((cx-6,cy-6,cx+5,cy+6),fill="#41444f",outline="#dfaf77")
+    d.line((cx-4,cy+3,cx+3,cy-3),fill="#d0ae80",width=2)
+    plate([(x-7,h+2),(x-3,h+7),(x+5,h+8),(x+10,h+3),(x+12,h-3),
+           (x+6,h-4),(x+5,h-10),(x-5,h-8)], "#82706a")
+    seam([(x-4,h+3),(x+3,h+5),(x+8,h+2)], "#cca57e", 2)
+    seam([(x+2,h-1),(x+10,h-2)], INK,4)
+    seam([(x+4,h-1),(x+9,h-2)], "#bcf0db",2)
+    arm = [(x+3,h-10),(x+9,h-19 if i != 6 else h-6),(hx,hy)]
+    seam(arm,INK,8)
+    seam(arm,"#ab8168",5)
+    plate([(hx-4,hy+2),(hx,hy+5),(hx+4,hy+3),(hx+4,hy-2),(hx-3,hy-3)], "#acc5bd")
+    if i not in (4,5,6):
+        seam([(hx+2,hy-1),(hx+6,hy-10),(hx+3,hy-14),(hx-1,hy-11)], INK, 5)
+        seam([(hx+2,hy-1),(hx+5,hy-10),(hx+3,hy-12)], "#d4b38a", 2)
+    return im, pt((hx,hy))
+
+
 def foe(kind, i):
+    if kind == "chain":
+        return chain_warden(i)
     if kind == "fork":
         return tide_fork(i)
     im = Image.new("RGBA", (120, 96))

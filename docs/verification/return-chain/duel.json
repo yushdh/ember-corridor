@@ -1,0 +1,177 @@
+{
+  "route": {
+    "version": 3,
+    "seed": 17,
+    "attempts": 1,
+    "fallback": false,
+    "templates": [
+      "gate",
+      "gallery-west",
+      "pump-steps",
+      "sluice-twins",
+      "bell"
+    ]
+  },
+  "room_index": 1,
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "frozen": false,
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "standing": {
+    "states": [
+      [
+        "warn",
+        2
+      ],
+      [
+        "active",
+        98
+      ],
+      [
+        "recover",
+        132
+      ]
+    ],
+    "player_hp": 82,
+    "enemy_hp": 68,
+    "roll_tick": null,
+    "attack_tick": null,
+    "recovery_age_at_attack": null,
+    "passes_under_head": [],
+    "events": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 2,
+        "tick": 105,
+        "kind": "hurt",
+        "x": 59.0,
+        "y": 147,
+        "enemy": "chain",
+        "hp": 82
+      }
+    ],
+    "warning_audio": true,
+    "frames": 66,
+    "median_update_draw_finish_ms": 4.89,
+    "p95_update_draw_finish_ms": 6.02
+  },
+  "dodge": {
+    "states": [
+      [
+        "warn",
+        2
+      ],
+      [
+        "active",
+        98
+      ],
+      [
+        "recover",
+        128
+      ],
+      [
+        "hurt",
+        178
+      ]
+    ],
+    "player_hp": 100,
+    "enemy_hp": 52,
+    "roll_tick": 104,
+    "attack_tick": 166,
+    "recovery_age_at_attack": 39,
+    "passes_under_head": [
+      {
+        "tick": 106,
+        "roll_age": 1,
+        "invulnerable": false
+      },
+      {
+        "tick": 108,
+        "roll_age": 3,
+        "invulnerable": false
+      },
+      {
+        "tick": 110,
+        "roll_age": 5,
+        "invulnerable": true
+      },
+      {
+        "tick": 112,
+        "roll_age": 7,
+        "invulnerable": true
+      },
+      {
+        "tick": 114,
+        "roll_age": 9,
+        "invulnerable": true
+      },
+      {
+        "tick": 116,
+        "roll_age": 11,
+        "invulnerable": true
+      },
+      {
+        "tick": 118,
+        "roll_age": 13,
+        "invulnerable": true
+      },
+      {
+        "tick": 120,
+        "roll_age": 15,
+        "invulnerable": true
+      },
+      {
+        "tick": 122,
+        "roll_age": 17,
+        "invulnerable": true
+      },
+      {
+        "tick": 124,
+        "roll_age": 19,
+        "invulnerable": true
+      },
+      {
+        "tick": 126,
+        "roll_age": 21,
+        "invulnerable": true
+      }
+    ],
+    "events": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 4,
+        "tick": 178,
+        "kind": "hit",
+        "x": 148.92,
+        "y": 130.0,
+        "enemy": "chain",
+        "target": 0,
+        "action": "cut",
+        "attack_id": 1,
+        "hp": 52,
+        "frame": 3,
+        "facing": -1
+      }
+    ],
+    "warning_audio": true,
+    "frames": 91,
+    "median_update_draw_finish_ms": 1.21,
+    "p95_update_draw_finish_ms": 2.92
+  }
+}

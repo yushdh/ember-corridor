@@ -1,5 +1,5 @@
 {
-  "version": 15,
+  "version": 16,
   "assets": [
     {
       "path": "assets/quay/atmosphere.png",
@@ -147,7 +147,7 @@
     },
     {
       "path": "assets/combat/watch.png",
-      "purpose": "四种岸防守卫的行走、预警、攻击、恢复、受创与倒下姿态；探潮叉手双手握叉，贴地突刺",
+      "purpose": "五种岸防守卫的行走、预警、攻击、恢复、受创与倒下姿态。回链绞工以背部卷筒和绞索手甲辨认，钩头及链节由 game/battle_view.py 按实际轨迹绘制。",
       "source": "tools/draw_combat.py（复用 tools/draw_walker.py、tools/roll_pose.py）",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
@@ -225,6 +225,15 @@
       "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
       "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
       "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，152 ms。"
+    },
+    {
+      "path": "assets/combat/audio/chain.wav",
+      "purpose": "回链绞工放索时的三次棘轮咬合声",
+      "source": "tools/forge_audio.py",
+      "author": "本项目，Codex 按动作编写 Python 合成程序",
+      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "错时的金属短音叠加衰减噪声，22050 Hz 单声道 PCM。"
     },
     {
       "path": "assets/combat/audio/fork.wav",

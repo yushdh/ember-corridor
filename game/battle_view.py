@@ -8,7 +8,7 @@ import arcade
 from PIL import Image, ImageDraw
 
 from .attacks import STRIKES
-from .combat import FORK_HEIGHT, FORK_REACH, MAX_HP, TYPES, wall_entry
+from .combat import CHAIN_HEIGHT, CHAIN_OPEN, CHAIN_REST, FORK_HEIGHT, FORK_REACH, MAX_HP, TYPES, chain_tip, wall_entry
 from .resources import ASSETS, load_clips
 from .ui import blit, panel, tag, label, draw_stamina, GOLD, PALE, FOAM
 
@@ -146,11 +146,14 @@ def contact_frames(heavy):
 
 def warning_marks(kind):
     ink = "#192530"
-    edge = {"hook": "#edb079", "rivet": "#8fd9cd", "ram": "#f2aa76", "fork": "#b6e0ad"}[kind]
+    edge = {"hook": "#edb079", "rivet": "#8fd9cd", "ram": "#f2aa76", "fork": "#b6e0ad", "chain": "#ebc798"}[kind]
     icon = Image.new("RGBA", (16, 16))
     d = ImageDraw.Draw(icon)
     d.polygon([(4, 0), (11, 0), (15, 4), (15, 9), (8, 15), (0, 10), (0, 4)], fill=ink, outline=edge)
-    if kind == "hook":
+    if kind == "chain":
+        d.arc((3, 2, 12, 11), 125, 435, fill=edge, width=2)
+        d.polygon([(2, 7), (7, 8), (4, 12)], fill=edge)
+    elif kind == "hook":
         d.line((5, 7, 5, 9, 8, 10, 11, 7, 11, 3), fill=edge, width=2)
     elif kind == "fork":
         d.line((3, 9, 7, 9, 11, 5), fill=edge, width=2)
@@ -180,6 +183,26 @@ def warning_marks(kind):
     return (arcade.Texture(icon), arcade.Texture(ready)), tex, tex.flip_left_right()
 
 
+def chain_hardware():
+    link = Image.new("RGBA", (6, 4))
+    ImageDraw.Draw(link).rounded_rectangle((0, 0, 5, 3), radius=1, outline="#272c39", fill="#bb9274")
+    heads = []
+    for opened in (False, True):
+        im = Image.new("RGBA", (15, 15))
+        d = ImageDraw.Draw(im)
+        if opened:
+            d.polygon([(1,1),(8,3),(13,6),(13,9),(8,12),(1,14),(4,9),(8,8),
+                       (8,6),(4,6)], fill="#efa96f", outline="#302d35")
+            d.line((2,2,8,4,11,6), fill="#fff0c0", width=2)
+            d.line((2,12,6,10), fill="#fff0c0", width=2)
+        else:
+            d.polygon([(3,5),(8,3),(12,6),(12,9),(7,11),(3,9)], fill="#88a29f", outline="#292f3a")
+            d.line((5,5,9,5), fill="#ccded0")
+        tex = arcade.Texture(im)
+        heads.append((tex, tex.flip_left_right()))
+    return arcade.Texture(link), heads
+
+
 class BattleView:
     def __init__(self, movement, foes):
         self.clips = load_clips("combat")
@@ -192,6 +215,7 @@ class BattleView:
         self.enemies = arcade.SpriteList()
         self.marks = {kind: warning_marks(kind) for kind in TYPES}
         self.warning_list = arcade.SpriteList()
+        self.chain_link, self.chain_heads = chain_hardware()
         self.warning_count = 0
         self.warning_badges = []
         self.health_bars = []
@@ -507,6 +531,19 @@ class BattleView:
             visible = x + width//2 > 0 and x - width//2 < 640
             boss = e.kind == "bell"
             warn = not boss and e.state == "warn"
+            if e.kind == "chain" and e.state in ("warn", "active"):
+                tx, ty = chain_tip(e, c.surfaces)
+                sx = e.x + e.facing * min(CHAIN_REST, abs(tx - e.x))
+                sy = e.y + CHAIN_HEIGHT
+                length = math.hypot(tx - sx, ty - sy)
+                links = math.ceil(length / 5)
+                for n in range(links):
+                    u = n / links
+                    sag = 3 * math.sin(math.pi * u) if warn and e.age < CHAIN_OPEN else 0
+                    self.place_warning(self.chain_link, round(sx + u*(tx-sx)) - scroll,
+                                       round(sy + u*(ty-sy) - sag) - lift)
+                opened = e.state == "active" or e.age >= CHAIN_OPEN
+                self.place_warning(self.chain_heads[opened][e.facing < 0], round(tx)-scroll, round(ty)-lift)
             # An offscreen attack can still telegraph into the visible playfield.
             if not visible and not warn:
                 continue
@@ -545,6 +582,8 @@ class BattleView:
                         if abs(px - face_x) < 16 and abs(py - face_y) < 12:
                             continue
                     self.place_warning(dash, px, py)
+            elif e.kind == "chain":
+                continue  # The chain and open teeth already mark the exact return lane.
             elif e.kind == "fork":
                 origin = (e.x, e.y + FORK_HEIGHT)
                 tip = (e.x + e.facing * FORK_REACH, origin[1])

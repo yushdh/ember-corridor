@@ -2638,5 +2638,200 @@
         "state": "dead"
       }
     ]
+  },
+  "chain": {
+    "sheet": "watch.png",
+    "frames": [
+      {
+        "region": [
+          0,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          69,
+          47
+        ],
+        "ticks": 34,
+        "events": [],
+        "state": "idle"
+      },
+      {
+        "region": [
+          120,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          70,
+          48
+        ],
+        "ticks": 34,
+        "events": [],
+        "state": "idle"
+      },
+      {
+        "region": [
+          240,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          71,
+          49
+        ],
+        "ticks": 11,
+        "events": [],
+        "state": "walk"
+      },
+      {
+        "region": [
+          360,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          67,
+          45
+        ],
+        "ticks": 11,
+        "events": [],
+        "state": "walk"
+      },
+      {
+        "region": [
+          480,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          69,
+          28
+        ],
+        "ticks": 48,
+        "events": [],
+        "state": "warn"
+      },
+      {
+        "region": [
+          600,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          69,
+          28
+        ],
+        "ticks": 48,
+        "events": [],
+        "state": "warn"
+      },
+      {
+        "region": [
+          720,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          69,
+          28
+        ],
+        "ticks": 30,
+        "events": [],
+        "state": "active"
+      },
+      {
+        "region": [
+          840,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          72,
+          65
+        ],
+        "ticks": 96,
+        "events": [],
+        "state": "recover"
+      },
+      {
+        "region": [
+          960,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          61,
+          53
+        ],
+        "ticks": 24,
+        "events": [],
+        "state": "hurt"
+      },
+      {
+        "region": [
+          1080,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          73
+        ],
+        "ticks": 45,
+        "events": [],
+        "state": "dead"
+      }
+    ]
   }
 }

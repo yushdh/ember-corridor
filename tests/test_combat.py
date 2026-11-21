@@ -93,6 +93,35 @@ class CombatTests(unittest.TestCase):
                 c.step_enemy(Walker(x=e.x + gap, y=e.y + rise), e)
                 self.assertEqual(c.hp, hp)
 
+    def test_return_chain_only_hits_on_reel_and_spends_once(self):
+        for facing in (-1, 1):
+            with self.subTest(facing=facing):
+                enemy = Enemy("chain", 300, GROUND_Y, (220, 380))
+                c = Encounter([enemy], ())
+                w = Walker(x=enemy.x + facing * 70)
+                c.step_enemy(w, enemy)
+                for _ in range(enemy.spec.windup):
+                    c.step_enemy(w, enemy)
+                self.assertEqual((enemy.facing, enemy.state, c.hp), (facing, "active", 100))
+                for _ in range(enemy.spec.active):
+                    c.immune = 0
+                    c.step_enemy(w, enemy)
+                self.assertEqual((enemy.state, c.hp), ("recover", 82))
+                self.assertEqual(sum(ev["kind"] == "hurt" for ev in c.events), 1)
+
+    def test_return_chain_clearance_cover_and_interrupt(self):
+        wall = Surface("pillar", 330, 335, GROUND_Y, GROUND_Y + 80)
+        for tucked, walls, state in ((True, (), "active"), (False, (wall,), "active"), (False, (), "hurt")):
+            with self.subTest(tucked=tucked, wall=bool(walls), state=state):
+                enemy = Enemy("chain", 300, GROUND_Y, (220, 380), facing=1)
+                c = Encounter([enemy], walls)
+                w = Walker(x=350, tucked=tucked)
+                enemy.enter(state)
+                for _ in range(enemy.spec.active):
+                    c.step_enemy(w, enemy)
+                self.assertEqual(c.hp, 100)
+                self.assertFalse(w.invulnerable)
+
     def test_effective_frames_and_instance_dedup(self):
         self.step(attack=True)
         self.step(sum(STRIKES["cut"].ticks[:3]) - 1)

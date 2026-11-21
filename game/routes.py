@@ -7,7 +7,7 @@ from .foundry import BELL_SPAWN, ENTRY, ROOMS, Room, block, crate_point, ledge
 from .motion import BODY_HALF_WIDTH, STAND_HEIGHT, TUCK_HEIGHT, Walker
 from .terrain import FLOOR, Surface, WORLD_WIDTH
 
-VERSION = 2
+VERSION = 3
 ATTEMPTS = 4
 
 
@@ -76,7 +76,7 @@ ALTERNATES = (
                 block("东压舱座", 899, 1041, 145),
             ),
             guards=(
-                ("hook", 145, 94, (105, 205)),
+                ("chain", 145, 94, (105, 205)),
                 ("rivet", 493, 197, (420, 551)),
                 ("ram", 966, 145, (928, 1015)),
             ),

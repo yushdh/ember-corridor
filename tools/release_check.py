@@ -68,11 +68,15 @@ def main():
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--blade-detour", action="store_true")
     modes.add_argument("--forge-preview", action="store_true")
+    modes.add_argument("--return-chain", action="store_true")
     args = parser.parse_args()
     out = args.verify_install
     out.mkdir(parents=True, exist_ok=False)
     try:
-        if args.forge_preview:
+        if args.return_chain:
+            from verify_return_chain import verify as verify_chain
+            verify_chain(out)
+        elif args.forge_preview:
             from verify_forge_preview import verify as verify_forge
             verify_forge(out)
         else:

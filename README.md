@@ -6,11 +6,13 @@
 
 [五间厂房的动态实景与同机位前后对照](docs/verification/harbour/comparison.gif) · [开发日志](docs/DEVLOG.md)
 
-[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-forge-preview/EmberCorridor-Windows-x64.zip) · [炉件装配预览与实测](docs/verification/forge-preview/README.md) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
+[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-return-chain/EmberCorridor-Windows-x64.zip) · [回链绞工实机交锋](docs/verification/return-chain/README.md) · [炉件装配预览与实测](docs/verification/forge-preview/README.md) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
 
 [栈板下穿、头顶血条与新版刀锤试听](docs/verification/deck-foley/README.md) · [蓄满提示与敌方预警](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)
 
 ## 在本机开始
+
+想遇到回链绞工，解压后运行 `.\EmberCorridor.exe --seed 17`。离开第一室，在司钟吊廊的西侧绞盘入口可以看见他背上的铜卷筒。等钩齿张开、链条绷直，朝绞工翻滚，趁他垂手收具时转身出刀。[躲过回钩并反击的实机动图](docs/verification/return-chain/duel.gif)
 
 想重走已验收的随机潮图 6108，在解压目录运行 `.\EmberCorridor.exe --seed 6108`。离开门廊后依次经过双闸涵洞、东西泵台和西侧绞盘。[实机画面与落点记录](docs/verification/stage6/seed-6108/README.md)
 

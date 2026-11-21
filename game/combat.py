@@ -1,7 +1,7 @@
 """Deterministic combat. Collision, actions and damage use the movement clock."""
 from collections import deque
 from dataclasses import dataclass
-from math import hypot
+from math import hypot, sin, pi
 
 from .attacks import STRIKES
 from .terrain import SURFACES, GROUND_Y
@@ -12,6 +12,9 @@ BUFFER = 22
 HITSTOP = {"light": 4, "heavy": 9, "hurt": 5}
 FORK_HEIGHT = 9
 FORK_REACH = 60
+CHAIN_HEIGHT, CHAIN_REACH, CHAIN_REST = 53, 110, 13
+CHAIN_RADIUS = 5
+CHAIN_CAST_START, CHAIN_OPEN = 16, 62
 MELEE_SEGMENTS = {"hook": (46, 29), "ram": (29, 25), "fork": (FORK_REACH, FORK_HEIGHT)}
 
 
@@ -34,6 +37,7 @@ TYPES = {
     "rivet": EnemySpec("盐雾铆弩手", 48, 11, 46, 210, 210, 77, 10, 105, 12),
     "ram": EnemySpec("炉门重卫", 98, 19, 59, 182, 131, 65, 46, 80, 23),
     "fork": EnemySpec("探潮叉手", 56, 12, 46, 155, 58, 70, 14, 86, 16),
+    "chain": EnemySpec("回链绞工", 68, 14, 52, 158, 98, 96, 30, 96, 18),
 }
 
 
@@ -99,6 +103,28 @@ def wall_entry(a, b, surfaces=SURFACES):
             if t is not None:
                 first = min(first, t)
     return first
+
+
+def chain_tip(e, surfaces, age=None):
+    """World-space centre of the hook. A solid face stops even its open teeth."""
+    age = e.age if age is None else age
+    y = e.y + CHAIN_HEIGHT
+    reach = CHAIN_REACH
+    for s in surfaces:
+        if s.one_way or s.bottom > y + 22 + CHAIN_RADIUS or s.top < y - CHAIN_RADIUS:
+            continue
+        near, far = sorted(((s.left - e.x) * e.facing, (s.right - e.x) * e.facing))
+        if far >= 0:
+            reach = min(reach, max(0, near - CHAIN_RADIUS - 1))
+    rest = min(CHAIN_REST, reach)
+    if e.state == "warn":
+        cast = min(1, max(0, (age - CHAIN_CAST_START) / (CHAIN_OPEN - CHAIN_CAST_START)))
+        distance = rest + (reach - rest) * cast
+        y += 22 * sin(pi * cast)
+    else:
+        returning = min(1, max(0, age / (e.spec.active - 1)))
+        distance = reach + (rest - reach) * returning
+    return e.x + e.facing * distance, y
 
 
 @dataclass
@@ -274,6 +300,15 @@ class Encounter:
                 e.enter("recover")
                 return
             if e.kind == "rivet":
+                return
+            if e.kind == "chain":
+                tip = chain_tip(e, self.surfaces)
+                previous = chain_tip(e, self.surfaces, max(0, e.age - 1))
+                t = segment_entry(previous, tip, (w.x - 11 - CHAIN_RADIUS, w.y - CHAIN_RADIUS,
+                                                  w.x + 11 + CHAIN_RADIUS, w.y + w.height + CHAIN_RADIUS))
+                if not e.spent and t is not None:
+                    e.spent = True
+                    self.damage_player(w, e, previous[0] + t * (tip[0] - previous[0]), tip[1])
                 return
             if e.kind == "ram":
                 e.move(e.facing * 2.35)

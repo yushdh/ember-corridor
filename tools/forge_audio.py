@@ -24,6 +24,7 @@ CUES = {
     "ignite": (356, 0.27, 485, 1210, 0.28, 2.9, 0.38),
     "firecut": (357, 0.41, 348, 66, 0.82, 3.9, 0.15),
     "fork": (359, 0.34, 530, 455, 0.12, 3.2, 0.47),
+    "chain": (360, 0.39, 370, 260, 0.45, 4, 0.22),
 }
 
 
@@ -58,6 +59,12 @@ def generate():
                 # Two tine taps as the ferrule is lowered to the stone.
                 echo = max(0, t - 0.13)
                 mixed += 0.52 * min(1, echo / 0.003, (1 - u) * 20) * math.exp(-echo / 0.043) * math.sin(math.tau * 844 * echo)
+            if name == "chain":
+                mixed = 0.0
+                for onset, pitch, level in ((0, 418, 0.8), (0.08, 564, 0.64), (0.19, 319, 0.92)):
+                    age = t - onset
+                    if age >= 0:
+                        mixed += level * (0.62 * chime(age, pitch) + colored * math.exp(-age / 0.017))
             samples.append(round(20500 * max(-1.4, min(1.4, mixed))))
         with wave.open(str(OUT / (name + ".wav")), "wb") as wav:
             wav.setparams((1, 2, 22050, 0, "NONE", "not compressed"))
