@@ -6,9 +6,13 @@
 
 [五间厂房的动态实景与同机位前后对照](docs/verification/harbour/comparison.gif) · [开发日志](docs/DEVLOG.md)
 
-[蓄满提示与敌方预警的带声实机对照](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)。最新 Windows 包位于 `dist/charge-signal/EmberCorridor-Windows-x64.zip`，可用项目虚拟环境执行 `tools/build_windows.py --output-dir dist/charge-signal` 复建。
+[蓄满提示与敌方预警的带声实机对照](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)。最新 Windows 包可用项目虚拟环境执行 `tools/build_windows.py --output-dir dist/first-play` 复建。
 
 ## 在本机开始
+
+### 首次试玩手工五室
+
+解压本轮 `dist/first-play/EmberCorridor-Windows-x64.zip`，双击 **首次试玩.cmd**。它会用独立新档打开经典五室；源码入口为 `.\.venv\Scripts\python.exe -m game --first-play`。按游戏内提示自由游玩，离席时可按 Esc 暂停，通关或随时关窗均可结束。若愿意反馈，打开资源管理器的 `%LOCALAPPDATA%\EmberCorridor-Playtests`，取最近目录中的 `session.json`，并说明是否第一次玩以及最难找路或最难应对的地方。试玩记录只保存在本机。[本轮验证和计时口径](docs/verification/stage4-first-play/README.md)
 
 ### Windows x64 发行包
 

@@ -1,5 +1,7 @@
 余烬回廊 · Windows x64 试玩版
 
+第一次体验手工五室，可双击同目录的「首次试玩.cmd」。每次启动使用独立新档，直接按游戏内提示游玩即可。胜利或中途关闭窗口后，可在资源管理器输入 %LOCALAPPDATA%\EmberCorridor-Playtests，打开最近一次的目录查看 session.json。记录仅保存在本机；需要离席时请按 Esc 暂停。
+
 将整个 ZIP 解压到一个可读目录，保留 EmberCorridor.exe 旁的 _internal 目录。双击 EmberCorridor.exe，在标题页按 Enter 开始。运行时可离线，无需单独安装 Python。需要支持 OpenGL 3.3 的显卡驱动和微软雅黑、等线或黑体中的一种系统字体。
 
 A / D 移动，Space 跳跃，K 翻滚，J 近战，1 / 2 切武器，持短刃按住 L 后松开可施放蓄焰斩，Q 释放潮印，E 开匣、开门或扳动机关。

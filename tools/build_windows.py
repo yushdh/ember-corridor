@@ -69,6 +69,7 @@ def main():
             assert (ROOT/p).read_bytes() == (bundle/"_internal"/p).read_bytes(), p
         copy_notices(bundle/"licenses")
         shutil.copyfile(ROOT/"docs/WINDOWS_RELEASE.md", bundle/"开始游戏.txt")
+        (bundle/"首次试玩.cmd").write_bytes(b'@echo off\r\nstart "" "%~dp0EmberCorridor.exe" --first-play\r\n')
         archive = stage/f"{NAME}-Windows-x64.zip"
         with ZipFile(archive, "w", ZIP_DEFLATED, compresslevel=6) as zipfile:
             for p in sorted(bundle.rglob("*")):

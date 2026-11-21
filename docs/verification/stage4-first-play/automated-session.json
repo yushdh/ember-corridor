@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "route": "classic",
+  "source": "automated",
+  "outcome": "won",
+  "wall_ms": 67468,
+  "play_ms": 66375,
+  "forge_ms": 499,
+  "pause_ms": 547,
+  "retry_wait_ms": 47,
+  "attempts": 2,
+  "deaths": 1,
+  "rooms": [
+    {
+      "attempt": 1,
+      "room": "退潮门廊",
+      "engaged_ms": 9078
+    },
+    {
+      "attempt": 2,
+      "room": "退潮门廊",
+      "engaged_ms": 10077
+    },
+    {
+      "attempt": 2,
+      "room": "铆雨泵房",
+      "engaged_ms": 9407
+    },
+    {
+      "attempt": 2,
+      "room": "沉闸水道",
+      "engaged_ms": 10500
+    },
+    {
+      "attempt": 2,
+      "room": "司钟吊廊",
+      "engaged_ms": 11515
+    },
+    {
+      "attempt": 2,
+      "room": "潮钟熔庭",
+      "engaged_ms": 16297
+    }
+  ],
+  "transitions": [
+    {
+      "at_ms": 0,
+      "attempt": 1,
+      "room": "退潮门廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 9078,
+      "attempt": 1,
+      "room": "退潮门廊",
+      "state": "dead"
+    },
+    {
+      "at_ms": 9125,
+      "attempt": 2,
+      "room": "退潮门廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 17875,
+      "attempt": 2,
+      "room": "退潮门廊",
+      "state": "forge"
+    },
+    {
+      "at_ms": 18031,
+      "attempt": 2,
+      "room": "退潮门廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 18109,
+      "attempt": 2,
+      "room": "退潮门廊",
+      "state": "forge"
+    },
+    {
+      "at_ms": 18203,
+      "attempt": 2,
+      "room": "退潮门廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 18312,
+      "attempt": 2,
+      "room": "退潮门廊",
+      "state": "pause"
+    },
+    {
+      "at_ms": 18625,
+      "attempt": 2,
+      "room": "退潮门廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 19515,
+      "attempt": 2,
+      "room": "铆雨泵房",
+      "state": "play"
+    },
+    {
+      "at_ms": 19531,
+      "attempt": 2,
+      "room": "铆雨泵房",
+      "state": "pause"
+    },
+    {
+      "at_ms": 19765,
+      "attempt": 2,
+      "room": "铆雨泵房",
+      "state": "play"
+    },
+    {
+      "at_ms": 28140,
+      "attempt": 2,
+      "room": "铆雨泵房",
+      "state": "forge"
+    },
+    {
+      "at_ms": 28265,
+      "attempt": 2,
+      "room": "铆雨泵房",
+      "state": "play"
+    },
+    {
+      "at_ms": 29156,
+      "attempt": 2,
+      "room": "沉闸水道",
+      "state": "play"
+    },
+    {
+      "at_ms": 38656,
+      "attempt": 2,
+      "room": "沉闸水道",
+      "state": "forge"
+    },
+    {
+      "at_ms": 38718,
+      "attempt": 2,
+      "room": "沉闸水道",
+      "state": "play"
+    },
+    {
+      "at_ms": 39656,
+      "attempt": 2,
+      "room": "司钟吊廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 50203,
+      "attempt": 2,
+      "room": "司钟吊廊",
+      "state": "forge"
+    },
+    {
+      "at_ms": 50265,
+      "attempt": 2,
+      "room": "司钟吊廊",
+      "state": "play"
+    },
+    {
+      "at_ms": 51171,
+      "attempt": 2,
+      "room": "潮钟熔庭",
+      "state": "play"
+    },
+    {
+      "at_ms": 67468,
+      "attempt": 2,
+      "room": "潮钟熔庭",
+      "state": "won"
+    }
+  ]
+}

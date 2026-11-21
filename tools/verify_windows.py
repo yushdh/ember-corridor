@@ -123,6 +123,44 @@ def check_modes(exe, cwd, env):
     return report
 
 
+def check_first_play(exe, cwd, env):
+    local = Path(env["LOCALAPPDATA"])
+    formal = local / "EmberCorridor"
+    before = {p.name: p.read_bytes() for p in formal.iterdir() if p.is_file()}
+    assert "profile.json" in before
+    sessions = local / "EmberCorridor-Playtests"
+    records = []
+    for start in (True, False):
+        existing = set(sessions.glob("*/session.json"))
+        process = subprocess.Popen([exe, "--first-play"], cwd=cwd, env=env)
+        try:
+            hwnd = wait_for(lambda: title_window(process), process)
+            time.sleep(1.25)
+            if start:
+                tap(hwnd, 13)
+                wait_for(lambda: set(sessions.glob("*/session.json")) - existing, process)
+                key(hwnd, ord("D"), True)
+                time.sleep(0.3)
+                key(hwnd, ord("D"), False)
+                tap(hwnd, 27)
+                time.sleep(0.2)
+            ctypes.windll.user32.PostMessageW(hwnd, 0x10, 0, 0)
+            assert process.wait(timeout=15) == 0
+        finally:
+            if process.poll() is None:
+                process.terminate()
+                process.wait(timeout=10)
+        path, = set(sessions.glob("*/session.json")) - existing
+        result = json.loads(path.read_bytes())
+        assert result["outcome"] == ("closed" if start else "closed_before_start")
+        if start:
+            assert result["pause_ms"] > 0 and result["play_ms"] > 0
+            assert json.loads((path.parent/"profile/last-route.json").read_bytes())["seed"] is None
+        records.append(result)
+    assert before == {p.name: p.read_bytes() for p in formal.iterdir() if p.is_file()}
+    return dict(source="automated", formal_profile_byte_identical=True, sessions=records)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("zip", type=Path)
@@ -152,6 +190,10 @@ def main():
         if args.modes_only:
             return
         launches = [regular_start(exe, cwd, env, volume) for volume in (3, 0)]
+        if (exe.parent / "首次试玩.cmd").is_file():
+            data = check_first_play(exe, cwd, env)
+            (out/"first-play.json").write_text(json.dumps(data, ensure_ascii=False, indent=2),
+                                                encoding="utf8")
         timing = root/"timing.json"
         subprocess.run([exe, "--profile-render", timing], cwd=cwd, env=env, timeout=90, check=True)
         shutil.copyfile(timing, out/"packaged-timing.json")
