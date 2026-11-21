@@ -1,5 +1,7 @@
 余烬回廊 · Windows x64 试玩版
 
+本版重绘行者、五类守卫和两相守钟人。在解压目录运行 `.\EmberCorridor.exe --seed 17`，第二室可遇到回链绞工，第四室有探潮叉手，第五室可以观察守钟人举槌与开阀。
+
 要复测种子 17 的长时间过门与重开，在解压目录运行 `.\EmberCorridor.exe --verify-install soak-check --gallery-soak`。游戏使用独立临时存档，在 30 帧下重复清理退潮门廊、进西侧绞盘、翻滚反击和死亡重开。十分钟后在下一次重开结束，结果存于新建的 soak-check 目录。可用 `--soak-seconds 30` 做短程核验。
 
 首次出刀、翻滚和移动的教学记录现在由后台写入。正常退出会等候存档完成。种子 17 西侧绞盘的逐帧复核可运行 `.\EmberCorridor.exe --verify-install frame-check --frame-pacing`，在新目录里的 on 和 off 分别查看开启和关闭窗口画面采集的帧耗。

@@ -1,5 +1,5 @@
 {
-  "version": 17,
+  "version": 18,
   "assets": [
     {
       "path": "assets/quay/atmosphere.png",
@@ -53,7 +53,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
+      "processing": "96×96 原生像素，逐帧绘制披肩、面甲和软甲腰片，武器挂点和脚底锚点写在 clips.json。"
     },
     {
       "path": "assets/walker/run.png",
@@ -62,7 +62,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 收臂两帧下移手腕，近侧膝甲、面甲眉沿和披风折边分别保留暖光与冷光。 刀身随腕角收放，披肩下摆露出深色内衬。"
+      "processing": "96×96 原生像素，逐帧绘制披肩、面甲和软甲腰片，武器挂点和脚底锚点写在 clips.json。"
     },
     {
       "path": "assets/walker/clips.json",
@@ -71,7 +71,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "导出与图像共用的姿势坐标和时序。"
+      "processing": "96×96 原生像素，逐帧绘制披肩、面甲和软甲腰片，武器挂点和脚底锚点写在 clips.json。"
     },
     {
       "path": "assets/walker/jump.png",
@@ -80,7 +80,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
+      "processing": "96×96 原生像素，逐帧绘制披肩、面甲和软甲腰片，武器挂点和脚底锚点写在 clips.json。"
     },
     {
       "path": "assets/walker/fall.png",
@@ -89,7 +89,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
+      "processing": "96×96 原生像素，逐帧绘制披肩、面甲和软甲腰片，武器挂点和脚底锚点写在 clips.json。"
     },
     {
       "path": "assets/walker/land.png",
@@ -98,7 +98,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "按帧绘制身体部件、弯刃和披肩；96×96 透明单元横向拼接，运行时按元数据裁切。 刀身随腕角收放，披肩下摆露出深色内衬。"
+      "processing": "96×96 原生像素，逐帧绘制披肩、面甲和软甲腰片，武器挂点和脚底锚点写在 clips.json。"
     },
     {
       "path": "assets/walker/roll.png",
@@ -107,7 +107,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "逐帧绘制屈体关节、面甲、披肩、收刀与支撑脚，按脚底对齐后由图集工具导出。"
+      "processing": "96×96 原生像素，逐帧绘制披肩、面甲和软甲腰片，武器挂点和脚底锚点写在 clips.json。"
     },
     {
       "path": "assets/quay/structures.png",
@@ -134,7 +134,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "以固定像素姿势逐帧绘制，图层分开拼入透明图集；攻击几何与 game/attacks.py 共用。 轻击共用行走弯刃的刀腹和护手；重锤按步态变换持角，翻滚外侧可见锤面。"
+      "processing": "160×128 原创逐帧绘制；短刃与重锤分别拥有持械受击、倒地、移动和攻击帧。"
     },
     {
       "path": "assets/combat/trails.png",
@@ -152,7 +152,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用；未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "以固定像素姿势逐帧绘制，图层分开拼入透明图集；攻击几何与 game/attacks.py 共用。"
+      "processing": "每类 14 个 120×96 单元，四个换步姿势、蓄势与出手、三段倒地，脚底锚点 (56,81)。"
     },
     {
       "path": "assets/combat/clips.json",
@@ -364,11 +364,20 @@
     {
       "path": "assets/foundry/bell.png",
       "purpose": "守钟人移动、两类攻势、变相和倒地姿势",
-      "source": "tools/draw_foundry.py（复用 tools/draw_structures.py 与 tools/draw_walker.py）",
+      "source": "tools/draw_bellkeeper.py、tools/draw_foundry.py",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "224×148 RGBA，每相 19 个独立姿势，脚底 (69,132)，逐帧记录手钟握点。"
+    },
+    {
+      "path": "assets/foundry/bell_tide.png",
+      "purpose": "守钟人半血后的抬阀、青铜通气口与第二相远扫",
+      "source": "tools/draw_bellkeeper.py、tools/draw_foundry.py",
+      "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
+      "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
+      "attribution": "无外部素材署名要求",
+      "processing": "224×148 RGBA，每相 19 个独立姿势，脚底 (69,132)，逐帧记录手钟握点。"
     },
     {
       "path": "assets/foundry/clips.json",
@@ -377,7 +386,7 @@
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
       "attribution": "无外部素材署名要求",
-      "processing": "由 Python 与 Pillow 按逻辑像素绘制，导出透明 PNG 和配套 JSON。"
+      "processing": "两相守钟人、潮印和蓄焰斩各层的切片、动作时长、事件与武器挂点。"
     },
     {
       "path": "assets/combat/audio/seal.wav",

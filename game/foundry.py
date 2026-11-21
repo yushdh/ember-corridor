@@ -103,12 +103,16 @@ class Bellkeeper(Enemy):
         if self.state == "dead":
             return min(15, 13 + self.age // 12)
         if self.state == "phase":
-            return 12
+            return 18 if self.age < 22 else 12
         if self.state in ("walk", "idle"):
             return (2 if self.state == "walk" else 0) + (self.age // 15) % 2
         start = 4 if self.move_name == "sweep" else 8
         if self.state == "warn":
+            if self.move_name == "sweep" and self.age >= self.windup - 8:
+                return 16
             return start + int(self.age >= self.windup // 2)
+        if self.move_name == "sweep" and self.state == "active" and self.age >= 9:
+            return 17
         return start + (2 if self.state == "active" else 3)
 
     def advance(self, c, w):

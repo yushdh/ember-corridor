@@ -23,6 +23,10 @@ def save_notice(message):
     return tag(message,max(200,13*len(message)+18),GOLD)
 
 
+# Leave room for multiple 1280-wide scenery layers alongside the character clips.
+CAMPAIGN_ATLAS_SIZE = (8192, 4096)
+
+
 class QuayWindow(arcade.Window):
     skirmish_result = True
 
@@ -34,7 +38,7 @@ class QuayWindow(arcade.Window):
             # Reserve campaign scenery space before the first sprite upload. Repacking
             # the shared atlas mid-fight copies every resident image on the render thread.
             limit = min(self.ctx.info.MAX_TEXTURE_SIZE, *self.ctx.info.MAX_VIEWPORT_DIMS)
-            self.ctx.atlas_size = (min(4096, limit), min(6144, limit))
+            self.ctx.atlas_size = tuple(min(side, limit) for side in CAMPAIGN_ATLAS_SIZE)
         self.set_minimum_size(WIDTH, HEIGHT)
         rect = arcade.LBWH(0, 0, WIDTH, HEIGHT)
         self.world_texture = self.ctx.texture((WIDTH, HEIGHT), components=3,

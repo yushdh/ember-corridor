@@ -92,6 +92,12 @@ def blade_fire(i, *, ignition=False):
             rgba,
         )
     if 3 <= i <= 10:
+        # The blackened fuller stays inside the hot edge. Its two facets point
+        # from the guard to the tip even while the outer wake crosses the archer.
+        poly([(12,0),(.32*length,2),(.57*length,2),(.67*length,0),
+              (.43*length,0),(.26*length,-1)], (115,54,45,242))
+        d.line([along(.31*length,2),along(.52*length,3),along(.62*length,1)],
+               fill=(255,207,107,245))
         for k in range(4):
             u = length * (0.29 + 0.13 * k)
             h = width * (1.1 + 0.4 * ((i + k) % 3))
@@ -219,7 +225,7 @@ def sweep(d, i, rng):
                 fill=(255, 194, 78, round(196 * fade)),
                 width=1,
             )
-    for j in range(1, n, 2):
+    for j in range(1, n, 4):
         px, py = pt(j, rng.uniform(0.64, 1.14), rng.randrange(4, 18))
         d.line((px, py, px + 2, py - 3), fill=(255, 177, 75, round(220 * fade)))
 

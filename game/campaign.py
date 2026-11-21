@@ -52,8 +52,9 @@ class CampaignWindow(QuayWindow):
                         for i in range(6)
                     ]
                 )
-        self.battle_view.clips["bell"] = self.extra["bell"]
-        self.battle_view.prepare_flash("bell")
+        for name in ("bell", "bell_tide"):
+            self.battle_view.clips[name] = self.extra[name]
+            self.battle_view.prepare_flash(name)
         self.room_images = [
             arcade.load_texture(ASSETS / "foundry" / f"room-{n+1}.png") for n in range(len(ROOMS))
         ]

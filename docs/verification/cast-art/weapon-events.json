@@ -1,0 +1,567 @@
+{
+  "shots": {
+    "motion-18": {
+      "frame": 18,
+      "pos": [
+        369.267,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "motion-45": {
+      "frame": 45,
+      "pos": [
+        438.567,
+        161.925
+      ],
+      "facing": 1,
+      "scroll": 84.567,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "motion-99": {
+      "frame": 99,
+      "pos": [
+        597.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 243.0,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 2
+    },
+    "motion-132": {
+      "frame": 132,
+      "pos": [
+        671.55,
+        94
+      ],
+      "facing": -1,
+      "scroll": 335.0,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "hammer-18": {
+      "frame": 18,
+      "pos": [
+        369.267,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "hammer-45": {
+      "frame": 45,
+      "pos": [
+        438.567,
+        161.925
+      ],
+      "facing": 1,
+      "scroll": 84.567,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "hammer-99": {
+      "frame": 99,
+      "pos": [
+        597.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 243.0,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 2
+    },
+    "hammer-132": {
+      "frame": 132,
+      "pos": [
+        671.55,
+        94
+      ],
+      "facing": -1,
+      "scroll": 335.0,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "cut-2": {
+      "frame": 4,
+      "pos": [
+        330.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "cut-3": {
+      "frame": 5,
+      "pos": [
+        334.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        46,
+        46
+      ],
+      "badges": 0,
+      "particles": 14
+    },
+    "cut-4": {
+      "frame": 9,
+      "pos": [
+        334.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        46,
+        46
+      ],
+      "badges": 0,
+      "particles": 2
+    },
+    "cut-5": {
+      "frame": 11,
+      "pos": [
+        334.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        46,
+        46
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "liftcut-2": {
+      "frame": 3,
+      "pos": [
+        330.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "liftcut-3": {
+      "frame": 4,
+      "pos": [
+        335.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        43,
+        43
+      ],
+      "badges": 0,
+      "particles": 14
+    },
+    "liftcut-4": {
+      "frame": 9,
+      "pos": [
+        335.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        43,
+        43
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "liftcut-5": {
+      "frame": 11,
+      "pos": [
+        335.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        43,
+        43
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "thrust-2": {
+      "frame": 4,
+      "pos": [
+        330.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "thrust-3": {
+      "frame": 7,
+      "pos": [
+        339.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        32,
+        32
+      ],
+      "badges": 0,
+      "particles": 14
+    },
+    "thrust-4": {
+      "frame": 11,
+      "pos": [
+        339.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        32,
+        32
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "thrust-5": {
+      "frame": 14,
+      "pos": [
+        339.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        32,
+        32
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "breaker-2": {
+      "frame": 11,
+      "pos": [
+        330.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        62,
+        62
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "breaker-3": {
+      "frame": 18,
+      "pos": [
+        336.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        19,
+        19
+      ],
+      "badges": 0,
+      "particles": 20
+    },
+    "breaker-4": {
+      "frame": 25,
+      "pos": [
+        336.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        19,
+        19
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "breaker-5": {
+      "frame": 29,
+      "pos": [
+        336.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 28,
+      "enemies": [
+        19,
+        19
+      ],
+      "badges": 0,
+      "particles": 0
+    },
+    "fire-warning": {
+      "frame": 33,
+      "pos": [
+        838.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 520,
+      "enemies": [
+        8,
+        48,
+        98
+      ],
+      "badges": 1,
+      "particles": 10
+    },
+    "full-charge": {
+      "frame": 27,
+      "pos": [
+        830.0,
+        94
+      ],
+      "facing": 1,
+      "scroll": 520,
+      "enemies": [
+        62,
+        48,
+        98
+      ],
+      "badges": 1,
+      "particles": 0
+    }
+  },
+  "poses": {
+    "motion/run": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "motion/jump": [
+      0,
+      1,
+      2
+    ],
+    "motion/fall": [
+      0,
+      1,
+      2
+    ],
+    "motion/land": [
+      0,
+      1
+    ],
+    "motion/roll": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "hammer/run": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "hammer/jump": [
+      0,
+      1,
+      2
+    ],
+    "hammer/fall": [
+      0,
+      1,
+      2
+    ],
+    "hammer/land": [
+      0,
+      1
+    ],
+    "hammer/roll": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "flame": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  },
+  "attacks": {
+    "cut": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "liftcut": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "thrust": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "breaker": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "hit_frames": {
+    "cut": [
+      3,
+      3
+    ],
+    "liftcut": [
+      3,
+      3
+    ],
+    "thrust": [
+      3,
+      3
+    ],
+    "breaker": [
+      3,
+      3
+    ]
+  },
+  "contacts": {
+    "cut": [
+      0,
+      1,
+      2
+    ],
+    "breaker": [
+      0,
+      1,
+      2
+    ]
+  },
+  "sounds": [
+    "crush",
+    "fire_hit",
+    "firecut",
+    "hit",
+    "hit_lift",
+    "hit_thrust",
+    "hook",
+    "hurt",
+    "ignite",
+    "land",
+    "maul",
+    "rivet",
+    "roll",
+    "sabre",
+    "shot"
+  ]
+}

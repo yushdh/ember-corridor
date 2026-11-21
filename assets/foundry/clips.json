@@ -6,51 +6,69 @@
         "region": [
           0,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          120,
-          72
+          99,
+          86
         ],
         "ticks": 15,
         "events": []
       },
       {
         "region": [
-          192,
+          224,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          123,
-          75
+          101,
+          89
         ],
         "ticks": 15,
         "events": []
       },
       {
         "region": [
-          384,
+          448,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          118,
+          95,
+          87
+        ],
+        "ticks": 15,
+        "events": []
+      },
+      {
+        "region": [
+          672,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          102,
           78
         ],
         "ticks": 15,
@@ -58,36 +76,18 @@
       },
       {
         "region": [
-          576,
+          896,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          115,
-          68
-        ],
-        "ticks": 15,
-        "events": []
-      },
-      {
-        "region": [
-          768,
-          0,
-          192,
-          136
-        ],
-        "anchor": [
-          89,
-          118
-        ],
-        "weapon_socket": [
-          89,
-          44
+          78,
+          49
         ],
         "ticks": 41,
         "events": [
@@ -96,74 +96,74 @@
       },
       {
         "region": [
-          960,
+          1120,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          68,
-          38
+          42,
+          42
         ],
-        "ticks": 41,
+        "ticks": 33,
         "events": []
       },
       {
         "region": [
-          1152,
+          1344,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          145,
-          99
+          125,
+          102
         ],
-        "ticks": 18,
+        "ticks": 9,
         "events": [
           "sweep"
         ]
       },
       {
         "region": [
-          1344,
+          1568,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          133,
-          96
+          105,
+          108
         ],
         "ticks": 89,
         "events": []
       },
       {
         "region": [
-          1536,
+          1792,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          116,
-          38
+          95,
+          52
         ],
         "ticks": 54,
         "events": [
@@ -172,36 +172,36 @@
       },
       {
         "region": [
-          1728,
+          2016,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          108,
-          29
+          91,
+          40
         ],
         "ticks": 54,
         "events": []
       },
       {
         "region": [
-          1920,
+          2240,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          127,
-          40
+          105,
+          42
         ],
         "ticks": 18,
         "events": [
@@ -210,56 +210,56 @@
       },
       {
         "region": [
-          2112,
+          2464,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          121,
-          72
+          101,
+          82
         ],
         "ticks": 89,
         "events": []
       },
       {
         "region": [
-          2304,
+          2688,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          125,
-          40
+          111,
+          54
         ],
-        "ticks": 80,
+        "ticks": 58,
         "events": [
           "phase"
         ]
       },
       {
         "region": [
-          2496,
+          2912,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          128,
-          94
+          102,
+          107
         ],
         "ticks": 12,
         "events": [
@@ -268,41 +268,456 @@
       },
       {
         "region": [
-          2688,
+          3136,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          140,
-          88
+          93,
+          115
         ],
         "ticks": 12,
         "events": []
       },
       {
         "region": [
-          2880,
+          3360,
           0,
-          192,
-          136
+          224,
+          148
         ],
         "anchor": [
-          89,
-          118
+          69,
+          132
         ],
         "weapon_socket": [
-          156,
-          74
+          85,
+          121
         ],
-        "ticks": 30,
+        "ticks": 21,
+        "events": []
+      },
+      {
+        "region": [
+          3584,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          107,
+          56
+        ],
+        "ticks": 8,
+        "events": []
+      },
+      {
+        "region": [
+          3808,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          115,
+          98
+        ],
+        "ticks": 9,
+        "events": []
+      },
+      {
+        "region": [
+          4032,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          90,
+          80
+        ],
+        "ticks": 22,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
+  },
+  "bell_tide": {
+    "sheet": "bell_tide.png",
+    "frames": [
+      {
+        "region": [
+          0,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          99,
+          86
+        ],
+        "ticks": 15,
+        "events": []
+      },
+      {
+        "region": [
+          224,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          101,
+          89
+        ],
+        "ticks": 15,
+        "events": []
+      },
+      {
+        "region": [
+          448,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          95,
+          87
+        ],
+        "ticks": 15,
+        "events": []
+      },
+      {
+        "region": [
+          672,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          102,
+          78
+        ],
+        "ticks": 15,
+        "events": []
+      },
+      {
+        "region": [
+          896,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          78,
+          49
+        ],
+        "ticks": 32,
+        "events": [
+          "sweep_warn"
+        ]
+      },
+      {
+        "region": [
+          1120,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          42,
+          42
+        ],
+        "ticks": 24,
+        "events": []
+      },
+      {
+        "region": [
+          1344,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          125,
+          102
+        ],
+        "ticks": 9,
+        "events": [
+          "sweep"
+        ]
+      },
+      {
+        "region": [
+          1568,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          105,
+          108
+        ],
+        "ticks": 67,
+        "events": []
+      },
+      {
+        "region": [
+          1792,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          95,
+          52
+        ],
+        "ticks": 45,
+        "events": [
+          "vent_warn"
+        ]
+      },
+      {
+        "region": [
+          2016,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          91,
+          40
+        ],
+        "ticks": 45,
+        "events": []
+      },
+      {
+        "region": [
+          2240,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          105,
+          42
+        ],
+        "ticks": 18,
+        "events": [
+          "vent"
+        ]
+      },
+      {
+        "region": [
+          2464,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          101,
+          82
+        ],
+        "ticks": 67,
+        "events": []
+      },
+      {
+        "region": [
+          2688,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          111,
+          54
+        ],
+        "ticks": 58,
+        "events": [
+          "phase"
+        ]
+      },
+      {
+        "region": [
+          2912,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          102,
+          107
+        ],
+        "ticks": 12,
+        "events": [
+          "death"
+        ]
+      },
+      {
+        "region": [
+          3136,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          93,
+          115
+        ],
+        "ticks": 12,
+        "events": []
+      },
+      {
+        "region": [
+          3360,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          85,
+          121
+        ],
+        "ticks": 21,
+        "events": []
+      },
+      {
+        "region": [
+          3584,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          107,
+          56
+        ],
+        "ticks": 8,
+        "events": []
+      },
+      {
+        "region": [
+          3808,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          115,
+          98
+        ],
+        "ticks": 9,
+        "events": []
+      },
+      {
+        "region": [
+          4032,
+          0,
+          224,
+          148
+        ],
+        "anchor": [
+          69,
+          132
+        ],
+        "weapon_socket": [
+          90,
+          80
+        ],
+        "ticks": 22,
+        "events": []
+      }
+    ],
+    "trim_transparent": true
   },
   "cast": {
     "sheet": "cast.png",

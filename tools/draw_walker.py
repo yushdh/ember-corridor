@@ -65,6 +65,8 @@ def draw_sabre(d, hand, tip):
            (length - 4, 3), (belly, 6), (mid, 7), (8, 4), (0, 2)], "#96634d")
     d.line([point(7, 2), point(mid, 5), point(belly, 4), tip], fill="#f4c982", width=2)
     d.line([point(belly, 4), tip], fill="#fff0bc")
+    plate([(6, -2), (mid, 0), (belly, 0), (length-4,-1), (belly, 3), (mid, 3)], "#bd7952")
+    d.line([point(10, 2), point(mid, 3), point(belly, 2)], fill="#fbb968")
     plate([(1, -5), (5, -7), (5, -4), (3, -2), (2, 4), (-2, 6), (-3, 4)], "#d49a5e")
 
 
@@ -85,8 +87,8 @@ def draw_frame(action, i, *, pose=None, armed=True, off_hand=None):
     else:
         bob = (0, -1, -1, 0, 1, 1)[i]
         flutter = (0, -1, -2, 0, 1, 2)[i]
-        knee, ankle = (51, 65), (52, 79)
-        far_knee, far_ankle = (39, 64), (37, 79)
+        knee, ankle = (51 + (i in (3, 4)), 65 + bob), (52, 79)
+        far_knee, far_ankle = (39 - (i in (1, 2)), 64 + bob), (37, 79)
         hand = (55 + (i in (2, 3)), 55 + bob)
         lean = 0
 
@@ -141,9 +143,11 @@ def draw_frame(action, i, *, pose=None, armed=True, off_hand=None):
         d.line((x - 2, y - 5, x + 2, y - 6), fill="#88765d" if far else GOLD)
         if not far:
             d.line((x + 2, y - 2, x + 6, y - 1), fill="#bac4c2")
+            poly([(x-4,y-6),(x+2,y-8),(x+2,y-5),(x-3,y-3)], "#87694f", INK)
 
-    leg((45, 54 + bob), far_knee, far_ankle, True)
-    leg((49, 54 + bob), knee, ankle, False)
+    hip_shift = round(lean * .45)
+    leg((45 + hip_shift, 54 + bob), far_knee, far_ankle, True)
+    leg((49 + hip_shift, 54 + bob), knee, ankle, False)
     # Rear arm and layered brigandine, with a split skirt and sword belt.
     elbow = (40 if not run else 49 + (55 - hand[0]) // 2, 47 + bob)
     bar((47 + lean, 38 + bob), elbow, 7, "#475064")
@@ -167,112 +171,47 @@ def draw_frame(action, i, *, pose=None, armed=True, off_hand=None):
     part([(49, 38), (53, 40), (50, 49), (47, 51), (45, 45)], "#809099")
     part([(41, 47), (52, 46), (52, 50), (40, 53)], "#7d5841", INK)
     part([(46, 48), (50, 47), (50, 50), (46, 51)], GOLD)
-    # Short, forked shoulder mantle. Anchored at collar, flexing in the wind.
-    trail = -8 if run else -2
-    # The forked mantle has a broad shoulder mass and two separately folded hems.
-    part(
-        [
-            (45, 31),
-            (50, 37),
-            (43, 44),
-            (33, 48),
-            (20 + trail, 51 + flutter),
-            (25 + trail, 46 + flutter),
-            (16 + trail, 47 + flutter),
-            (24 + trail, 42 + flutter),
-            (34, 38),
-            (38, 33),
-        ],
-        "#24475b",
-        INK,
-    )
-    part(
-        [
-            (44, 32),
-            (48, 35),
-            (44, 41),
-            (38, 45),
-            (31 + trail, 50 + flutter),
-            (26 + trail, 50 + flutter),
-            (30 + trail, 46 + flutter),
-            (25 + trail, 46 + flutter),
-            (30 + trail, 43 + flutter),
-            (34, 37),
-        ],
-        CLOTH,
-        INK,
-    )
-    part(
-        [(43, 35), (41, 39), (33, 43), (28 + trail, 47 + flutter), (34 + trail, 44 + flutter)],
-        "#78a2ad",
-    )
-    part([(44, 32), (51, 32), (53, 36), (49, 39), (42, 37), (37, 39), (39, 35)], ICE, INK)
-    part(
-        [(39, 35), (43, 35), (38, 39), (29 + trail, 44 + flutter), (23 + trail, 45 + flutter)],
-        "#73aab9",
-    )
-    part([(37, 40), (33, 44), (25 + trail, 48 + flutter), (29 + trail, 44 + flutter)], "#4d829a")
-    # A light selvage turns back over the dark lining; its free end trails the stride.
-    hem = flutter + ((1, 0, -2, -3, -1, 1, 3, 2)[i] if run else 0)
-    part(
-        [
-            (41, 35),
-            (35, 42),
-            (21 + trail, 49 + hem),
-            (13 + trail, 50 + hem),
-            (22 + trail, 44 + hem),
-            (32, 40),
-        ],
-        "#36677c",
-        INK,
-    )
-    part(
-        [
-            (39, 36),
-            (33, 42),
-            (21 + trail, 47 + hem),
-            (17 + trail, 48 + hem),
-            (24 + trail, 43 + hem),
-            (32, 40),
-        ],
-        "#78aeb9",
-    )
-    part([(30, 41), (28, 44), (26, 44), (27, 42)], "#d4c197")
-    if run:
-        # A cold reflected edge stays behind the warmer hand on the return swing.
-        part([(39, 34), (34, 38), (22, 42 + flutter), (13, 44 + flutter),
-              (23, 40 + flutter), (33, 36)], "#91c6cd")
-    # The folded lining drops away from the shoulder, leaving a notch between the hems.
-    fold = flutter + (3 if run else 0)
-    part([(40, 40), (37, 47), (28 + trail, 53 + fold), (21 + trail, 54 + fold),
-          (28 + trail, 49 + fold), (34, 44)], "#263c50", INK)
-    part([(37, 44), (31 + trail, 51 + fold), (25 + trail, 52 + fold),
-          (30 + trail, 49 + fold)], "#487384")
-    # Sealed kettle helm: raised crest, segmented bronze cheek and lit eye slit.
-    part(
-        [(39, 31), (39, 24), (42, 20), (48, 18), (52, 20), (55, 24), (55, 30), (51, 35), (45, 35)],
-        "#677c88",
-        INK,
-    )
-    part([(40, 25), (42, 21), (48, 19), (51, 21), (46, 21), (43, 25)], LIGHT)
-    part([(44, 26), (53, 24), (57, 25), (54, 30), (52, 34), (48, 35), (45, 32)], "#a3afb0", INK)
-    part([(44, 26), (55, 24), (54, 27), (47, 29), (44, 28)], INK)
-    part([(48, 27), (54, 25), (53, 27), (49, 28)], "#ffdc94")
-    part([(49, 30), (54, 28), (51, 33), (49, 34)], "#d1d2c1")
-    for x, y in [(47, 30), (49, 31), (51, 30)]:
-        d.point((x + lean, y + bob), fill=IRON)
-    part([(38, 25), (42, 24), (43, 29), (40, 32), (38, 30)], "#39495a", INK)
-    part([(38, 24), (42, 20), (48, 18), (53, 20), (47, 20), (42, 24)], "#91afb6")
-    part([(42, 25), (51, 23), (57, 23), (60, 25), (54, 26), (44, 28)], "#95734e", INK)
-    part([(47, 26), (56, 24), (55, 26), (48, 28)], "#ffca76")
-    part([(53, 28), (57, 26), (54, 32), (50, 35), (49, 33)], "#a1b4ba", INK)
-    # Bronze comb and undercut cheek give the helm a readable front even in profile.
-    part([(37, 25), (39, 19), (43, 16), (53, 15), (51, 18), (43, 21), (41, 25)], "#8e694e", INK)
-    part([(39, 21), (43, 17), (50, 16), (46, 18), (42, 20)], "#d5ae79")
-    part([(47, 27), (57, 24), (62, 24), (56, 28), (49, 30)], "#202b36")
-    part([(51, 27), (58, 25), (56, 27), (51, 29)], "#ffe1a0")
-    part([(53, 25), (59, 23), (62, 23), (59, 25), (54, 26)], "#ede2bd")
-    part([(54, 30), (57, 28), (55, 32), (51, 35), (50, 34)], "#d1c3a5")
+    # The front tab is attached to the belt. It lags the leading knee on push-off.
+    sway = (-4, -6, -5, -2, 1, 3, 1, -2)[i] if run else -flutter // 2
+    part([(43,49),(51,48),(50,56),(47+sway,66),(42+sway,63),(39+sway,64),
+          (43,54)], "#723f42", INK)
+    part([(45,50),(50,49),(47,58),(44+sway,63),(43+sway,61)], "#b8664c")
+    part([(41,48),(52,46),(52,50),(41,53)], "#573e39", INK)
+    part([(47,48),(51,47),(51,50),(47,51)], GOLD)
+    # One broad upper fold catches the sky. The bent lower hem exposes the lining.
+    trail = -7 if run else -1
+    hem = flutter + ((1,0,-2,-3,-1,1,3,2)[i] if run else 0)
+    def cloth(x, y):
+        return (x+trail, y+hem)
+    part([(39,32),(49,31),(50,38),(39,46),cloth(28,51),cloth(16,53),
+          cloth(20,49),cloth(11,48),cloth(23,43),(34,37)], "#213546", INK)
+    part([(40,33),(48,32),(46,38),(36,44),cloth(24,47),cloth(14,48),
+          cloth(22,44),(32,39)], "#528a99")
+    part([(39,34),(46,32),(44,35),(36,39),cloth(24,44),cloth(20,45),
+          (31,38)], "#a1c3c0")
+    part([(40,39),(37,45),cloth(28,50),cloth(19,51),cloth(26,47)],
+         "#386779")
+    # A shorter, turned-back flap has a separate tip and a copper fastening at the neck.
+    part([(40,35),(38,42),cloth(29,47),cloth(22,48),cloth(17,46),
+          cloth(25,44),(33,39)], "#437f90", INK)
+    part([(39,35),(36,40),cloth(28,45),cloth(22,46),cloth(26,43),(34,39)], "#82b8bb")
+    part([(43,35),(44,39),(40,42),(37,42),(40,38)], "#c49b64", INK)
+    part([(43,33),(50,33),(53,36),(49,39),(43,38),(39,40),(36,39)], "#789ba3", INK)
+    # Full close-helm: stepped comb, dark neck lames, separate visor and bevor.
+    part([(38,31),(37,24),(40,19),(47,16),(53,17),(57,22),(57,29),
+          (51,35),(44,36)], "#3e5264", INK)
+    part([(38,25),(41,19),(48,17),(53,18),(48,20),(44,24)], "#8fa7af")
+    part([(39,22),(40,17),(46,13),(54,13),(51,16),(45,18)], "#97664d", INK)
+    part([(41,18),(46,14),(52,14),(47,16)], "#e8ba78")
+    part([(38,27),(43,24),(45,29),(44,35),(41,37),(37,34)], "#374458", INK)
+    part([(40,29),(43,28),(43,32),(40,34)], "#74818b")
+    part([(43,23),(51,20),(57,21),(61,24),(55,25),(45,28)], "#ac825b", INK)
+    part([(45,23),(51,21),(56,22),(54,23),(46,25)], "#e6cf9b")
+    part([(45,27),(55,24),(61,24),(57,28),(49,30),(45,29)], "#17232f")
+    part([(50,27),(56,25),(58,25),(55,27),(50,28)], "#ffdc8b")
+    part([(48,30),(55,28),(59,27),(56,32),(51,36),(47,34)], "#91a8ac", INK)
+    part([(51,31),(56,29),(54,32),(51,34)], "#d3d3bc")
+    part([(44,28),(47,27),(49,31),(48,34),(45,33)], "#6d5b50", INK)
     # Wrist turns through the stride, raises the blade on ascent and opens on landing.
     hx, hy = hand
     if armed:
@@ -289,7 +228,8 @@ def draw_frame(action, i, *, pose=None, armed=True, off_hand=None):
         round((shoulder[1] + hy) / 2 + dx / span * bend),
     )
     bar((44 + lean, 39 + bob), arm_elbow, 7, "#465369")
-    bar(arm_elbow, hand, 6, BRASS)
+    bar(arm_elbow, hand, 7, "#996b4c")
+    d.line((arm_elbow[0], arm_elbow[1]-1, hx-1, hy-1), fill="#dbab72", width=2)
     if run:
         d.line((arm_elbow[0], arm_elbow[1]-2, hx-1, hy-2), fill="#dab584", width=2)
     part([(38, 36), (46, 34), (52, 38), (51, 43), (44, 46), (37, 41)], BRASS, INK)
@@ -297,6 +237,8 @@ def draw_frame(action, i, *, pose=None, armed=True, off_hand=None):
     part([(40, 37), (45, 36), (48, 38), (43, 38)], GOLD)
     part([(41, 40), (47, 39), (46, 41), (42, 42)], "#97704b")
     part([(39, 41), (44, 43), (50, 40), (49, 43), (44, 45)], "#845b46")
+    part([(36,39),(40,42),(44,44),(48,43),(47,46),(43,48),(37,44)], "#6f6157", INK)
+    part([(37,41),(43,44),(47,43),(44,46),(41,45)], "#c09468")
     d.point((41 + lean, 39 + bob), fill="#ffdc94")
     poly(
         [(hx - 3, hy - 2), (hx, hy - 3), (hx + 3, hy), (hx + 2, hy + 3), (hx - 2, hy + 2)],
@@ -311,7 +253,7 @@ def generate():
     target.mkdir(parents=True, exist_ok=True)
     clips = {}
     for action, durations in {
-        "idle": [165, 150, 170, 180, 160, 175],
+        "idle": [185, 135, 165, 190, 140, 185],
         "run": [75, 65, 75, 75, 75, 65, 75, 75],
         "jump": [75, 100, 110],
         "fall": [65, 85, 100],

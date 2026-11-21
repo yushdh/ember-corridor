@@ -46,6 +46,8 @@ def roll_frame(i, armed=True):
     patch(knee, [(-4, -1), (0, -4), (4, -2), (4, 1), (1, 4), (-3, 2)], "#bf9059")
     shape([(-6, -12), (1, -14), (3, -8), (-3, -5), cape, (-12, -6)], "#4d758a")
     shape([(-5, -12), (-2, -11), (-7, -7), cape], "#89afbc", None)
+    # Belt tab folds back toward the far boot; the visor remains outside the fold.
+    shape([(-4,0),(0,-2),(2,2),(-3,7),(-8,8),(-6,5)], "#af674f")
     hx, hy = head
     patch(
         head,

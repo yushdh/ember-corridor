@@ -197,7 +197,9 @@ def chain_hardware():
             d.line((5,5,9,5), fill="#ccded0")
         tex = arcade.Texture(im)
         heads.append((tex, tex.flip_left_right()))
-    collar = Image.new("RGBA", (6, 9))
+    # Leave the last row clear so this integer-centred sprite also has integer
+    # top/bottom edges. A nine-pixel texture can sample the adjacent texel row.
+    collar = Image.new("RGBA", (6, 10))
     cuff = ImageDraw.Draw(collar)
     cuff.polygon([(1,0),(4,0),(5,2),(5,6),(3,8),(1,8),(0,6),(0,2)],
                  fill="#b37b53", outline="#352d34")
@@ -333,6 +335,7 @@ class BattleView:
         self.last_impact = None
         self.kick_direction = 1
         self.flash = {}
+        self.bell_recoil = 0
         self.focus = None
 
     def prepare_flash(self, kind):
@@ -361,6 +364,7 @@ class BattleView:
         self.last_event = self.shake = 0
         self.last_impact = None
         self.flash.clear()
+        self.bell_recoil = 0
         self.focus = None
 
     def sound(self, name):
@@ -400,6 +404,7 @@ class BattleView:
             self.echo_hp += min(0.45, max(-0.45, c.hp - self.echo_hp))
         self.shake = max(0, self.shake - 1)
         self.flash = {k: n - 1 for k, n in self.flash.items() if n > 1}
+        self.bell_recoil = max(0, self.bell_recoil - 1)
         for p in self.particles[:]:
             p.life -= 1
             if p.life <= 0:
@@ -480,6 +485,8 @@ class BattleView:
                 self.kick_direction = facing
                 if k == "hit":
                     self.flash[ev["target"]] = 3 * self.levels[1]
+                    if ev.get("enemy") == "bell":
+                        self.bell_recoil = 6
                 if fire and self.levels[1] and facing in self.fire_impacts:
                     frames = self.fire_impacts[facing]
                     self.particle(
@@ -533,9 +540,9 @@ class BattleView:
 
     def actor_frame(self, c, w):
         if not c.hp:
-            return self.clips["death"].frame(c.death_age / 120)
+            return self.clips["hammer_death" if c.weapon == "heavy" else "death"].frame(c.death_age / 120)
         if c.hurt:
-            return self.clips["hurt"].frame((23 - c.hurt) / 120)
+            return self.clips["hammer_hurt" if c.weapon == "heavy" else "hurt"].frame((23 - c.hurt) / 120)
         if c.attack:
             return self.clips[c.attack].frames[STRIKES[c.attack].frame(c.age)]
         if c.weapon == "heavy":
@@ -561,23 +568,26 @@ class BattleView:
                 self.trail.visible = True
         for target_index, (e, sp) in enumerate(zip(c.foes, self.enemies)):
             if e.kind == "bell":
-                i = e.pose_index()
+                i = 18 if self.bell_recoil and e.state in ("recover", "idle") else e.pose_index()
+            elif e.state == "dead":
+                i = 9 + int(e.age >= 9) + int(e.age >= 22)
             elif e.state == "warn":
                 i = 4 + int(e.age >= e.spec.windup // 2)
             elif e.state == "walk":
-                i = 2 + (e.age // 11) % 2
+                i = (12 if e.age % 11 >= 6 else 2) + (e.age // 11) % 2
             else:
-                i = {"active": 6, "recover": 7, "hurt": 8, "dead": 9}.get(
+                i = {"active": 6, "recover": 7, "hurt": 8}.get(
                     e.state, (e.age // 34) % 2
                 )
+            skin = "bell_tide" if e.kind == "bell" and e.phase == 2 else e.kind
             frames = (
-                self.flashes[e.kind][int(self.flash[target_index] > self.levels[1])]
-                if self.flash.get(target_index, 0) > 0 and e.kind in self.flashes
-                else self.clips[e.kind].frames
+                self.flashes[skin][int(self.flash[target_index] > self.levels[1])]
+                if self.flash.get(target_index, 0) > 0 and skin in self.flashes
+                else self.clips[skin].frames
             )
             position(sp, frames[i], e.x, e.y, e.facing, scroll, lift)
             sp.visible = e.hp > 0 or e.age < 45
-            sp.alpha = max(0, 255 - e.age * 6) if not e.hp else 255
+            sp.alpha = max(0, 255 - max(0, e.age - 22) * 12) if not e.hp else 255
         while len(self.projectiles) < len(c.bolts):
             self.projectiles.append(arcade.Sprite(rivet_marks(0)[1]))
         for i, sp in enumerate(self.projectiles):
@@ -655,8 +665,10 @@ class BattleView:
                 continue
             if e.kind not in self.head_clearance:
                 # Stable across walk frames, measured from the baked pose's sole to its crown.
-                frame = self.clips[e.kind].frames[0]
-                self.head_clearance[e.kind] = max(e.spec.height, frame.anchor[1] - frame.right.image.getbbox()[1]) + 7
+                frames = self.clips[e.kind].frames
+                poses = frames if boss else frames[:1]
+                crown = max(f.anchor[1] - f.right.image.getbbox()[1] for f in poses)
+                self.head_clearance[e.kind] = max(e.spec.height, crown) + 7
             bottom = y + self.head_clearance[e.kind]
             filled = max(1, round((width-2) * e.hp/e.spec.hp))
             texture = health_texture(width, filled, boss)

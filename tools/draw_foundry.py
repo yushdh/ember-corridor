@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from game.foundry import ROOMS, CAST_TICKS
+from draw_bellkeeper import SIZE as BELL_SIZE, SOLE as BELL_SOLE, keeper
 from draw_structures import structures
 from draw_walker import draw_frame
 from draw_flame import bake_flame
@@ -162,7 +163,7 @@ def room_image(i, room):
         for x, r in ((277, 41), (524, 54), (807, 81), (1070, 45)):
             d.line((x, 0, x, 73), fill="#887257", width=6)
             d.line((x - 12, 20, x + 12, 20), fill="#a48b68", width=3)
-            bell(d, x, 109, r, "#675e58", "#9a856c")
+            bell(d, x, 109, r, "#484e54", "#6b7071")
             d.line((x - 3, 109 + r, x + 4, 244), fill="#594f4a", width=2)
     return im
 
@@ -216,142 +217,6 @@ def room_front(room):
     return im
 
 
-def keeper(i):
-    im = Image.new("RGBA", (192, 136))
-    d = ImageDraw.Draw(im)
-    # Feet, bent knees, shoulder, elbow and mace are posed independently.
-    lean = (0, 1, 4, -2, -5, -9, 10, 6, -2, -4, 2, 3, -3, 4, 16, 29)[i]
-    drop = (0, 2, 3, 1, 3, 8, 12, 9, 2, 4, 3, 6, 1, 15, 23, 28)[i]
-    hip = (89 + lean, 84 + drop // 2)
-
-    def limb(pts, w, metal):
-        d.line(pts, fill=INK, width=w + 4, joint="curve")
-        d.line(pts, fill=metal, width=w, joint="curve")
-        for x, y in pts[1:-1]:
-            d.ellipse(
-                (x - w // 2, y - w // 2, x + w // 2, y + w // 2), fill=metal, outline=GOLD, width=2
-            )
-
-    for side, metal in ((-1, "#485666"), (1, "#788386")):
-        x = 89 + side * (17 + (i in (5, 6, 7)) * 6) + ((i == 2) - (i == 3)) * side * 6
-        knee = (x + side * (6 + drop // 6), 97 + drop // 5)
-        limb([hip, knee, (x, 114)], 10, metal)
-        d.polygon(
-            [(x - 8, 111), (x + 4, 109), (x + 12, 114), (x + 13, 117), (x - 9, 117)],
-            fill=metal,
-            outline=INK,
-        )
-        d.line((x - 5, 114, x + 3, 113, x + 8, 115), fill="#a7a58c")
-        d.line((knee[0] - 2, knee[1] + 5, x - 3, 109), fill="#99a59e", width=2)
-    cx, cy = 89 + lean, 59 + drop
-    bell(d, cx, cy, 29, "#8b715b", "#bf9c6f")
-    d.polygon(
-        [
-            (cx - 19, cy + 7),
-            (cx - 11, cy - 10),
-            (cx + 6, cy - 12),
-            (cx + 17, cy + 7),
-            (cx + 6, cy + 17),
-            (cx - 8, cy + 19),
-        ],
-        fill="#364c57",
-        outline=INK,
-        width=2,
-    )
-    for n in range(3):
-        d.line(
-            (cx - 8 + n * 5, cy + 10, cx - 5 + n * 5, cy - 4),
-            fill=TEAL if i in (8, 9, 10, 12) else "#cc9461",
-            width=2,
-        )
-    hx, hy = cx + 6, cy - 24
-    d.polygon(
-        [
-            (hx - 15, hy - 1),
-            (hx - 11, hy - 12),
-            (hx - 2, hy - 17),
-            (hx + 8, hy - 14),
-            (hx + 14, hy - 6),
-            (hx + 17, hy - 3),
-            (hx + 9, hy + 9),
-            (hx - 6, hy + 10),
-        ],
-        fill="#657579",
-        outline=INK,
-        width=2,
-    )
-    d.line((hx - 1, hy, hx + 13, hy - 4), fill="#ffcb85", width=3)
-    d.line((hx - 11, hy - 7, hx - 2, hy - 13, hx + 6, hy - 12), fill="#b4b6a0", width=2)
-    d.line((hx + 2, hy + 3, hx + 9, hy + 1, hx + 6, hy + 6), fill="#919d96", width=2)
-    for a in (0, 4):
-        d.point((hx - 6 + a, hy + 4), fill=GOLD)
-    d.polygon(
-        [
-            (hx - 14, hy - 7),
-            (hx - 24, hy - 19),
-            (hx - 21, hy - 24),
-            (hx - 12, hy - 13),
-            (hx - 5, hy - 10),
-        ],
-        fill=BRONZE,
-        outline=INK,
-    )
-    elbows = [
-        (19, 7),
-        (20, 9),
-        (14, 10),
-        (18, 6),
-        (7, -8),
-        (-3, -15),
-        (30, 19),
-        (26, 21),
-        (19, -10),
-        (13, -20),
-        (23, -16),
-        (20, 5),
-        (25, -13),
-        (22, 18),
-        (22, 8),
-        (26, -12),
-    ]
-    hands = [
-        (31, 13),
-        (33, 14),
-        (25, 16),
-        (28, 8),
-        (5, -18),
-        (-12, -29),
-        (46, 28),
-        (38, 28),
-        (29, -23),
-        (23, -34),
-        (36, -22),
-        (29, 7),
-        (39, -20),
-        (35, 20),
-        (35, 7),
-        (38, -12),
-    ]
-    ex, ey = elbows[i]
-    wx, wy = hands[i]
-    wrist = (cx + wx, cy + wy)
-    limb([(cx + 10, cy - 7), (cx + ex, cy + ey), wrist], 9, "#69797a")
-    limb([(cx - 18, cy - 5), (cx - 26, cy + 13), (cx - 22, cy + 24)], 8, "#485b64")
-    head = (
-        wrist[0] + (29 if i == 6 else -10 if i in (4, 5) else 15),
-        wrist[1] + (-13 if i in (4, 5, 8, 9) else 0),
-    )
-    limb([wrist, head], 4, "#af865d")
-    bell(d, *head, 12, "#806c5e", "#dfb97c")
-    # The folded arm and clapper must stay above the same sole line in the collapse.
-    if i >= 13:
-        dy = 118 - im.getbbox()[3]
-        aligned = Image.new("RGBA", im.size)
-        aligned.paste(im, (0, dy))
-        im, wrist = aligned, (wrist[0], wrist[1] + dy)
-    return im, wrist
-
-
 def effects():
     sheet = Image.new("RGBA", (144 * 6, 112 * 4))
     for i in range(6):
@@ -390,6 +255,15 @@ def effects():
                         ],
                         fill=(243, 167 + k * 15, 105, 185),
                     )
+                # The rim travels out along the floor while the full danger strip stays visible.
+                nose = min(width-4, 16 + i * (width-20)//5)
+                d.polygon([(nose-15,26),(nose-9,20),(nose-5,21),(nose,12),
+                           (nose-1,22),(nose+3,25),(nose-4,28)], fill=(225,191,151,215))
+                d.line([(nose-10,24),(nose-5,22),(nose,15)], fill="#f8dba5",width=2)
+                for offset, rise in ((11,8),(21,4)):
+                    x = max(1,nose-offset)
+                    d.polygon([(x,26),(x+2,26-rise),(x+5,25-rise),(x+4,26)],
+                              fill=(139,156,151,170))
             else:
                 for j in range(5):
                     x = 5 + j * 8
@@ -405,6 +279,11 @@ def effects():
                         fill=(239, 169 + 8 * j, 108, 210),
                     )
                     d.line((x, 106, x + 1 + bend, 65), fill="#ffe6a7")
+                # Split jets leave sightlines through the middle of the eruption.
+                for j in (1,3):
+                    x=5+j*8
+                    d.polygon([(x-1,104),(x-1,70),(x+1,37+i*3),(x+2,81)],
+                              fill=(100,130,128,70))
             sheet.paste(im, (144 * i, 112 * row))
     return sheet
 
@@ -447,21 +326,16 @@ def generate():
         sheet.save(OUT / (name + ".png"))
         clips[name] = dict(sheet=name + ".png", frames=frames)
 
-    bake(
-        "bell",
-        (192, 136),
-        (89, 118),
-        [keeper(i) for i in range(16)],
-        (15, 15, 15, 15, 41, 41, 18, 89, 54, 54, 18, 89, 80, 12, 12, 30),
-        {
-            4: ["sweep_warn"],
-            6: ["sweep"],
-            8: ["vent_warn"],
-            10: ["vent"],
-            12: ["phase"],
-            13: ["death"],
-        },
-    )
+    for name, tide in (("bell", False), ("bell_tide", True)):
+        sweep = 64 if tide else 82
+        vent = 90 if tide else 108
+        recovery = 67 if tide else 89
+        bake(name, BELL_SIZE, BELL_SOLE, [keeper(i, tide) for i in range(19)],
+             (15,15,15,15,sweep//2,sweep//2-8,9,recovery,vent//2,vent//2,18,
+              recovery,58,12,12,21,8,9,22),
+             {4:["sweep_warn"], 6:["sweep"], 8:["vent_warn"], 10:["vent"],
+              12:["phase"], 13:["death"]})
+        clips[name]["trim_transparent"] = True
     cells = []
     for i, (hand, bob, lean) in enumerate(
         [

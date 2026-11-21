@@ -53,13 +53,25 @@ def load_clips(folder="walker"):
             sheet = sheets[path]
             for entry in clip["frames"]:
                 x, y, w, h = entry["region"]
-                texture = arcade.Texture(sheet.crop((x, y, x + w, y + h)))
+                cell = sheet.crop((x, y, x + w, y + h))
+                left = top = 0
+                if clip.get("trim_transparent"):
+                    # Retain a clear border. Even crop edges preserve integer centres
+                    # under mirroring and keep the foot and weapon at the authored pixels.
+                    bounds = cell.getchannel("A").getbbox()
+                    if bounds:
+                        l, t, r, b = bounds
+                        left, top = max(0, (l-1)//2*2), max(0, (t-1)//2*2)
+                        cell = cell.crop((left, top, min(w, (r+2)//2*2), min(h, (b+2)//2*2)))
+                texture = arcade.Texture(cell)
+                ax, ay = entry["anchor"]
+                sx, sy = entry["weapon_socket"]
                 frames.append(
                     Frame(
                         texture,
                         texture.flip_left_right(),
-                        tuple(entry["anchor"]),
-                        tuple(entry["weapon_socket"]),
+                        (ax-left, ay-top),
+                        (sx-left, sy-top),
                         tuple(entry["events"]),
                     )
                 )

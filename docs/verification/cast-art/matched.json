@@ -1,0 +1,473 @@
+{
+  "shots": {
+    "gate-10": [
+      10,
+      22,
+      295.0,
+      23,
+      "hook",
+      "walk",
+      -1,
+      100,
+      62
+    ],
+    "gate-38": [
+      38,
+      78,
+      324.0,
+      23,
+      "hook",
+      "walk",
+      -1,
+      100,
+      62
+    ],
+    "gate-68": [
+      68,
+      138,
+      353.98,
+      23,
+      "hook",
+      "active",
+      -1,
+      87,
+      62
+    ],
+    "gate-110": [
+      110,
+      222,
+      361.98,
+      23,
+      "hook",
+      "hurt",
+      -1,
+      87,
+      30
+    ],
+    "room2-20": [
+      20,
+      42,
+      92.0,
+      0,
+      "chain",
+      "warn",
+      -1,
+      100,
+      68
+    ],
+    "room2-36": [
+      36,
+      74,
+      92.0,
+      0,
+      "chain",
+      "warn",
+      -1,
+      100,
+      68
+    ],
+    "room2-65": [
+      65,
+      132,
+      92.0,
+      0,
+      "chain",
+      "recover",
+      -1,
+      82,
+      68
+    ],
+    "room4-20": [
+      20,
+      42,
+      198.0,
+      0,
+      "fork",
+      "warn",
+      -1,
+      100,
+      56
+    ],
+    "room4-36": [
+      36,
+      74,
+      198.0,
+      0,
+      "fork",
+      "warn",
+      -1,
+      100,
+      56
+    ],
+    "room4-65": [
+      65,
+      132,
+      198.0,
+      0,
+      "fork",
+      "recover",
+      -1,
+      84,
+      56
+    ],
+    "boss-sweep-warn-1": [
+      21,
+      44,
+      704.0,
+      432,
+      "bell",
+      "warn",
+      -1,
+      100,
+      296
+    ],
+    "boss-sweep-active-1": [
+      45,
+      92,
+      704.0,
+      432,
+      "bell",
+      "active",
+      -1,
+      79,
+      296
+    ],
+    "boss-sweep-recover-1": [
+      54,
+      110,
+      704.0,
+      432,
+      "bell",
+      "recover",
+      -1,
+      79,
+      296
+    ],
+    "boss-vent-warn-1": [
+      125,
+      252,
+      704.0,
+      432,
+      "bell",
+      "warn",
+      -1,
+      79,
+      296
+    ],
+    "boss-vent-active-1": [
+      156,
+      314,
+      704.0,
+      432,
+      "bell",
+      "active",
+      -1,
+      58,
+      296
+    ],
+    "boss-vent-recover-1": [
+      165,
+      332,
+      704.0,
+      432,
+      "bell",
+      "recover",
+      -1,
+      58,
+      296
+    ],
+    "boss-vent-phase-2": [
+      174,
+      350,
+      704.0,
+      432,
+      "bell",
+      "phase",
+      -1,
+      58,
+      148
+    ],
+    "boss-sweep-warn-2": [
+      229,
+      460,
+      704.0,
+      432,
+      "bell",
+      "warn",
+      -1,
+      58,
+      148
+    ],
+    "boss-sweep-active-2": [
+      249,
+      500,
+      704.0,
+      432,
+      "bell",
+      "active",
+      -1,
+      37,
+      148
+    ],
+    "boss-sweep-recover-2": [
+      258,
+      518,
+      704.0,
+      432,
+      "bell",
+      "recover",
+      -1,
+      37,
+      148
+    ]
+  },
+  "events": {
+    "1": [
+      {
+        "id": 1,
+        "tick": 82,
+        "kind": "warn",
+        "x": 368.44,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 2,
+        "tick": 125,
+        "kind": "windup",
+        "x": 353.98,
+        "y": 126,
+        "action": "cut",
+        "attack_id": 1
+      },
+      {
+        "id": 3,
+        "tick": 125,
+        "kind": "hurt",
+        "x": 364.98,
+        "y": 123,
+        "enemy": "hook",
+        "hp": 87
+      },
+      {
+        "id": 4,
+        "tick": 153,
+        "kind": "windup",
+        "x": 353.98,
+        "y": 126,
+        "action": "cut",
+        "attack_id": 2
+      },
+      {
+        "id": 5,
+        "tick": 164,
+        "kind": "swing",
+        "x": 357.98,
+        "y": 124,
+        "action": "cut",
+        "attack_id": 2
+      },
+      {
+        "id": 6,
+        "tick": 164,
+        "kind": "hit",
+        "x": 372.98,
+        "y": 130.0,
+        "enemy": "hook",
+        "target": 0,
+        "action": "cut",
+        "attack_id": 2,
+        "hp": 46,
+        "frame": 3,
+        "facing": 1
+      },
+      {
+        "id": 7,
+        "tick": 193,
+        "kind": "windup",
+        "x": 357.98,
+        "y": 126,
+        "action": "cut",
+        "attack_id": 3
+      },
+      {
+        "id": 8,
+        "tick": 204,
+        "kind": "swing",
+        "x": 361.98,
+        "y": 124,
+        "action": "cut",
+        "attack_id": 3
+      },
+      {
+        "id": 9,
+        "tick": 204,
+        "kind": "hit",
+        "x": 376.98,
+        "y": 130.0,
+        "enemy": "hook",
+        "target": 0,
+        "action": "cut",
+        "attack_id": 3,
+        "hp": 30,
+        "frame": 3,
+        "facing": 1
+      },
+      {
+        "id": 10,
+        "tick": 281,
+        "kind": "warn",
+        "x": 374.44,
+        "y": 143,
+        "enemy": "hook"
+      },
+      {
+        "id": 11,
+        "tick": 324,
+        "kind": "hurt",
+        "x": 372.98,
+        "y": 123,
+        "enemy": "hook",
+        "hp": 74
+      }
+    ],
+    "2": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 2,
+        "tick": 110,
+        "kind": "hurt",
+        "x": 76.0,
+        "y": 147,
+        "enemy": "chain",
+        "hp": 82
+      }
+    ],
+    "4": [
+      {
+        "id": 1,
+        "tick": 27,
+        "kind": "warn",
+        "x": 255.82,
+        "y": 140,
+        "enemy": "fork"
+      },
+      {
+        "id": 2,
+        "tick": 97,
+        "kind": "hurt",
+        "x": 209.0,
+        "y": 103,
+        "enemy": "fork",
+        "hp": 84
+      },
+      {
+        "id": 3,
+        "tick": 203,
+        "kind": "warn",
+        "x": 255.82,
+        "y": 140,
+        "enemy": "fork"
+      }
+    ],
+    "5": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "sweep",
+        "x": 810,
+        "y": 94,
+        "phase": 1
+      },
+      {
+        "id": 2,
+        "tick": 83,
+        "kind": "bell_release",
+        "x": 810,
+        "y": 94,
+        "move": "sweep"
+      },
+      {
+        "id": 3,
+        "tick": 83,
+        "kind": "hurt",
+        "x": 704.0,
+        "y": 118,
+        "enemy": "bell",
+        "hp": 79
+      },
+      {
+        "id": 4,
+        "tick": 196,
+        "kind": "vent",
+        "x": 810,
+        "y": 94,
+        "phase": 1
+      },
+      {
+        "id": 5,
+        "tick": 304,
+        "kind": "bell_release",
+        "x": 810,
+        "y": 94,
+        "move": "vent"
+      },
+      {
+        "id": 6,
+        "tick": 304,
+        "kind": "hurt",
+        "x": 704.0,
+        "y": 118,
+        "enemy": "bell",
+        "hp": 58
+      },
+      {
+        "id": 7,
+        "tick": 345,
+        "kind": "phase",
+        "x": 810,
+        "y": 94
+      },
+      {
+        "id": 8,
+        "tick": 426,
+        "kind": "sweep",
+        "x": 810,
+        "y": 94,
+        "phase": 2
+      },
+      {
+        "id": 9,
+        "tick": 490,
+        "kind": "bell_release",
+        "x": 810,
+        "y": 94,
+        "move": "sweep"
+      },
+      {
+        "id": 10,
+        "tick": 490,
+        "kind": "hurt",
+        "x": 704.0,
+        "y": 118,
+        "enemy": "bell",
+        "hp": 37
+      },
+      {
+        "id": 11,
+        "tick": 581,
+        "kind": "vent",
+        "x": 810,
+        "y": 94,
+        "phase": 2
+      }
+    ]
+  }
+}

@@ -132,7 +132,8 @@
         "ticks": 8,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "liftcut": {
     "sheet": "walker.png",
@@ -267,7 +268,8 @@
         "ticks": 9,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "thrust": {
     "sheet": "walker.png",
@@ -402,7 +404,8 @@
         "ticks": 12,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "breaker": {
     "sheet": "walker.png",
@@ -537,7 +540,8 @@
         "ticks": 17,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "hurt": {
     "sheet": "walker.png",
@@ -554,8 +558,8 @@
           102
         ],
         "weapon_socket": [
-          79,
-          77
+          81,
+          69
         ],
         "ticks": 7,
         "events": []
@@ -572,8 +576,8 @@
           102
         ],
         "weapon_socket": [
-          80,
-          75
+          84,
+          72
         ],
         "ticks": 8,
         "events": []
@@ -590,15 +594,16 @@
           102
         ],
         "weapon_socket": [
-          81,
-          73
+          87,
+          75
         ],
         "ticks": 8,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
-  "death": {
+  "hammer_hurt": {
     "sheet": "walker.png",
     "frames": [
       {
@@ -614,9 +619,9 @@
         ],
         "weapon_socket": [
           81,
-          73
+          69
         ],
-        "ticks": 6,
+        "ticks": 7,
         "events": []
       },
       {
@@ -631,8 +636,68 @@
           102
         ],
         "weapon_socket": [
-          77,
-          73
+          84,
+          72
+        ],
+        "ticks": 8,
+        "events": []
+      },
+      {
+        "region": [
+          320,
+          640,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          87,
+          75
+        ],
+        "ticks": 8,
+        "events": []
+      }
+    ],
+    "trim_transparent": true
+  },
+  "death": {
+    "sheet": "walker.png",
+    "frames": [
+      {
+        "region": [
+          0,
+          768,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          89,
+          74
+        ],
+        "ticks": 6,
+        "events": []
+      },
+      {
+        "region": [
+          160,
+          768,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          83,
+          69
         ],
         "ticks": 6,
         "events": []
@@ -640,7 +705,7 @@
       {
         "region": [
           320,
-          640,
+          768,
           160,
           128
         ],
@@ -650,7 +715,7 @@
         ],
         "weapon_socket": [
           72,
-          73
+          64
         ],
         "ticks": 6,
         "events": []
@@ -658,43 +723,7 @@
       {
         "region": [
           480,
-          640,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          67,
-          74
-        ],
-        "ticks": 6,
-        "events": []
-      },
-      {
-        "region": [
-          640,
-          640,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          63,
-          69
-        ],
-        "ticks": 7,
-        "events": []
-      },
-      {
-        "region": [
-          800,
-          640,
+          768,
           160,
           128
         ],
@@ -704,140 +733,27 @@
         ],
         "weapon_socket": [
           61,
-          71
+          66
+        ],
+        "ticks": 6,
+        "events": []
+      },
+      {
+        "region": [
+          640,
+          768,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          55,
+          68
         ],
         "ticks": 7,
-        "events": []
-      },
-      {
-        "region": [
-          960,
-          640,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          62,
-          78
-        ],
-        "ticks": 7,
-        "events": []
-      },
-      {
-        "region": [
-          1120,
-          640,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          65,
-          81
-        ],
-        "ticks": 10,
-        "events": []
-      }
-    ]
-  },
-  "hammer_idle": {
-    "sheet": "walker.png",
-    "frames": [
-      {
-        "region": [
-          0,
-          768,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          87,
-          77
-        ],
-        "ticks": 19.8,
-        "events": []
-      },
-      {
-        "region": [
-          160,
-          768,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          87,
-          76
-        ],
-        "ticks": 18.0,
-        "events": []
-      },
-      {
-        "region": [
-          320,
-          768,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          88,
-          76
-        ],
-        "ticks": 20.4,
-        "events": []
-      },
-      {
-        "region": [
-          480,
-          768,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          88,
-          77
-        ],
-        "ticks": 21.599999999999998,
-        "events": []
-      },
-      {
-        "region": [
-          640,
-          768,
-          160,
-          128
-        ],
-        "anchor": [
-          80,
-          102
-        ],
-        "weapon_socket": [
-          87,
-          78
-        ],
-        "ticks": 19.2,
         "events": []
       },
       {
@@ -852,13 +768,314 @@
           102
         ],
         "weapon_socket": [
+          58,
+          70
+        ],
+        "ticks": 7,
+        "events": []
+      },
+      {
+        "region": [
+          960,
+          768,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          61,
+          74
+        ],
+        "ticks": 7,
+        "events": []
+      },
+      {
+        "region": [
+          1120,
+          768,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          64,
+          75
+        ],
+        "ticks": 10,
+        "events": []
+      }
+    ],
+    "trim_transparent": true
+  },
+  "hammer_death": {
+    "sheet": "walker.png",
+    "frames": [
+      {
+        "region": [
+          0,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          89,
+          74
+        ],
+        "ticks": 6,
+        "events": []
+      },
+      {
+        "region": [
+          160,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          83,
+          69
+        ],
+        "ticks": 6,
+        "events": []
+      },
+      {
+        "region": [
+          320,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          72,
+          64
+        ],
+        "ticks": 6,
+        "events": []
+      },
+      {
+        "region": [
+          480,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          61,
+          66
+        ],
+        "ticks": 6,
+        "events": []
+      },
+      {
+        "region": [
+          640,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          55,
+          68
+        ],
+        "ticks": 7,
+        "events": []
+      },
+      {
+        "region": [
+          800,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          58,
+          70
+        ],
+        "ticks": 7,
+        "events": []
+      },
+      {
+        "region": [
+          960,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          61,
+          74
+        ],
+        "ticks": 7,
+        "events": []
+      },
+      {
+        "region": [
+          1120,
+          896,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          64,
+          75
+        ],
+        "ticks": 10,
+        "events": []
+      }
+    ],
+    "trim_transparent": true
+  },
+  "hammer_idle": {
+    "sheet": "walker.png",
+    "frames": [
+      {
+        "region": [
+          0,
+          1024,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          87,
+          77
+        ],
+        "ticks": 22.2,
+        "events": []
+      },
+      {
+        "region": [
+          160,
+          1024,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          87,
+          76
+        ],
+        "ticks": 16.2,
+        "events": []
+      },
+      {
+        "region": [
+          320,
+          1024,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          88,
+          76
+        ],
+        "ticks": 19.8,
+        "events": []
+      },
+      {
+        "region": [
+          480,
+          1024,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          88,
+          77
+        ],
+        "ticks": 22.8,
+        "events": []
+      },
+      {
+        "region": [
+          640,
+          1024,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
           87,
           78
         ],
-        "ticks": 21.0,
+        "ticks": 16.8,
+        "events": []
+      },
+      {
+        "region": [
+          800,
+          1024,
+          160,
+          128
+        ],
+        "anchor": [
+          80,
+          102
+        ],
+        "weapon_socket": [
+          87,
+          78
+        ],
+        "ticks": 22.2,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "hammer_run": {
     "sheet": "walker.png",
@@ -866,7 +1083,7 @@
       {
         "region": [
           0,
-          896,
+          1152,
           160,
           128
         ],
@@ -884,7 +1101,7 @@
       {
         "region": [
           160,
-          896,
+          1152,
           160,
           128
         ],
@@ -902,7 +1119,7 @@
       {
         "region": [
           320,
-          896,
+          1152,
           160,
           128
         ],
@@ -920,7 +1137,7 @@
       {
         "region": [
           480,
-          896,
+          1152,
           160,
           128
         ],
@@ -938,7 +1155,7 @@
       {
         "region": [
           640,
-          896,
+          1152,
           160,
           128
         ],
@@ -956,7 +1173,7 @@
       {
         "region": [
           800,
-          896,
+          1152,
           160,
           128
         ],
@@ -974,7 +1191,7 @@
       {
         "region": [
           960,
-          896,
+          1152,
           160,
           128
         ],
@@ -992,7 +1209,7 @@
       {
         "region": [
           1120,
-          896,
+          1152,
           160,
           128
         ],
@@ -1007,7 +1224,8 @@
         "ticks": 9.0,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "hammer_jump": {
     "sheet": "walker.png",
@@ -1015,7 +1233,7 @@
       {
         "region": [
           0,
-          1024,
+          1280,
           160,
           128
         ],
@@ -1033,7 +1251,7 @@
       {
         "region": [
           160,
-          1024,
+          1280,
           160,
           128
         ],
@@ -1051,7 +1269,7 @@
       {
         "region": [
           320,
-          1024,
+          1280,
           160,
           128
         ],
@@ -1066,7 +1284,8 @@
         "ticks": 13.2,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "hammer_fall": {
     "sheet": "walker.png",
@@ -1074,7 +1293,7 @@
       {
         "region": [
           0,
-          1152,
+          1408,
           160,
           128
         ],
@@ -1092,7 +1311,7 @@
       {
         "region": [
           160,
-          1152,
+          1408,
           160,
           128
         ],
@@ -1110,7 +1329,7 @@
       {
         "region": [
           320,
-          1152,
+          1408,
           160,
           128
         ],
@@ -1125,7 +1344,8 @@
         "ticks": 12.0,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "hammer_land": {
     "sheet": "walker.png",
@@ -1133,7 +1353,7 @@
       {
         "region": [
           0,
-          1280,
+          1536,
           160,
           128
         ],
@@ -1151,7 +1371,7 @@
       {
         "region": [
           160,
-          1280,
+          1536,
           160,
           128
         ],
@@ -1169,7 +1389,7 @@
       {
         "region": [
           320,
-          1280,
+          1536,
           160,
           128
         ],
@@ -1184,7 +1404,8 @@
         "ticks": 5.04,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "hammer_roll": {
     "sheet": "walker.png",
@@ -1192,7 +1413,7 @@
       {
         "region": [
           0,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1210,7 +1431,7 @@
       {
         "region": [
           160,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1228,7 +1449,7 @@
       {
         "region": [
           320,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1246,7 +1467,7 @@
       {
         "region": [
           480,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1264,7 +1485,7 @@
       {
         "region": [
           640,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1282,7 +1503,7 @@
       {
         "region": [
           800,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1300,7 +1521,7 @@
       {
         "region": [
           960,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1318,7 +1539,7 @@
       {
         "region": [
           1120,
-          1408,
+          1664,
           160,
           128
         ],
@@ -1333,7 +1554,8 @@
         "ticks": 5.04,
         "events": []
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "trail_cut": {
     "sheet": "trails.png",
@@ -1915,7 +2137,7 @@
           70,
           57
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -1934,7 +2156,7 @@
           71,
           58
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -1950,8 +2172,8 @@
           81
         ],
         "weapon_socket": [
-          56,
-          37
+          55,
+          43
         ],
         "ticks": 21,
         "events": [],
@@ -1969,8 +2191,8 @@
           81
         ],
         "weapon_socket": [
-          56,
-          37
+          50,
+          33
         ],
         "ticks": 22,
         "events": [],
@@ -1988,7 +2210,7 @@
           81
         ],
         "weapon_socket": [
-          78,
+          80,
           51
         ],
         "ticks": 13,
@@ -2048,11 +2270,88 @@
           61,
           64
         ],
-        "ticks": 45,
+        "ticks": 9,
         "events": [],
         "state": "dead"
+      },
+      {
+        "region": [
+          1200,
+          0,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          74
+        ],
+        "ticks": 13,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1320,
+          0,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          78
+        ],
+        "ticks": 23,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1440,
+          0,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          72,
+          56
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
+      },
+      {
+        "region": [
+          1560,
+          0,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          73,
+          57
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "rivet": {
     "sheet": "watch.png",
@@ -2110,7 +2409,7 @@
           72,
           54
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2129,7 +2428,7 @@
           72,
           54
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2243,11 +2542,88 @@
           67,
           59
         ],
-        "ticks": 45,
+        "ticks": 9,
         "events": [],
         "state": "dead"
+      },
+      {
+        "region": [
+          1200,
+          96,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          74
+        ],
+        "ticks": 13,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1320,
+          96,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          78
+        ],
+        "ticks": 23,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1440,
+          96,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          73,
+          53
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
+      },
+      {
+        "region": [
+          1560,
+          96,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          73,
+          54
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "ram": {
     "sheet": "watch.png",
@@ -2305,7 +2681,7 @@
           73,
           54
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2324,7 +2700,7 @@
           73,
           55
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2438,11 +2814,88 @@
           68,
           61
         ],
-        "ticks": 45,
+        "ticks": 9,
         "events": [],
         "state": "dead"
+      },
+      {
+        "region": [
+          1200,
+          192,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          74
+        ],
+        "ticks": 13,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1320,
+          192,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          78
+        ],
+        "ticks": 23,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1440,
+          192,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          74,
+          53
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
+      },
+      {
+        "region": [
+          1560,
+          192,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          74,
+          54
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "fork": {
     "sheet": "watch.png",
@@ -2500,7 +2953,7 @@
           69,
           57
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2519,7 +2972,7 @@
           68,
           54
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2633,11 +3086,88 @@
           55,
           74
         ],
-        "ticks": 45,
+        "ticks": 9,
         "events": [],
         "state": "dead"
+      },
+      {
+        "region": [
+          1200,
+          288,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          74
+        ],
+        "ticks": 13,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1320,
+          288,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          78
+        ],
+        "ticks": 23,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1440,
+          288,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          71,
+          55
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
+      },
+      {
+        "region": [
+          1560,
+          288,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          70,
+          52
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
       }
-    ]
+    ],
+    "trim_transparent": true
   },
   "chain": {
     "sheet": "watch.png",
@@ -2695,7 +3225,7 @@
           71,
           49
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2714,7 +3244,7 @@
           67,
           45
         ],
-        "ticks": 11,
+        "ticks": 6,
         "events": [],
         "state": "walk"
       },
@@ -2825,13 +3355,90 @@
           81
         ],
         "weapon_socket": [
-          56,
-          73
+          57,
+          65
         ],
-        "ticks": 45,
+        "ticks": 9,
         "events": [],
         "state": "dead"
+      },
+      {
+        "region": [
+          1200,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          74
+        ],
+        "ticks": 13,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1320,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          56,
+          78
+        ],
+        "ticks": 23,
+        "events": [],
+        "state": "dead"
+      },
+      {
+        "region": [
+          1440,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          69,
+          46
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
+      },
+      {
+        "region": [
+          1560,
+          384,
+          120,
+          96
+        ],
+        "anchor": [
+          56,
+          81
+        ],
+        "weapon_socket": [
+          65,
+          42
+        ],
+        "ticks": 5,
+        "events": [],
+        "state": "walk"
       }
-    ]
+    ],
+    "trim_transparent": true
   }
 }
