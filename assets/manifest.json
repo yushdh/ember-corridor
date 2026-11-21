@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 15,
   "assets": [
     {
       "path": "assets/quay/atmosphere.png",
@@ -166,47 +166,65 @@
     {
       "path": "assets/combat/audio/sabre.wav",
       "purpose": "弯刃挥空",
-      "source": "tools/forge_audio.py",
-      "author": "本项目，Codex 按动作编写 Python 合成程序",
-      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
-      "attribution": "无外部素材署名要求",
-      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+      "source": "tools/foley/README.md · swing2",
+      "author": "artisticdude · RPG Sound Pack；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，119 ms。"
     },
     {
       "path": "assets/combat/audio/maul.wav",
       "purpose": "锤头下挥",
-      "source": "tools/forge_audio.py",
-      "author": "本项目，Codex 按动作编写 Python 合成程序",
-      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
-      "attribution": "无外部素材署名要求",
-      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+      "source": "tools/foley/README.md · swing",
+      "author": "artisticdude · RPG Sound Pack；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，195 ms。"
     },
     {
       "path": "assets/combat/audio/hit.wav",
       "purpose": "弯刃命中",
-      "source": "tools/forge_audio.py",
-      "author": "本项目，Codex 按动作编写 Python 合成程序",
-      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
-      "attribution": "无外部素材署名要求",
-      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。 轻击接触后 8 毫秒叠入短促的下滑金属刮音。"
+      "source": "tools/foley/README.md · impactMetal_light_002, impactPunch_medium_000",
+      "author": "Kenney · Impact Sounds；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，123 ms。"
+    },
+    {
+      "path": "assets/combat/audio/hit_thrust.wav",
+      "purpose": "弯刃突刺命中",
+      "source": "tools/foley/README.md · impactPunch_medium_000, impactMetal_light_002",
+      "author": "Kenney · Impact Sounds；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，109 ms。"
+    },
+    {
+      "path": "assets/combat/audio/hit_lift.wav",
+      "purpose": "弯刃上挑命中",
+      "source": "tools/foley/README.md · impactMetal_light_003, impactWood_heavy_001",
+      "author": "Kenney · Impact Sounds；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，144 ms。"
     },
     {
       "path": "assets/combat/audio/crush.wav",
       "purpose": "重锤接触的低频冲量、金属敲击与延迟铜壳颤音",
-      "source": "tools/forge_audio.py",
-      "author": "本项目，Codex 按动作编写 Python 合成程序",
-      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
-      "attribution": "无外部素材署名要求",
-      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+      "source": "tools/foley/README.md · impactWood_heavy_001, impactPunch_heavy_001, impactMetal_heavy_000",
+      "author": "Kenney · Impact Sounds；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，241 ms。"
     },
     {
       "path": "assets/combat/audio/hurt.wav",
       "purpose": "行者受创",
-      "source": "tools/forge_audio.py",
-      "author": "本项目，Codex 按动作编写 Python 合成程序",
-      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
-      "attribution": "无外部素材署名要求",
-      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+      "source": "tools/foley/README.md · impactPunch_medium_000, impactWood_heavy_001",
+      "author": "Kenney · Impact Sounds；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，152 ms。"
     },
     {
       "path": "assets/combat/audio/fork.wav",
@@ -454,11 +472,11 @@
     {
       "path": "assets/combat/audio/fire_hit.wav",
       "purpose": "火刃命中时的低频撞击、金属锐响和火花尾音",
-      "source": "tools/forge_audio.py",
-      "author": "本项目，Codex 按动作编写 Python 合成程序",
-      "license_basis": "按委托为本项目生成，未采样外部音频，未指定对外开放许可。",
-      "attribution": "无外部素材署名要求",
-      "processing": "以振荡器、确定性噪声与包络离线合成 22050 Hz 单声道 PCM，无外部录音。"
+      "source": "tools/foley/README.md · impactMetal_heavy_000, impactPunch_heavy_001, swing2, impactWood_heavy_001",
+      "author": "Kenney · Impact Sounds / artisticdude · RPG Sound Pack；本项目剪辑混音",
+      "license_basis": "原始素材 CC0 1.0，作者及来源详见 tools/foley/README.md",
+      "attribution": "CC0 无强制署名；工程内保留作者和素材出处。",
+      "processing": "tools/mix_foley.py 裁切、变速、分层混合及尾部淡出，22050 Hz 单声道 PCM，274 ms。"
     },
     {
       "path": "assets/foundry/inserts.png",

@@ -368,7 +368,7 @@ class Encounter:
             surfaces=self.surfaces,
             jump=jump and not locked,
             held=held,
-            drop=drop,
+            drop=drop and not locked,
             roll=roll and not locked,
         )
         self.buffer = max(0, self.buffer - 1)

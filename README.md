@@ -6,13 +6,13 @@
 
 [五间厂房的动态实景与同机位前后对照](docs/verification/harbour/comparison.gif) · [开发日志](docs/DEVLOG.md)
 
-[蓄满提示与敌方预警的带声实机对照](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)。最新 Windows 包可用项目虚拟环境执行 `tools/build_windows.py --output-dir dist/first-play` 复建。
+[栈板下穿、头顶血条与新版刀锤试听](docs/verification/deck-foley/README.md) · [蓄满提示与敌方预警](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)。最新 Windows 包可用项目虚拟环境执行 `python tools/build_windows.py --output-dir dist/deck-foley` 复建。
 
 ## 在本机开始
 
 ### 首次试玩手工五室
 
-解压本轮 `dist/first-play/EmberCorridor-Windows-x64.zip`，双击 **首次试玩.cmd**。它会用独立新档打开经典五室；源码入口为 `.\.venv\Scripts\python.exe -m game --first-play`。按游戏内提示自由游玩，离席时可按 Esc 暂停，通关或随时关窗均可结束。若愿意反馈，打开资源管理器的 `%LOCALAPPDATA%\EmberCorridor-Playtests`，取最近目录中的 `session.json`，并说明是否第一次玩以及最难找路或最难应对的地方。试玩记录只保存在本机。[本轮验证和计时口径](docs/verification/stage4-first-play/README.md)
+解压本轮 `dist/deck-foley/EmberCorridor-Windows-x64.zip`，双击 **首次试玩.cmd**。它会用独立新档打开经典五室；源码入口为 `.\.venv\Scripts\python.exe -m game --first-play`。按游戏内提示自由游玩，离席时可按 Esc 暂停，通关或随时关窗均可结束。若愿意反馈，打开资源管理器的 `%LOCALAPPDATA%\EmberCorridor-Playtests`，取最近目录中的 `session.json`，并说明是否第一次玩以及最难找路或最难应对的地方。试玩记录只保存在本机。[本轮验证和计时口径](docs/verification/stage4-first-play/README.md)
 
 ### Windows x64 发行包
 
@@ -40,7 +40,7 @@
 | 开始潮钟线 | 标题页按 Enter |
 | 左右跑动、空中调整方向 | A / D。地面奔跑消耗左上琥珀色耐力条，停步恢复；耗尽时改为慢跑，恢复到 30 可再次全速奔跑 |
 | 跳跃 | Space，轻点低跳，按住高跳 |
-| 从悬吊栈板下穿 | 按住 S 再按 Space |
+| 从悬吊栈板下穿 | 按住 S 再按 Space，或近乎同时按下两键 |
 | 朝当前方向翻滚 | 在地面或平台上按 K；梁下保持方向可低身移出 |
 | 攻击 | J。弯刃连按三次可依次横斩、上挑、突刺；重锤按一次蓄势落锤 |
 | 切换已持有的武器 | 1 余烬短刃，2 潮砧重锤。动作收势后可换装，图标旁短暂显示武器名 |

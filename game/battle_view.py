@@ -1,5 +1,6 @@
 """Preloaded combat presentation. Input and hit stop never block the window."""
 from dataclasses import dataclass, replace
+from functools import lru_cache
 import math
 import random
 
@@ -10,6 +11,17 @@ from .attacks import STRIKES
 from .combat import FORK_HEIGHT, FORK_REACH, MAX_HP, TYPES, wall_entry
 from .resources import ASSETS, load_clips
 from .ui import blit, panel, tag, label, draw_stamina, GOLD, PALE, FOAM
+
+
+@lru_cache(maxsize=256)
+def health_texture(width, filled, boss):
+    height = 6 if boss else 5
+    im = Image.new("RGBA", (width, height), "#1a222a")
+    d = ImageDraw.Draw(im)
+    d.rectangle((1, 1, width-2, height-2), fill="#473e41")
+    d.rectangle((1, 1, filled, height-2), fill="#b6634c")
+    d.line((1, 1, filled, 1), fill="#e6a274")
+    return arcade.Texture(im)
 
 
 def position(sprite, frame, x, y, facing, scroll, lift):
@@ -182,6 +194,8 @@ class BattleView:
         self.warning_list = arcade.SpriteList()
         self.warning_count = 0
         self.warning_badges = []
+        self.health_bars = []
+        self.head_clearance = {}
         for enemy in foes:
             self.enemies.append(arcade.Sprite(self.clips[enemy.kind].frames[0].right))
         self.trail = arcade.Sprite(self.clips["trail_cut"].frames[3].right)
@@ -208,7 +222,7 @@ class BattleView:
         self.sounds = {
             p.stem: arcade.load_sound(p) for p in sorted((ASSETS / "combat/audio").glob("*.wav"))
         }
-        priorities = {**dict.fromkeys(("hit", "crush", "fire_hit", "hurt"), 1), "ignite": 2,
+        priorities = {**dict.fromkeys(("hit", "hit_lift", "hit_thrust", "crush", "fire_hit", "hurt"), 1), "ignite": 2,
                       **dict.fromkeys((*TYPES, "sweep", "vent", "phase"), 3)}
         self.voice_priority = {sound: priorities.get(name, 0) for name, sound in self.sounds.items()}
         self.players = []
@@ -356,7 +370,9 @@ class BattleView:
                 if k == "hit":
                     instance = (ev["action"], ev.get("attack_id", ev["tick"]))
                     if instance != self.last_impact:
-                        self.sound("fire_hit" if fire else "crush" if heavy else "hit")
+                        cue = {"liftcut": "hit_lift", "thrust": "hit_thrust",
+                               "breaker": "crush", "firecut": "fire_hit"}.get(ev["action"], "hit")
+                        self.sound(cue)
                         self.last_impact = instance
                 else:
                     self.sound("hurt")
@@ -482,17 +498,39 @@ class BattleView:
         self.warning_count = 0
         placed = []
         self.warning_badges.clear()
-        for e in c.foes:
-            if e.state != "warn" or e.kind == "bell":
+        self.health_bars.clear()
+        for e in sorted(c.foes, key=lambda foe: foe.y + foe.spec.height):
+            if e.hp <= 0:
                 continue
             x, y = round(e.x) - scroll, round(e.y) - lift
+            width = 2 * e.spec.half_width + 4
+            visible = x + width//2 > 0 and x - width//2 < 640
+            boss = e.kind == "bell"
+            warn = not boss and e.state == "warn"
+            # An offscreen attack can still telegraph into the visible playfield.
+            if not visible and not warn:
+                continue
+            if e.kind not in self.head_clearance:
+                # Stable across walk frames, measured from the baked pose's sole to its crown.
+                frame = self.clips[e.kind].frames[0]
+                self.head_clearance[e.kind] = max(e.spec.height, frame.anchor[1] - frame.right.image.getbbox()[1]) + 7
+            bottom = y + self.head_clearance[e.kind]
+            filled = max(1, round((width-2) * e.hp/e.spec.hp))
+            texture = health_texture(width, filled, boss)
+            height = texture.height + (18 if warn else 0)
+            left = x - width//2
+            for l, r, b, t in sorted(placed, key=lambda rect: rect[3]):
+                if left < r+2 and left+width > l-2 and bottom < t+2 and bottom+height > b-2:
+                    bottom = t+2
+            if visible:
+                placed.append((left, left+width, bottom, bottom+height))
+                self.health_bars.append((texture, left, bottom))
+            if not warn:
+                continue
             icons, right, left = self.marks[e.kind]
             icon = icons[int(e.age * 3 >= e.spec.windup * 2)]
             dash = right if e.facing > 0 else left
-            top = y + e.spec.height + 12
-            while any(abs(x - px) < 17 and abs(top - py) < 17 for px, py in placed):
-                top += 17
-            placed.append((x, top))
+            top = bottom + texture.height + 10
             self.warning_badges.append((icon, x, top))
             if e.kind == "rivet":
                 muzzle = (e.x + e.facing * 21, e.y + 30)
@@ -526,6 +564,8 @@ class BattleView:
         self.warning_list.draw(pixelated=True)
 
     def draw_badges(self):
+        for tex, x, y in self.health_bars:
+            arcade.draw_texture_rect(tex, arcade.LBWH(x, y, tex.width, tex.height), pixelated=True)
         for icon, x, y in self.warning_badges:
             arcade.draw_texture_rect(icon, arcade.LBWH(x - 8, y - 8, 16, 16), pixelated=True)
 
@@ -557,8 +597,6 @@ class BattleView:
         if self.focus and c.hp and self.focus.kind in self.tags:
             e = self.focus
             blit(self.tags[e.kind], 523, 328)
-            box(530, 328, 86, 3, (43, 48, 54))
-            box(530, 328, max(1, round(86*e.hp/e.spec.hp)), 3, (216, 147, 107))
         if show_result and not c.hp and c.death_age > 40:
             blit(self.notices["dead"], 236, 172)
         elif show_result and c.cleared:

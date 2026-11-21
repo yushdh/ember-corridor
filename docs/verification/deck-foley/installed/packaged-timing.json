@@ -1,0 +1,46 @@
+{
+  "python": "3.12.14",
+  "arcade": "3.3.3",
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "window": [
+    1280,
+    720
+  ],
+  "logical": [
+    640,
+    360
+  ],
+  "vsync": true,
+  "levels": [
+    3,
+    3,
+    3,
+    3
+  ],
+  "foes": 2,
+  "peak_particles": 10,
+  "samples": 752,
+  "fps": 59.48,
+  "present_ms": {
+    "median": 16.7095,
+    "p95": 17.4707,
+    "p99": 17.7838
+  },
+  "update_draw_submit_ms": {
+    "median": 0.6432,
+    "p95": 0.9581,
+    "p99": 1.269
+  },
+  "sync_pose_ms": {
+    "median": 0.0601,
+    "p95": 0.1222,
+    "p99": 0.1395
+  },
+  "released_old_objects": 60,
+  "warmup_frame_hashes": {
+    "15": "d689b7df20ab81dc4acecb8c40a1f907b3d142bc36bf5e2dac484bfd84f02ab3",
+    "33": "6c56b1b170b2bf104cb3edc03e13cee9036bb0a0d5e38557fb992960b28ddaa7",
+    "40": "1731bb47de25d82b250481b0aa4f42fef217cfb7b7ff6b4744703b919bda4784",
+    "60": "214602c6e1ec449f1651cace348bc960d89c698ecea774f57c0ed5da64227e80"
+  }
+}

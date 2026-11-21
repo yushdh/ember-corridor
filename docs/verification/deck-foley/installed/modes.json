@@ -1,0 +1,22 @@
+{
+  "practice": {
+    "learned": [
+      "move"
+    ],
+    "exit_code": 0
+  },
+  "skirmish": {
+    "learned": [
+      "attack",
+      "move"
+    ],
+    "exit_code": 0
+  },
+  "classic": {
+    "learned": [
+      "attack",
+      "move"
+    ],
+    "exit_code": 0
+  }
+}

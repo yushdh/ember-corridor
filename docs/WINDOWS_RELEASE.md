@@ -11,7 +11,9 @@ Esc 打开暂停菜单。操作说明页支持改键，设置页支持调节震�
 
 永久炉谱、教学记录、绑定及反馈设置位于 %LOCALAPPDATA%\EmberCorridor。需要迁移时请关闭游戏并复制整个存档目录。局内进度在重开时重置。
 
-原创美术与音效的逐项来源见 _internal\assets\manifest.json。运行库及其许可说明见 licenses 目录，中文字体使用本机安装版本。
+在悬空栈板上，按住 S 再按空格或近乎同时按下两键即可下穿。守卫头顶短槽显示剩余生命，体型越大，槽越宽。
+
+美术与音效的逐项来源见 _internal\assets\manifest.json。近战混音使用 Kenney 和 artisticdude 的 CC0 采样，出处见 licenses\武器拟音.txt。运行库许可也在 licenses 目录，中文字体使用本机安装版本。
 
 安装自检（可选）：.\EmberCorridor.exe --verify-install .\验收结果
 请指定尚不存在的输出目录。该模式使用临时存档，向游戏窗口发送按键并实走五室、胜负重开，完成后输出窗口截图与 installed.json；遇到游戏内检查错误会输出 error.txt。请保持窗口打开直至自动退出。

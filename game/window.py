@@ -210,6 +210,8 @@ class QuayWindow(arcade.Window):
         elif not self.paused:
             if key == arcade.key.SPACE:
                 self.drop_request = arcade.key.S in self.keys
+            elif key == arcade.key.S and arcade.key.SPACE in self.keys:
+                self.drop_request = True
             self.edges.add(key)
 
     def toggle_pause(self):

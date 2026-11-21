@@ -1,0 +1,217 @@
+{
+  "cases": {
+    "down-first": {
+      "top": 151,
+      "peak": 150.42,
+      "end": 94,
+      "below": 0
+    },
+    "jump-first-same-tick": {
+      "top": 151,
+      "peak": 215.99,
+      "end": 151,
+      "below": null
+    },
+    "jump-first-3-ticks": {
+      "top": 151,
+      "peak": 215.99,
+      "end": 151,
+      "below": null
+    },
+    "remapped": {
+      "top": 151,
+      "peak": 215.99,
+      "end": 151,
+      "below": null
+    },
+    "jump-only": {
+      "top": 151,
+      "peak": 215.99,
+      "end": 151,
+      "below": null
+    },
+    "late-down": {
+      "top": 151,
+      "peak": 215.99,
+      "end": 151,
+      "below": null
+    },
+    "miss": [],
+    "combo": [
+      [
+        "cut",
+        3
+      ],
+      [
+        "liftcut",
+        3
+      ],
+      [
+        "thrust",
+        3
+      ]
+    ],
+    "hammer": [
+      [
+        "breaker",
+        3
+      ]
+    ]
+  },
+  "sounds": [
+    {
+      "name": "land",
+      "scene": "down-first",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "down-first",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "jump-first-same-tick",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "jump-first-same-tick",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "jump-first-3-ticks",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "jump-first-3-ticks",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "remapped",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "remapped",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "jump-only",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "jump-only",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "late-down",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "land",
+      "scene": "late-down",
+      "played": true,
+      "frame": 0,
+      "gain": 0.2046
+    },
+    {
+      "name": "sabre",
+      "scene": "miss",
+      "played": true,
+      "frame": 11,
+      "gain": 0.23249999999999998
+    },
+    {
+      "name": "sabre",
+      "scene": "combo",
+      "played": true,
+      "frame": 95,
+      "gain": 0.23249999999999998
+    },
+    {
+      "name": "hit",
+      "scene": "combo",
+      "played": true,
+      "frame": 95,
+      "gain": 0.31
+    },
+    {
+      "name": "sabre",
+      "scene": "combo",
+      "played": true,
+      "frame": 108,
+      "gain": 0.23249999999999998
+    },
+    {
+      "name": "hit",
+      "scene": "combo",
+      "played": true,
+      "frame": 108,
+      "gain": 0.31
+    },
+    {
+      "name": "sabre",
+      "scene": "combo",
+      "played": true,
+      "frame": 125,
+      "gain": 0.23249999999999998
+    },
+    {
+      "name": "hit",
+      "scene": "combo",
+      "played": true,
+      "frame": 125,
+      "gain": 0.31
+    },
+    {
+      "name": "maul",
+      "scene": "hammer",
+      "played": true,
+      "frame": 192,
+      "gain": 0.2635
+    },
+    {
+      "name": "crush",
+      "scene": "hammer",
+      "played": true,
+      "frame": 192,
+      "gain": 0.3472
+    },
+    {
+      "name": "hook",
+      "scene": "hammer",
+      "played": true,
+      "frame": 233,
+      "gain": 0.31
+    }
+  ]
+}

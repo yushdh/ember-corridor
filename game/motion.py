@@ -11,6 +11,7 @@ MAX_STAMINA = 100.0
 RUN_DRAIN, REST_GAIN, WALK_SPEED = 16.0, 27.0, 102
 JUMP_SPEED, RELEASE_SPEED, GRAVITY = 444, 202, 1160
 GRACE_TICKS = BUFFER_TICKS = 12
+DROP_CHORD_TICKS = 6
 ROLL_TICKS, ROLL_RECHARGE = 42, 78
 INVULN_START, INVULN_END = 5, 29
 LAND_TICKS = 15
@@ -39,6 +40,9 @@ class Walker:
     ignore: Surface | None = None
     grace: int = 0
     jump_buffer: int = 0
+    buffered_drop: bool = False
+    jump_deck: Surface | None = None
+    chord_ticks: int = 0
     roll_age: int = -1
     recharge: int = 0
     landing: int = 0
@@ -103,6 +107,8 @@ class Walker:
 
     def clear_transients(self, surfaces=SURFACES):
         self.jump_buffer = self.grace = 0
+        self.buffered_drop = False
+        self.jump_deck, self.chord_ticks = None, 0
         self.roll_age = -1
         self.speed = 0
         if self.headroom(surfaces):
@@ -125,15 +131,32 @@ class Walker:
 
         if jump:
             self.jump_buffer = BUFFER_TICKS
-        if jump and drop and self.support and self.support.one_way and self.roll_age < 0:
-            self.ignore = self.support
+            self.buffered_drop = drop
+        elif drop and self.jump_buffer:
+            self.buffered_drop = True
+        # Accept either key order without delaying a plain jump. Only the plank the
+        # jump started on can be crossed by the short second-key correction.
+        deck = None
+        if self.support and self.support.one_way and self.jump_buffer and self.buffered_drop:
+            deck = self.support
+        elif drop and self.chord_ticks and self.vy > 0 and self.support is None:
+            deck = self.jump_deck
+        if deck and self.roll_age < 0:
+            self.ignore = deck
             self.support = None
             self.grace = self.jump_buffer = 0
-            self.vy = -60
+            self.vy = -max(60, (self.y - deck.top) * 12)
+            self.chord_ticks = 0
         if self.jump_buffer and (self.support or self.grace) and not self.tucked:
-            self.vy = JUMP_SPEED
-            self.support = None
+            if self.support or not self.buffered_drop:
+                self.jump_deck = self.support if self.support and self.support.one_way else None
+                self.chord_ticks = DROP_CHORD_TICKS + 1 if self.jump_deck else 0
+                self.vy = JUMP_SPEED
+                self.support = None
             self.grace = self.jump_buffer = 0
+        self.chord_ticks = max(0, self.chord_ticks - 1)
+        if not self.chord_ticks:
+            self.jump_deck = None
         if not held and self.vy > RELEASE_SPEED:
             self.vy = RELEASE_SPEED
 

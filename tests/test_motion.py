@@ -4,6 +4,7 @@ from game.motion import (
     Walker,
     STEP,
     GRACE_TICKS,
+    DROP_CHORD_TICKS,
     BUFFER_TICKS,
     INVULN_START,
     INVULN_END,
@@ -97,6 +98,27 @@ class MovementTests(unittest.TestCase):
         tick(w, 80, surfaces=world)
         self.assertIs(w.support, lower)
         self.assertIsNone(w.ignore)
+
+    def test_drop_chord_last_tick_and_expiry(self):
+        deck = FACES["sling"]
+        for gap, expected in ((DROP_CHORD_TICKS, FLOOR), (DROP_CHORD_TICKS + 1, deck)):
+            w = Walker(x=(deck.left + deck.right) / 2, y=deck.top, support=deck)
+            world = (FLOOR, deck)
+            w.step(0, jump=True, held=True, surfaces=world)
+            tick(w, gap - 1, held=True, surfaces=world)
+            w.step(0, held=True, drop=True, surfaces=world)
+            tick(w, 120, surfaces=world)
+            self.assertIs(w.support, expected)
+
+    def test_buffered_drop_at_landing_and_solid_floor(self):
+        deck = FACES["sling"]
+        w = Walker(x=(deck.left + deck.right) / 2, y=deck.top + 1, vy=-200, support=None)
+        world = (FLOOR, deck)
+        w.step(0, jump=True, held=True, drop=True, surfaces=world)
+        tick(w, 120, surfaces=world)
+        self.assertIs(w.support, FLOOR)
+        w.step(0, jump=True, held=True, drop=True, surfaces=world)
+        self.assertGreater(w.vy, 0)
 
     def test_ceiling_sweep_walls_and_flush_corner(self):
         beam = FACES["weighbridge"]

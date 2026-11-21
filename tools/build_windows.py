@@ -17,6 +17,7 @@ NAME = "EmberCorridor"
 
 def copy_notices(folder):
     folder.mkdir()
+    shutil.copyfile(ROOT/"tools/foley/README.md", folder/"武器拟音.txt")
     shutil.copyfile(Path(sys.base_prefix)/"LICENSE.txt", folder/"Python.txt")
     for name in ("arcade", "pyglet", "pillow", "pymunk", "cffi", "pycparser",
                  "attrs", "pytiled_parser", "typing_extensions", "pyinstaller"):

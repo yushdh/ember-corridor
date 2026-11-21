@@ -465,10 +465,6 @@ class CampaignWindow(QuayWindow):
         boss = next((e for e in c.foes if isinstance(e, Bellkeeper)), None)
         if boss and boss.hp and abs(boss.x - w.x) < 475:
             blit(self.boss_tags[boss.phase - 1], 465, 310)
-            arcade.draw_lbwh_rectangle_filled(467, 306, 156, 4, (47, 37, 42))
-            arcade.draw_lbwh_rectangle_filled(
-                467, 306, max(1, round(156 * boss.hp / boss.spec.hp)), 4, (220, 155, 90)
-            )
         hint = None
         if self.gear_badge and self.elapsed_ticks < self.gear_until:
             blit(self.gear_badge, 10, 268, min(255, 6*(self.gear_until-self.elapsed_ticks)))
