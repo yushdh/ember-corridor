@@ -6,7 +6,7 @@
 
 [五间厂房的动态实景与同机位前后对照](docs/verification/harbour/comparison.gif) · [开发日志](docs/DEVLOG.md)
 
-[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-stage4-detour/EmberCorridor-Windows-x64.zip) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
+[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-forge-preview/EmberCorridor-Windows-x64.zip) · [炉件装配预览与实测](docs/verification/forge-preview/README.md) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
 
 [栈板下穿、头顶血条与新版刀锤试听](docs/verification/deck-foley/README.md) · [蓄满提示与敌方预警](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)
 
@@ -14,7 +14,7 @@
 
 ### 首次试玩手工五室
 
-解压本轮 `dist/stage4-detour/EmberCorridor-Windows-x64.zip`，双击 **首次试玩.cmd**。它会用独立新档打开经典五室；源码入口为 `.\.venv\Scripts\python.exe -m game --first-play`。按游戏内提示自由游玩，离席时可按 Esc 暂停，通关或随时关窗均可结束。若愿意反馈，打开资源管理器的 `%LOCALAPPDATA%\EmberCorridor-Playtests`，取最近目录中的 `session.json`，并说明是否第一次玩以及最难找路或最难应对的地方。试玩记录只保存在本机。[本轮验证和计时口径](docs/verification/stage4-first-play/README.md)
+解压本轮 `dist/forge-preview/EmberCorridor-Windows-x64.zip`，双击 **首次试玩.cmd**。它会用独立新档打开经典五室；源码入口为 `.\.venv\Scripts\python.exe -m game --first-play`。按游戏内提示自由游玩，离席时可按 Esc 暂停，通关或随时关窗均可结束。若愿意反馈，打开资源管理器的 `%LOCALAPPDATA%\EmberCorridor-Playtests`，取最近目录中的 `session.json`，并说明是否第一次玩以及最难找路或最难应对的地方。试玩记录只保存在本机。[本轮验证和计时口径](docs/verification/stage4-first-play/README.md)
 
 ### Windows x64 发行包
 
@@ -74,7 +74,7 @@
 
 种子 17 先到西侧绞盘，再走高架检修桥和双闸涵洞。门廊与最后的退潮钟固定。当前版本中相同种子可复现房间顺序、地形、守卫和机关位置。[阶段 6 实机记录](docs/verification/stage6/README.md)
 
-每个匣可选一件。重复选同款可升阶，换款会保留本局已投入的阶数，仅身上这一款生效。赤铜刃齿加强近战，回潮轮缩短 Q 的冷却。首次装配会解锁覆炉甲片，下次出发即可选择减伤。过门保留装备，死亡或胜利后按 R 开始新局，炉件阶数清零。[装配实机截图](docs/verification/stage5/blueprint.png)
+每个匣可选一件。用 ↑ ↓ 比较当前武器首击、潮印冷却和固定减伤，Enter 装配，Esc 可退出再选。重复选同款可升阶，换款会保留本局已投入的阶数，仅身上这一款生效。赤铜刃齿加强近战，回潮轮缩短 Q 的冷却。首次装配会解锁覆炉甲片，下次出发即可选择减伤。过门保留装备，死亡或胜利后按 R 开始新局，炉件阶数清零。[装配实机截图](docs/verification/stage5/blueprint.png)
 
 永久炉谱与四项反馈设置保存在 `%LOCALAPPDATA%\EmberCorridor\profile.json`，同目录的 `profile.bak` 保存上一次有效数据。每次更改会自动写入。主文件损坏时游戏尝试恢复备份并显示提示。如果两份都无法读取，可以继续本次游玩；修复时先关闭游戏，另存整个目录，再放回有效备份或移走损坏文件重新开始。从新版本生成的存档请使用对应版本打开。局内房间和战斗进度仅在本次游玩中保留。
 

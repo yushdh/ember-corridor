@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from .combat import Enemy, EnemySpec, Encounter, wall_entry
 from .flame import FlameCut
-from .gear import Loadout
+from .gear import COOLDOWN, Loadout
 from .terrain import FLOOR, Surface
 
 ENTRY = (75, FLOOR.top)
@@ -154,7 +154,6 @@ class Bellkeeper(Enemy):
         c.emit(self.move_name, self.x, self.y, phase=self.phase)
 
 
-COOLDOWN = 420
 CAST_TICKS = (5, 6, 5, 5, 7, 8)
 RELEASE = sum(CAST_TICKS[:2])
 
@@ -178,13 +177,13 @@ class FoundryEncounter(Encounter):
 
     @property
     def seal_period(self):
-        return COOLDOWN - 72 * self.loadout.rank("tide")
+        return self.loadout.seal_period
 
     def melee_damage(self, base):
-        return base + 6 * self.loadout.rank("tooth")
+        return self.loadout.melee_damage(base)
 
     def incoming_damage(self, base):
-        return max(1, base - 3 * self.loadout.rank("shell"))
+        return max(1, base - self.loadout.damage_reduction)
 
     @property
     def crate(self):

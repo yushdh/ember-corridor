@@ -53,3 +53,15 @@ class GearTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             c.loadout.fit("shell")
         self.assertFalse(c.loadout.ranks)
+
+    def test_preview_preserves_spent_ranks_and_active_equipment(self):
+        build = FoundryEncounter(ROOMS[0]).loadout
+        build.fit("tooth")
+        build.fit("tide")
+        for _ in range(3):
+            offer = build.after_fit("tooth")
+            self.assertEqual((offer.melee_damage(16), offer.seal_period), (28, COOLDOWN))
+        self.assertEqual(build.ranks, {"tooth": 1, "tide": 1})
+        self.assertEqual((build.equipped, build.seal_period), ("tide", COOLDOWN - 72))
+        with self.assertRaises(ValueError):
+            build.after_fit("shell")

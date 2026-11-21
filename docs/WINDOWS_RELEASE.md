@@ -13,6 +13,8 @@ Esc 打开暂停菜单。操作说明页支持改键，设置页支持调节震�
 
 在悬空栈板上，按住 S 再按空格或近乎同时按下两键即可下穿。守卫头顶短槽显示剩余生命，体型越大，槽越宽。
 
+靠近炉料匣按 E，使用 ↑ ↓ 预览装配后的首击伤害、潮印冷却和固定减伤。Enter 确认，数字键直接装配，Esc 退出并保留炉料匣。
+
 美术与音效的逐项来源见 _internal\assets\manifest.json。近战混音使用 Kenney 和 artisticdude 的 CC0 采样，出处见 licenses\武器拟音.txt。运行库许可也在 licenses 目录，中文字体使用本机安装版本。
 
 安装自检（可选）：.\EmberCorridor.exe --verify-install .\验收结果
@@ -23,3 +25,6 @@ Esc 打开暂停菜单。操作说明页支持改键，设置页支持调节震�
 
 手工五室复验（可选）：.\EmberCorridor.exe --verify-install .\手工五室验收 --blade-detour
 使用临时新档和自动按键，以短刃和潮印跳过四个炉料匣，先试吊廊东门再折返扳绞盘，最终鸣钟。输出目录须为新目录。首胜计时会标明是自动输入。
+
+炉件装配复验（可选）：.\EmberCorridor.exe --verify-install .\炉件验收 --forge-preview
+在独立存档比较四种配置的预览和实战数值，再以原生按键跑到随机潮图的首个炉料匣。输出目录须为新目录。

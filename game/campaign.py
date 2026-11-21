@@ -6,10 +6,11 @@ from secrets import randbits
 import arcade
 from PIL import Image
 
+from .attacks import STRIKES
 from .battle_view import position
 from .foundry import Bellkeeper, ENTRY, FoundryEncounter, RELEASE, ROOMS
 from .gear import INSERTS
-from .motion import Walker
+from .motion import STEP, Walker
 from .profile import atomic_write
 from .routes import ALTERNATES, CLASSIC, generate
 from .resources import ASSETS, load_clips
@@ -224,11 +225,20 @@ class CampaignWindow(QuayWindow):
 
     def open_forge(self):
         self.forge_focus = 0
-        self.forge_note = ("甲片炉谱已收录" if self.store.data.shell_known
-                           else "首次装配解锁甲片炉谱，下次出发可用")
+        build = self.combat.loadout
+        self.forge_current = self.forge_stats(build)
+        self.forge_offers = {item: self.forge_stats(build.after_fit(item)) for item in build.options}
+        self.forge_note = "换下的炉件保留本局阶数"
+        if not build.shell_known:
+            self.forge_note = ("甲片炉谱已收录，下次出发可用" if self.store.data.shell_known
+                               else "首次装配解锁甲片炉谱，下次出发可用")
         self.guidance.clear()
         self.mode = "forge"
         self.clear_input()
+
+    def forge_stats(self, build):
+        strike = STRIKES["cut" if self.combat.weapon == "light" else "breaker"]
+        return build.melee_damage(strike.damage), build.seal_period, build.damage_reduction
 
     def on_update(self, dt):
         if self.mode == "play" and not self.paused and not self.closed:
@@ -425,22 +435,35 @@ class CampaignWindow(QuayWindow):
                 blit(message, 123, 62)
             return
         if self.mode == "forge":
-            blit(panel((390, 360), style="scrim", fill="#101c27fa"), 0, 0)
-            blit(label("东门料槽", 12, 120, GOLD), 28, 308)
-            blit(label("装配炉芯", 27, 170), 26, 264)
-            blit(label("选择一件炉件，本局生效", 12, 200, FOAM), 29, 238)
-            for i, item in enumerate(c.loadout.options):
-                y = 192 - i*47
+            build = c.loadout
+            blit(panel((398, 360), style="scrim", fill="#101c27fa"), 0, 0)
+            blit(label("东门料槽", 12, 120, GOLD), 28, 324)
+            blit(label("装配炉芯", 25, 170), 26, 289)
+            equipped = (f"{INSERTS[build.equipped].name}  {build.rank(build.equipped)} 阶"
+                        if build.equipped else "空槽")
+            blit(label(f"当前炉件   {equipped}", 12, 270, FOAM), 29, 264)
+            for i, item in enumerate(build.options):
+                y = 230 - i*33
                 selected = i == self.forge_focus
                 if selected:
-                    blit(panel((305, 40), style="focus", fill="#514638ed"), 28, y-9)
-                blit(self.inserts[item], 43, y-6)
-                rank = c.loadout.ranks.get(item, 0)
-                blit(label(f"{i+1}   {INSERTS[item].name}", 14, 125, GOLD if selected else PALE), 82, y+6)
-                blit(label(f"{rank} 阶 → {rank+1} 阶", 12, 90, FOAM), 206, y+7)
-                blit(label(INSERTS[item].effect, 11, 215), 82, y-9)
-            blit(label(self.forge_note, 11, 270, FOAM), 29, 54)
-            blit(label("↑ ↓  选择    Enter  装配    Esc  稍后再取", 11, 290, FOAM), 29, 28)
+                    blit(panel((310, 30), style="focus", fill="#514638ed"), 28, y-5)
+                blit(self.inserts[item], 42, y-6)
+                rank = build.ranks.get(item, 0)
+                blit(label(f"{i+1}   {INSERTS[item].name}", 14, 125, GOLD if selected else PALE), 82, y)
+                blit(label(f"{rank} 阶 → {rank+1} 阶", 12, 96, FOAM), 215, y+1)
+            choice = build.options[self.forge_focus]
+            blit(label("装配预览", 13, 65, GOLD), 29, 128)
+            blit(label(INSERTS[choice].effect, 11, 225), 104, 130)
+            strike = "短刃首击" if c.weapon == "light" else "重锤首击"
+            for i, (title, x) in enumerate(((strike, 29), ("潮印冷却 / 秒", 138), ("固定减伤", 262))):
+                old, new = self.forge_current[i], self.forge_offers[choice][i]
+                current, result = (f"{old*STEP:.1f}", f"{new*STEP:.1f}") if i == 1 else (str(old), str(new))
+                value = result if old == new else f"{current} → {result}"
+                blit(label(title, 11, 108, FOAM), x, 101)
+                blit(label(value, 15, 115, GOLD if old != new else PALE), x, 80)
+            blit(label(self.forge_note, 11, 300, FOAM), 29, 44)
+            commands = f"↑ ↓ 预览    Enter 装配    1–{len(build.options)} 快选    Esc 返回"
+            blit(label(commands, 11, 320, FOAM), 29, 18)
             return
         if self.paused:
             if message:

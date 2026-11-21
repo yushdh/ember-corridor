@@ -1,0 +1,82 @@
+{
+  "window": [
+    1280,
+    720
+  ],
+  "frozen": true,
+  "step_seconds": 0.008333333333333333,
+  "cases": [
+    {
+      "case": "swap",
+      "equipped": "tide",
+      "initial_ranks": {
+        "tooth": 1
+      },
+      "preview": [
+        16,
+        348,
+        0
+      ],
+      "first_hit": 16,
+      "cooldown_ticks": 348,
+      "hook_base_damage": 13,
+      "hp_lost": 13
+    },
+    {
+      "case": "upgrade",
+      "equipped": "tooth",
+      "initial_ranks": {
+        "tooth": 1
+      },
+      "preview": [
+        55,
+        420,
+        0
+      ],
+      "first_hit": 55,
+      "cooldown_ticks": 420,
+      "hook_base_damage": 13,
+      "hp_lost": 13
+    },
+    {
+      "case": "armor",
+      "equipped": "shell",
+      "initial_ranks": {
+        "tooth": 1
+      },
+      "preview": [
+        16,
+        420,
+        3
+      ],
+      "first_hit": 16,
+      "cooldown_ticks": 420,
+      "hook_base_damage": 13,
+      "hp_lost": 10
+    },
+    {
+      "case": "refit",
+      "equipped": "tooth",
+      "initial_ranks": {
+        "tooth": 1,
+        "tide": 1
+      },
+      "preview": [
+        28,
+        420,
+        0
+      ],
+      "first_hit": 28,
+      "cooldown_ticks": 420,
+      "hook_base_damage": 13,
+      "hp_lost": 13
+    }
+  ],
+  "fresh_crate": {
+    "seed": 17,
+    "room": "退潮门廊",
+    "kills": 2,
+    "claimed": "tide",
+    "shell_unlocked": true
+  }
+}

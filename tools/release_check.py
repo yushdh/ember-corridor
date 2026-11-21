@@ -65,12 +65,18 @@ def verify(out, blade_detour=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--verify-install", type=Path, required=True)
-    parser.add_argument("--blade-detour", action="store_true")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--blade-detour", action="store_true")
+    modes.add_argument("--forge-preview", action="store_true")
     args = parser.parse_args()
     out = args.verify_install
     out.mkdir(parents=True, exist_ok=False)
     try:
-        verify(out, args.blade_detour)
+        if args.forge_preview:
+            from verify_forge_preview import verify as verify_forge
+            verify_forge(out)
+        else:
+            verify(out, args.blade_detour)
     except Exception:
         (out/"error.txt").write_text(traceback.format_exc(), encoding="utf8")
         raise SystemExit(1)
