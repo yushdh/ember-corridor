@@ -1,0 +1,253 @@
+{
+  "route": {
+    "version": 2,
+    "seed": 6108,
+    "attempts": 1,
+    "fallback": false,
+    "templates": [
+      "gate",
+      "sluice-twins",
+      "pump",
+      "gallery-west",
+      "bell"
+    ]
+  },
+  "visited": [
+    "gate",
+    "sluice-twins",
+    "pump",
+    "gallery-west",
+    "bell"
+  ],
+  "victory_seconds": 59.375,
+  "restarts": 2,
+  "events": [
+    "bell_release",
+    "death",
+    "evade",
+    "gate",
+    "hit",
+    "hurt",
+    "phase",
+    "seal",
+    "shot",
+    "sweep",
+    "swing",
+    "vent",
+    "warn",
+    "windup"
+  ],
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "input": "Win32 keyboard messages",
+  "landmarks": {
+    "gate-landing-2": {
+      "room": 1,
+      "template": "gate",
+      "tick": 684,
+      "x": 760.53,
+      "feet_y": 139,
+      "height": 64,
+      "action": "land",
+      "support": "桥墩",
+      "surface": "桥墩",
+      "top": 139
+    },
+    "sluice-twins-under-1": {
+      "room": 2,
+      "template": "sluice-twins",
+      "tick": 393,
+      "x": 415.55,
+      "feet_y": 94,
+      "height": 42,
+      "action": "roll",
+      "support": "quay",
+      "underside": 140
+    },
+    "sluice-twins-under-3": {
+      "room": 2,
+      "template": "sluice-twins",
+      "tick": 611,
+      "x": 761.9,
+      "feet_y": 94,
+      "height": 42,
+      "action": "roll",
+      "support": "quay",
+      "underside": 141
+    },
+    "pump-landing-1": {
+      "room": 3,
+      "template": "pump",
+      "tick": 263,
+      "x": 383.77,
+      "feet_y": 147,
+      "height": 64,
+      "action": "land",
+      "support": "西泵台",
+      "surface": "西泵台",
+      "top": 147
+    },
+    "pump-landing-3": {
+      "room": 3,
+      "template": "pump",
+      "tick": 761,
+      "x": 806.51,
+      "feet_y": 154,
+      "height": 64,
+      "action": "land",
+      "support": "东泵台",
+      "surface": "东泵台",
+      "top": 154
+    },
+    "gallery-west-landing-1": {
+      "room": 4,
+      "template": "gallery-west",
+      "tick": 313,
+      "x": 287.78,
+      "feet_y": 143,
+      "height": 64,
+      "action": "land",
+      "support": "西阶座",
+      "surface": "西阶座",
+      "top": 143
+    },
+    "gallery-west-landing-2": {
+      "room": 4,
+      "template": "gallery-west",
+      "tick": 441,
+      "x": 449.88,
+      "feet_y": 197,
+      "height": 64,
+      "action": "land",
+      "support": "绞盘吊台",
+      "surface": "绞盘吊台",
+      "top": 197
+    },
+    "winch-open": {
+      "room": 4,
+      "template": "gallery-west",
+      "tick": 632,
+      "x": 527.71,
+      "feet_y": 197,
+      "height": 64,
+      "action": "run",
+      "support": "绞盘吊台",
+      "valve": [
+        543,
+        197
+      ]
+    },
+    "gallery-west-landing-4": {
+      "room": 4,
+      "template": "gallery-west",
+      "tick": 975,
+      "x": 935.51,
+      "feet_y": 145,
+      "height": 64,
+      "action": "land",
+      "support": "东压舱座",
+      "surface": "东压舱座",
+      "top": 145
+    }
+  },
+  "exits": [
+    {
+      "room": 1,
+      "template": "gate",
+      "tick": 1140,
+      "x": 1175.73,
+      "feet_y": 94,
+      "height": 64,
+      "action": "run",
+      "support": "quay",
+      "door": [
+        1194,
+        94
+      ],
+      "destination": "sluice-twins",
+      "arrival": [
+        75,
+        94
+      ]
+    },
+    {
+      "room": 2,
+      "template": "sluice-twins",
+      "tick": 1147,
+      "x": 1171.47,
+      "feet_y": 94,
+      "height": 64,
+      "action": "run",
+      "support": "quay",
+      "door": [
+        1194,
+        94
+      ],
+      "destination": "pump",
+      "arrival": [
+        75,
+        94
+      ]
+    },
+    {
+      "room": 3,
+      "template": "pump",
+      "tick": 1166,
+      "x": 1171.94,
+      "feet_y": 94,
+      "height": 64,
+      "action": "run",
+      "support": "quay",
+      "door": [
+        1194,
+        94
+      ],
+      "destination": "gallery-west",
+      "arrival": [
+        75.0,
+        94
+      ]
+    },
+    {
+      "room": 4,
+      "template": "gallery-west",
+      "tick": 1424,
+      "x": 1184.76,
+      "feet_y": 94,
+      "height": 64,
+      "action": "run",
+      "support": "quay",
+      "door": [
+        1200,
+        94
+      ],
+      "destination": "bell",
+      "arrival": [
+        75.0,
+        94
+      ]
+    },
+    {
+      "room": 5,
+      "template": "bell",
+      "tick": 2244,
+      "x": 1157.63,
+      "feet_y": 94,
+      "height": 64,
+      "action": "run",
+      "support": "quay",
+      "door": [
+        1176,
+        94
+      ],
+      "destination": "victory",
+      "arrival": [
+        1157.63,
+        94
+      ]
+    }
+  ]
+}

@@ -12,6 +12,8 @@
 
 ## 在本机开始
 
+想重走已验收的随机潮图 6108，在解压目录运行 `.\EmberCorridor.exe --seed 6108`。离开门廊后依次经过双闸涵洞、东西泵台和西侧绞盘。[实机画面与落点记录](docs/verification/stage6/seed-6108/README.md)
+
 ### 首次试玩手工五室
 
 解压本轮 `dist/forge-preview/EmberCorridor-Windows-x64.zip`，双击 **首次试玩.cmd**。它会用独立新档打开经典五室；源码入口为 `.\.venv\Scripts\python.exe -m game --first-play`。按游戏内提示自由游玩，离席时可按 Esc 暂停，通关或随时关窗均可结束。若愿意反馈，打开资源管理器的 `%LOCALAPPDATA%\EmberCorridor-Playtests`，取最近目录中的 `session.json`，并说明是否第一次玩以及最难找路或最难应对的地方。试玩记录只保存在本机。[本轮验证和计时口径](docs/verification/stage4-first-play/README.md)

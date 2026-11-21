@@ -1,0 +1,62 @@
+{
+  "seed": 6108,
+  "cases": [
+    {
+      "room": 1,
+      "template": "gate",
+      "launch": {
+        "surface": "quay",
+        "x": 424.83,
+        "y": 94
+      },
+      "surface": "盐栈",
+      "x": 469.8,
+      "feet_y": 151,
+      "top": 151,
+      "ticks_from_entry": 351
+    },
+    {
+      "room": 2,
+      "template": "sluice-twins",
+      "launch": {
+        "surface": "quay",
+        "x": 586.64,
+        "y": 94
+      },
+      "surface": "中继栈",
+      "x": 631.61,
+      "feet_y": 147,
+      "top": 147,
+      "ticks_from_entry": 435
+    },
+    {
+      "room": 3,
+      "template": "pump",
+      "launch": {
+        "surface": "西泵台",
+        "x": 515.1,
+        "y": 147
+      },
+      "surface": "索桥",
+      "x": 615.2,
+      "feet_y": 188,
+      "top": 188,
+      "ticks_from_entry": 441
+    },
+    {
+      "room": 4,
+      "template": "gallery-west",
+      "launch": {
+        "surface": "quay",
+        "x": 728.98,
+        "y": 94
+      },
+      "surface": "横渡板",
+      "x": 773.67,
+      "feet_y": 162,
+      "top": 162,
+      "ticks_from_entry": 582
+    }
+  ],
+  "method": "Room entrance; guards cleared by fixture; keyboard callbacks; 120 Hz"
+}

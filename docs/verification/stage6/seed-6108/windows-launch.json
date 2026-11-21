@@ -1,0 +1,21 @@
+{
+  "archive_sha256": "d978e05bd669f8f605ef892419409f00dd3336a4bdefe773ff56b9772da5b48d",
+  "argv": [
+    "--seed",
+    "6108"
+  ],
+  "saved_route": {
+    "version": 2,
+    "seed": 6108,
+    "attempts": 1,
+    "fallback": false,
+    "templates": [
+      "gate",
+      "sluice-twins",
+      "pump",
+      "gallery-west",
+      "bell"
+    ]
+  },
+  "exit_code": 0
+}
