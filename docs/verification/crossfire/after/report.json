@@ -1,0 +1,327 @@
+{
+  "seed": 17,
+  "framebuffer": [
+    1280,
+    720
+  ],
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU/PCIe/SSE2",
+  "frozen": false,
+  "crossing_standing": {
+    "player_hp": 82,
+    "chain_hp": 68,
+    "events": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 2,
+        "tick": 1,
+        "kind": "warn",
+        "x": 300,
+        "y": 189,
+        "enemy": "rivet"
+      },
+      {
+        "id": 3,
+        "tick": 78,
+        "kind": "shot",
+        "x": 300,
+        "y": 173,
+        "enemy": "rivet"
+      },
+      {
+        "id": 4,
+        "tick": 110,
+        "kind": "hurt",
+        "x": 194.0,
+        "y": 147,
+        "enemy": "chain",
+        "hp": 82
+      },
+      {
+        "id": 5,
+        "tick": 120,
+        "kind": "guarded",
+        "x": 178.0,
+        "y": 133.69,
+        "enemy": "rivet"
+      }
+    ],
+    "open_hook_on_aim_ticks": [
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77
+    ],
+    "roll_crosses_chain_ticks": [],
+    "roll_crosses_bolt_ticks": [],
+    "samples": 92,
+    "second_step_draw_finish_median_ms": 4.98,
+    "second_step_draw_finish_p95_ms": 6.35
+  },
+  "crossing": {
+    "player_hp": 100,
+    "chain_hp": 52,
+    "events": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 2,
+        "tick": 1,
+        "kind": "warn",
+        "x": 300,
+        "y": 189,
+        "enemy": "rivet"
+      },
+      {
+        "id": 3,
+        "tick": 78,
+        "kind": "shot",
+        "x": 300,
+        "y": 173,
+        "enemy": "rivet"
+      },
+      {
+        "id": 6,
+        "tick": 175,
+        "kind": "hit",
+        "x": 157.99,
+        "y": 130.0,
+        "enemy": "chain",
+        "target": 0,
+        "action": "cut",
+        "attack_id": 1,
+        "hp": 52,
+        "frame": 3,
+        "facing": -1
+      }
+    ],
+    "open_hook_on_aim_ticks": [
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77
+    ],
+    "roll_crosses_chain_ticks": [
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ],
+    "roll_crosses_bolt_ticks": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107
+    ],
+    "samples": 92,
+    "second_step_draw_finish_median_ms": 1.24,
+    "second_step_draw_finish_p95_ms": 2.29
+  },
+  "gallery_standing": {
+    "player_hp": 88,
+    "chain_hp": 68,
+    "events": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 2,
+        "tick": 170,
+        "kind": "warn",
+        "x": 493,
+        "y": 243,
+        "enemy": "rivet"
+      },
+      {
+        "id": 3,
+        "tick": 247,
+        "kind": "shot",
+        "x": 493,
+        "y": 227,
+        "enemy": "rivet"
+      },
+      {
+        "id": 4,
+        "tick": 271,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 5,
+        "tick": 360,
+        "kind": "hurt",
+        "x": 173.55,
+        "y": 152.65,
+        "enemy": "rivet",
+        "hp": 88
+      },
+      {
+        "id": 6,
+        "tick": 387,
+        "kind": "guarded",
+        "x": 189.55,
+        "y": 147,
+        "enemy": "chain"
+      }
+    ],
+    "open_hook_on_aim_ticks": [],
+    "roll_crosses_chain_ticks": [],
+    "roll_crosses_bolt_ticks": [],
+    "samples": 227,
+    "second_step_draw_finish_median_ms": 1.11,
+    "second_step_draw_finish_p95_ms": 1.91
+  },
+  "gallery": {
+    "player_hp": 100,
+    "chain_hp": 52,
+    "events": [
+      {
+        "id": 1,
+        "tick": 1,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 2,
+        "tick": 170,
+        "kind": "warn",
+        "x": 493,
+        "y": 243,
+        "enemy": "rivet"
+      },
+      {
+        "id": 3,
+        "tick": 247,
+        "kind": "shot",
+        "x": 493,
+        "y": 227,
+        "enemy": "rivet"
+      },
+      {
+        "id": 4,
+        "tick": 271,
+        "kind": "warn",
+        "x": 145,
+        "y": 146,
+        "enemy": "chain"
+      },
+      {
+        "id": 7,
+        "tick": 443,
+        "kind": "hit",
+        "x": 157.99,
+        "y": 130.0,
+        "enemy": "chain",
+        "target": 0,
+        "action": "cut",
+        "attack_id": 1,
+        "hp": 52,
+        "frame": 3,
+        "facing": -1
+      }
+    ],
+    "open_hook_on_aim_ticks": [],
+    "roll_crosses_chain_ticks": [
+      367,
+      368,
+      369,
+      370,
+      371,
+      372,
+      373,
+      374,
+      375,
+      376
+    ],
+    "roll_crosses_bolt_ticks": [
+      347,
+      348,
+      349,
+      350,
+      351
+    ],
+    "samples": 227,
+    "second_step_draw_finish_median_ms": 1.19,
+    "second_step_draw_finish_p95_ms": 1.51
+  },
+  "roll_timing_samples": [
+    {
+      "roll_tick": 62,
+      "player_hp": 82,
+      "chain_hp": 52
+    },
+    {
+      "roll_tick": 68,
+      "player_hp": 100,
+      "chain_hp": 52
+    },
+    {
+      "roll_tick": 87,
+      "player_hp": 100,
+      "chain_hp": 52
+    },
+    {
+      "roll_tick": 103,
+      "player_hp": 100,
+      "chain_hp": 52
+    },
+    {
+      "roll_tick": 111,
+      "player_hp": 82,
+      "chain_hp": 68
+    }
+  ]
+}

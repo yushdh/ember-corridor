@@ -14,6 +14,7 @@ FORK_HEIGHT = 9
 FORK_REACH = 60
 CHAIN_HEIGHT, CHAIN_REACH, CHAIN_REST = 53, 110, 13
 CHAIN_RADIUS = 5
+BOLT_SPEED, BOLT_LIFE = 2.6, 180
 CHAIN_CAST_START, CHAIN_OPEN = 16, 62
 MELEE_SEGMENTS = {"hook": (46, 29), "ram": (29, 25), "fork": (FORK_REACH, FORK_HEIGHT)}
 
@@ -133,7 +134,7 @@ class Bolt:
     y: float
     dx: float
     dy: float
-    life: int = 180
+    life: int = BOLT_LIFE
     owner: Enemy | None = None
 
 
@@ -292,7 +293,7 @@ class Encounter:
             e.enter("active")
             if e.kind == "rivet":
                 self.bolts.append(
-                    Bolt(e.x + e.facing * 21, e.y + 30, e.aim[0] * 2.6, e.aim[1] * 2.6, owner=e)
+                    Bolt(e.x + e.facing * 21, e.y + 30, e.aim[0] * BOLT_SPEED, e.aim[1] * BOLT_SPEED, owner=e)
                 )
                 self.emit("shot", e.x, e.y + 30, enemy=e.kind)
         if e.state == "active":

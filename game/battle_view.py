@@ -8,7 +8,7 @@ import arcade
 from PIL import Image, ImageDraw
 
 from .attacks import STRIKES
-from .combat import CHAIN_HEIGHT, CHAIN_OPEN, CHAIN_REST, FORK_HEIGHT, FORK_REACH, MAX_HP, TYPES, chain_tip, wall_entry
+from .combat import BOLT_LIFE, BOLT_SPEED, CHAIN_HEIGHT, CHAIN_OPEN, CHAIN_REST, FORK_HEIGHT, FORK_REACH, MAX_HP, TYPES, chain_tip, wall_entry
 from .resources import ASSETS, load_clips
 from .ui import blit, panel, tag, label, draw_stamina, GOLD, PALE, FOAM
 
@@ -80,9 +80,6 @@ def effect_texture(kind, sector=0):
         d.line((7, 6, 9, 6), fill="#d6ae7e")
     elif kind == "mist":
         d.polygon([(1, 10), (4, 7), (7, 7), (9, 5), (12, 7), (14, 10), (7, 11)], fill="#a8bcaf")
-    else:
-        d.polygon([(0, 8), (7, 5), (15, 8), (8, 11)], fill="#91e0dc", outline="#344f5a")
-        d.line((6, 8, 13, 8), fill="#e9fff2")
     return arcade.Texture(im)
 
 
@@ -200,7 +197,42 @@ def chain_hardware():
             d.line((5,5,9,5), fill="#ccded0")
         tex = arcade.Texture(im)
         heads.append((tex, tex.flip_left_right()))
-    return arcade.Texture(link), heads
+    collar = Image.new("RGBA", (6, 9))
+    cuff = ImageDraw.Draw(collar)
+    cuff.polygon([(1,0),(4,0),(5,2),(5,6),(3,8),(1,8),(0,6),(0,2)],
+                 fill="#b37b53", outline="#352d34")
+    cuff.line((2,1,2,6), fill="#ffe1aa")
+    return arcade.Texture(link), heads, arcade.Texture(collar)
+
+
+def rivet_sector(dx, dy):
+    return round(math.atan2(dy, dx) * 32 / math.tau) % 32
+
+
+@lru_cache(maxsize=32)
+def rivet_marks(sector):
+    """Bake pointed sights and a fletched bolt on the same integer-pixel bearing."""
+    angle = math.tau * sector / 32
+    ux, uy = math.cos(angle), math.sin(angle)
+
+    def points(coords):
+        return [(16 + round(x*ux - y*uy), 16 - round(x*uy + y*ux)) for x,y in coords]
+
+    sight = Image.new("RGBA", (32, 32))
+    draw = ImageDraw.Draw(sight)
+    wings = points([(-2, 3), (2, 0), (-2, -3)])
+    draw.line(wings, fill="#1c313e", width=4)
+    draw.line(wings, fill="#a4d5ca", width=2)
+    bolt = Image.new("RGBA", sight.size)
+    draw = ImageDraw.Draw(bolt)
+    shaft = points([(-12, 0), (-2, 0), (1, 0)])
+    draw.line(shaft, fill="#162936", width=4)
+    draw.line(shaft, fill="#b9ddd4", width=2)
+    for side in (-1, 1):
+        fin = points([(-13, side*4), (-9, side*4), (-5, 0), (-10, 0)])
+        draw.polygon(fin, fill="#76c3be", outline="#243c48")
+    draw.polygon(points([(-5, 2), (1, 0), (-5, -2)]), fill="#e2f6df")
+    return arcade.Texture(sight), arcade.Texture(bolt)
 
 
 class BattleView:
@@ -215,7 +247,7 @@ class BattleView:
         self.enemies = arcade.SpriteList()
         self.marks = {kind: warning_marks(kind) for kind in TYPES}
         self.warning_list = arcade.SpriteList()
-        self.chain_link, self.chain_heads = chain_hardware()
+        self.chain_link, self.chain_heads, self.chain_collar = chain_hardware()
         self.warning_count = 0
         self.warning_badges = []
         self.health_bars = []
@@ -228,7 +260,7 @@ class BattleView:
         self.projectiles = arcade.SpriteList()
         self.particle_list = arcade.SpriteList()
         self.particles = []
-        self.effects = {k: effect_texture(k) for k in ("chip", "mist", "bolt", "burst")}
+        self.effects = {k: effect_texture(k) for k in ("chip", "mist", "burst")}
         self.sparks = [effect_texture("spark", i) for i in range(12)]
         self.rng = random.Random(19)
         self.weapon_names = {"light": "余烬短刃", "heavy": "潮砧重锤"}
@@ -503,11 +535,12 @@ class BattleView:
             sp.visible = e.hp > 0 or e.age < 45
             sp.alpha = max(0, 255 - e.age * 6) if not e.hp else 255
         while len(self.projectiles) < len(c.bolts):
-            self.projectiles.append(arcade.Sprite(self.effects["bolt"]))
+            self.projectiles.append(arcade.Sprite(rivet_marks(0)[1]))
         for i, sp in enumerate(self.projectiles):
             sp.visible = i < len(c.bolts)
             if sp.visible:
                 b = c.bolts[i]
+                sp.texture = rivet_marks(rivet_sector(b.dx, b.dy))[1]
                 sp.position = round(b.x) - scroll, round(b.y) - lift
         for p in self.particles:
             p.sprite.position = round(p.x) - scroll, round(p.y) - lift
@@ -518,9 +551,30 @@ class BattleView:
             default=None,
         )
 
+    def place_chain(self, e, surfaces, scroll, lift):
+        tx, ty = chain_tip(e, surfaces)
+        sx = e.x + e.facing * min(CHAIN_REST, abs(tx - e.x))
+        sy = e.y + CHAIN_HEIGHT
+        length = math.hypot(tx - sx, ty - sy)
+        links = math.ceil(length / 5)
+        opened = e.state == "active" or e.age >= CHAIN_OPEN
+        for n in range(links):
+            u = n / links
+            sag = 0 if opened else 3 * math.sin(math.pi * u)
+            self.place_warning(self.chain_link, round(sx + u*(tx-sx)) - scroll,
+                               round(sy + u*(ty-sy) - sag) - lift)
+        if opened and e.state == "warn":
+            # The brake collar slides toward the glove while the open jaw holds still.
+            progress = (e.age - CHAIN_OPEN) / (e.spec.windup - CHAIN_OPEN)
+            back = min(length, 8 + 16 * progress)
+            self.place_warning(self.chain_collar, round(tx - e.facing*back)-scroll, round(ty)-lift)
+        return self.chain_heads[opened][e.facing < 0], round(tx)-scroll, round(ty)-lift
+
     def warnings(self, c, scroll, lift, walker=None):
         self.warning_count = 0
         placed = []
+        hook_heads = [self.place_chain(e, c.surfaces, scroll, lift) for e in c.foes
+                      if e.hp and e.kind == "chain" and e.state in ("warn", "active")]
         self.warning_badges.clear()
         self.health_bars.clear()
         for e in sorted(c.foes, key=lambda foe: foe.y + foe.spec.height):
@@ -531,19 +585,6 @@ class BattleView:
             visible = x + width//2 > 0 and x - width//2 < 640
             boss = e.kind == "bell"
             warn = not boss and e.state == "warn"
-            if e.kind == "chain" and e.state in ("warn", "active"):
-                tx, ty = chain_tip(e, c.surfaces)
-                sx = e.x + e.facing * min(CHAIN_REST, abs(tx - e.x))
-                sy = e.y + CHAIN_HEIGHT
-                length = math.hypot(tx - sx, ty - sy)
-                links = math.ceil(length / 5)
-                for n in range(links):
-                    u = n / links
-                    sag = 3 * math.sin(math.pi * u) if warn and e.age < CHAIN_OPEN else 0
-                    self.place_warning(self.chain_link, round(sx + u*(tx-sx)) - scroll,
-                                       round(sy + u*(ty-sy) - sag) - lift)
-                opened = e.state == "active" or e.age >= CHAIN_OPEN
-                self.place_warning(self.chain_heads[opened][e.facing < 0], round(tx)-scroll, round(ty)-lift)
             # An offscreen attack can still telegraph into the visible playfield.
             if not visible and not warn:
                 continue
@@ -571,17 +612,30 @@ class BattleView:
             self.warning_badges.append((icon, x, top))
             if e.kind == "rivet":
                 muzzle = (e.x + e.facing * 21, e.y + 30)
-                end = (muzzle[0] + 190 * e.aim[0], muzzle[1] + 190 * e.aim[1])
-                distance = min(1, wall_entry(muzzle, end, c.surfaces)) * 190
-                for n in range(12, round(distance), 10):
+                reach = BOLT_SPEED * BOLT_LIFE
+                end = (muzzle[0] + reach * e.aim[0], muzzle[1] + reach * e.aim[1])
+                distance = min(1, wall_entry(muzzle, end, c.surfaces)) * reach
+                sight = rivet_marks(rivet_sector(*e.aim))[0]
+                # When the bow locks, a second feather closes against its muzzle.
+                ready = e.age * 3 >= e.spec.windup * 2
+                slots = [7] if ready else []
+                slots.extend(range(14, 192, 17))
+                slots.extend(range(210, round(distance), 29))
+                for n in slots:
+                    if n + 3 >= distance:
+                        break
                     px = x + e.facing * 21 + round(e.aim[0] * n)
                     py = y + 30 + round(e.aim[1] * n)
+                    if px < -4 or px > 644 or py < -4 or py > 364:
+                        continue
+                    if any(abs(px-hx) < 12 and abs(py-hy) < 10 for _, hx, hy in hook_heads):
+                        continue
                     if walker is not None and walker.action != "roll":
                         face_x = round(walker.x) - scroll + 5 * walker.facing
                         face_y = round(walker.y) - lift + 50
                         if abs(px - face_x) < 16 and abs(py - face_y) < 12:
                             continue
-                    self.place_warning(dash, px, py)
+                    self.place_warning(sight, px, py)
             elif e.kind == "chain":
                 continue  # The chain and open teeth already mark the exact return lane.
             elif e.kind == "fork":
@@ -598,6 +652,9 @@ class BattleView:
             else:
                 for n in (19, 30, 41):
                     self.place_warning(dash, x + n * e.facing, y + 27)
+        # Keep the open jaw in front of sight marks regardless of caster height.
+        for texture, px, py in hook_heads:
+            self.place_warning(texture, px, py)
         for index in range(self.warning_count, len(self.warning_list)):
             self.warning_list[index].visible = False
         self.warning_list.draw(pixelated=True)
