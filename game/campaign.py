@@ -1,7 +1,6 @@
 """The five-room run, its entrance, room interactions and ending."""
 from collections import deque
 from functools import lru_cache
-import json
 from secrets import randbits
 from time import perf_counter
 
@@ -13,7 +12,6 @@ from .battle_view import flame_coverage, position
 from .foundry import Bellkeeper, ENTRY, FoundryEncounter, RELEASE, ROOMS
 from .gear import INSERTS
 from .motion import STEP, Walker
-from .profile import atomic_write
 from .routes import ALTERNATES, CLASSIC, generate
 from .resources import ASSETS, load_clips
 from .window import QuayWindow, save_notice
@@ -98,7 +96,6 @@ class CampaignWindow(QuayWindow):
         if self.route.fallback:
             label += "   ·   备用航线"
         self.seed_tag = tag(label, 220, FOAM)
-        self.route_notice = ""
         self.seed_text = label
         self.visited_regions = set()
         self.battle_view.status_weapon = None
@@ -107,11 +104,7 @@ class CampaignWindow(QuayWindow):
         self.start_room(0)
 
     def record_run(self):
-        try:
-            atomic_write(self.store.directory / "last-route.json",
-                         json.dumps(self.route.record(), indent=2).encode("utf8"))
-        except OSError:
-            self.route_notice = "潮图记录写入失败，可在暂停页抄下种子"
+        self.store.record_route(self.route.record())
 
     def start_room(self, index, last=None):
         self.guidance.clear()
@@ -446,7 +439,7 @@ class CampaignWindow(QuayWindow):
     def on_draw(self):
         super().on_draw()
         c = self.combat
-        notice = self.store.notice or self.route_notice
+        notice = self.store.notice or self.store.route_notice
         message = save_notice(notice) if notice else None
         if self.mode == "title":
             self.draw_menu("title")

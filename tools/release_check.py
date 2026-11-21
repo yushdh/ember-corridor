@@ -16,7 +16,7 @@ from game.resources import ASSETS
 from verify_stage4 import Route
 
 
-def verify(out, blade_detour=False):
+def verify(out, blade_detour=False, low_tour=False):
     assert arcade.__version__ == version("arcade")
     manifest = json.loads((ASSETS / "manifest.json").read_text(encoding="utf8"))
     expected = {row["path"] for row in manifest["assets"]}
@@ -30,7 +30,18 @@ def verify(out, blade_detour=False):
             from game.first_play import FirstPlayWindow
             w = FirstPlayWindow(report_root=Path(tmp), source="automated")
         else:
-            w = CampaignWindow(seed=17, save_dir=Path(tmp)/"profile")
+            profile_path = Path(tmp)/"profile"
+            if low_tour:
+                from verify_low_cadence import LEVELS, ProfileStore
+                store = ProfileStore(profile_path)
+                for i, level in enumerate(LEVELS):
+                    store.update(setting=(i, level))
+            w = CampaignWindow(seed=17, save_dir=profile_path)
+        if low_tour:
+            w.set_update_rate(1/30)
+            w.set_draw_rate(1/30)
+        atlas = w.ctx.default_atlas
+        initial_size = atlas.size
         trip = Route(w, Path(tmp)/"frames", blade_detour=blade_detour)
         gpu = pyglet.gl.gl_info.get_renderer()
         trip.gpu = gpu
@@ -59,6 +70,9 @@ def verify(out, blade_detour=False):
                       framebuffer=[1280,720], assets=len(actual), route=saved_route, rooms=rooms,
                       victory_seconds=trip.victory_time, restarts=2, paused=True,
                       audio_driver=driver, playing=sorted(trip.audio), events=sorted(kinds))
+        if low_tour:
+            report.update(fps_cap=30, levels=list(w.battle_view.levels),
+                          atlas_at_open=initial_size, atlas_at_close=atlas.size)
         (out/"installed.json").write_text(json.dumps(report,indent=2),encoding="utf8")
 
 
@@ -73,11 +87,19 @@ def main():
     modes.add_argument("--flame-crossfire", action="store_true")
     modes.add_argument("--low-cadence", action="store_true")
     modes.add_argument("--frame-pacing", action="store_true")
+    modes.add_argument("--gallery-soak", action="store_true")
+    modes.add_argument("--low-tour", action="store_true")
+    parser.add_argument("--soak-seconds", type=int, help="minimum duration of the gallery soak")
     args = parser.parse_args()
+    if args.soak_seconds is not None and (not args.gallery_soak or args.soak_seconds < 1):
+        parser.error("--soak-seconds requires --gallery-soak and a positive duration")
     out = args.verify_install
     out.mkdir(parents=True, exist_ok=False)
     try:
-        if args.frame_pacing:
+        if args.gallery_soak:
+            from soak_gallery import run as soak
+            soak(out, args.soak_seconds or 600, None)
+        elif args.frame_pacing:
             from profile_crossing import trial
             for mode in ("on", "off"):
                 folder = out / mode
@@ -99,7 +121,7 @@ def main():
             from verify_forge_preview import verify as verify_forge
             verify_forge(out)
         else:
-            verify(out, args.blade_detour)
+            verify(out, args.blade_detour, args.low_tour)
     except Exception:
         (out/"error.txt").write_text(traceback.format_exc(), encoding="utf8")
         raise SystemExit(1)

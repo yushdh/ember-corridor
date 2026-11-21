@@ -1,5 +1,7 @@
 余烬回廊 · Windows x64 试玩版
 
+要复测种子 17 的长时间过门与重开，在解压目录运行 `.\EmberCorridor.exe --verify-install soak-check --gallery-soak`。游戏使用独立临时存档，在 30 帧下重复清理退潮门廊、进西侧绞盘、翻滚反击和死亡重开。十分钟后在下一次重开结束，结果存于新建的 soak-check 目录。可用 `--soak-seconds 30` 做短程核验。
+
 首次出刀、翻滚和移动的教学记录现在由后台写入。正常退出会等候存档完成。种子 17 西侧绞盘的逐帧复核可运行 `.\EmberCorridor.exe --verify-install frame-check --frame-pacing`，在新目录里的 on 和 off 分别查看开启和关闭窗口画面采集的帧耗。
 
 要用低特效重走西侧绞盘，在解压目录运行 `.\EmberCorridor.exe --seed 17 --fps 30`。暂停进入设置，把闪光和震动调到 0、粒子调到 1。换用 `--fps 60` 可对照相同房间。持短刃蓄满时，关掉闪光也能看见长刀身。收招末尾轻按翻滚键后可以松手，看到绞工垂手再转身按 J。

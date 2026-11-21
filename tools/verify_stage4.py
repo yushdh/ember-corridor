@@ -212,6 +212,11 @@ class Route:
                     self.tap("esc")
                     self.paused_once = True
             return
+        self.drive_room()
+
+    def drive_room(self):
+        w = self.w
+        c, p = w.combat, w.walker
         enemies = [e for e in c.foes if e.hp]
         e = min(enemies, key=lambda e: abs(e.x - p.x)) if enemies else None
         if self.blade_detour:

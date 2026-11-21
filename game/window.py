@@ -30,6 +30,11 @@ class QuayWindow(arcade.Window):
         # Arcade selects stretch at import. Set physical pixels before making the window.
         pyglet.options.dpi_scaling = "real"
         super().__init__(1280, 720, "余烬回廊 · 盐炉渡口", resizable=True, antialiasing=False, vsync=True)
+        if not self.skirmish_result:
+            # Reserve campaign scenery space before the first sprite upload. Repacking
+            # the shared atlas mid-fight copies every resident image on the render thread.
+            limit = min(self.ctx.info.MAX_TEXTURE_SIZE, *self.ctx.info.MAX_VIEWPORT_DIMS)
+            self.ctx.atlas_size = (min(4096, limit), min(6144, limit))
         self.set_minimum_size(WIDTH, HEIGHT)
         rect = arcade.LBWH(0, 0, WIDTH, HEIGHT)
         self.world_texture = self.ctx.texture((WIDTH, HEIGHT), components=3,

@@ -1,0 +1,213 @@
+[
+  {
+    "frame": 0,
+    "room": 1,
+    "tick": 0,
+    "wall_ms": 41.898,
+    "thread_cpu_ms": 46.875,
+    "own": [
+      {
+        "file": "lib.py",
+        "line": 55,
+        "name": "errcheck",
+        "count": 771,
+        "own_ms": 7.873,
+        "total_ms": 8.378
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'render' of 'Font' objects>",
+        "count": 16,
+        "own_ms": 5.176,
+        "total_ms": 5.25
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<built-in method nt.stat>",
+        "count": 22,
+        "own_ms": 1.335,
+        "total_ms": 1.499
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'update' of '_hashlib.HASH' objects>",
+        "count": 12,
+        "own_ms": 1.259,
+        "total_ms": 1.259
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<built-in method _io.open_code>",
+        "count": 2,
+        "own_ms": 1.149,
+        "total_ms": 1.149
+      },
+      {
+        "file": "texture.py",
+        "line": 523,
+        "name": "write",
+        "count": 41,
+        "own_ms": 1.082,
+        "total_ms": 4.139
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<built-in method PIL._imaging.fill>",
+        "count": 41,
+        "own_ms": 0.82,
+        "total_ms": 0.82
+      },
+      {
+        "file": "Image.py",
+        "line": 884,
+        "name": "load",
+        "count": 1950,
+        "own_ms": 0.804,
+        "total_ms": 1.849
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'draw_lines' of 'ImagingDraw' objects>",
+        "count": 1078,
+        "own_ms": 0.771,
+        "total_ms": 0.771
+      },
+      {
+        "file": "~",
+        "line": 0,
+        "name": "<method 'join' of 'bytes' objects>",
+        "count": 25,
+        "own_ms": 0.744,
+        "total_ms": 0.744
+      }
+    ],
+    "cumulative": [
+      {
+        "file": "campaign.py",
+        "line": 439,
+        "name": "on_draw",
+        "count": 2,
+        "own_ms": 0.036,
+        "total_ms": 34.164
+      },
+      {
+        "file": "campaign.py",
+        "line": 270,
+        "name": "draw_menu",
+        "count": 1,
+        "own_ms": 0.005,
+        "total_ms": 34.135
+      },
+      {
+        "file": "controls.py",
+        "line": 122,
+        "name": "draw_menu",
+        "count": 1,
+        "own_ms": 0.025,
+        "total_ms": 34.121
+      },
+      {
+        "file": "ui.py",
+        "line": 129,
+        "name": "blit",
+        "count": 11,
+        "own_ms": 0.057,
+        "total_ms": 34.041
+      },
+      {
+        "file": "profile_crossing.py",
+        "line": 40,
+        "name": "measured",
+        "count": 28,
+        "own_ms": 0.71,
+        "total_ms": 29.562
+      },
+      {
+        "file": "ui.py",
+        "line": 63,
+        "name": "raster",
+        "count": 11,
+        "own_ms": 0.369,
+        "total_ms": 21.182
+      },
+      {
+        "file": "rect.py",
+        "line": 15,
+        "name": "draw_texture_rect",
+        "count": 13,
+        "own_ms": 0.18,
+        "total_ms": 11.886
+      },
+      {
+        "file": "lib.py",
+        "line": 55,
+        "name": "errcheck",
+        "count": 771,
+        "own_ms": 7.873,
+        "total_ms": 8.378
+      },
+      {
+        "file": "window.py",
+        "line": 347,
+        "name": "on_draw",
+        "count": 1,
+        "own_ms": 0.047,
+        "total_ms": 7.607
+      },
+      {
+        "file": "ui.py",
+        "line": 58,
+        "name": "font",
+        "count": 5,
+        "own_ms": 0.019,
+        "total_ms": 7.558
+      },
+      {
+        "file": "controls.py",
+        "line": 193,
+        "name": "menu_row",
+        "count": 3,
+        "own_ms": 0.006,
+        "total_ms": 6.699
+      },
+      {
+        "file": "ImageFont.py",
+        "line": 803,
+        "name": "truetype",
+        "count": 5,
+        "own_ms": 0.006,
+        "total_ms": 6.562
+      },
+      {
+        "file": "ImageFont.py",
+        "line": 876,
+        "name": "freetype",
+        "count": 5,
+        "own_ms": 0.013,
+        "total_ms": 6.556
+      },
+      {
+        "file": "ImageFont.py",
+        "line": 217,
+        "name": "__init__",
+        "count": 5,
+        "own_ms": 0.056,
+        "total_ms": 6.543
+      },
+      {
+        "file": "ImageDraw.py",
+        "line": 545,
+        "name": "text",
+        "count": 8,
+        "own_ms": 0.037,
+        "total_ms": 6.203
+      }
+    ]
+  }
+]

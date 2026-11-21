@@ -99,6 +99,9 @@ class ProfileStore:
         self.pending_bindings = None
         self.writer = None
         self.writes = deque()
+        self.route_job = None
+        self.route_payload = None
+        self.route_notice = ""
         try:
             if background_lessons:
                 # Start the worker during the initial load. Starting its Windows
@@ -148,6 +151,22 @@ class ProfileStore:
         self.poll()
         self.pending_learned.update(learned)
         self._write(background=True)
+
+    def record_route(self, record):
+        self.route_payload = json.dumps(record, indent=2).encode("utf8")
+        self.route_notice = ""
+        if self.writer is None:
+            self.route_notice = self._write_route(self.route_payload)
+        else:
+            # Jobs execute in order. Only the newest route's outcome belongs in the HUD.
+            self.route_job = self.writer.submit(self._write_route, self.route_payload)
+
+    def _write_route(self, payload):
+        try:
+            atomic_write(self.directory / "last-route.json", payload)
+            return ""
+        except OSError:
+            return "潮图记录写入失败，可在暂停页抄下种子"
 
     def update(self, *, unlock=False, setting=None, learned=(), bindings=None):
         self.poll(wait=True)
@@ -218,6 +237,9 @@ class ProfileStore:
     def poll(self, wait=False):
         while self.writes and (wait or self.writes[0].done()):
             self._accept(self.writes.popleft().result())
+        if self.route_job is not None and (wait or self.route_job.done()):
+            self.route_notice = self.route_job.result()
+            self.route_job = None
 
     def close(self):
         if self.writer is not None:
@@ -226,3 +248,5 @@ class ProfileStore:
             self.writer = None
             if self.pending_learned:
                 self.update()
+            if self.route_notice:
+                self.route_notice = self._write_route(self.route_payload)

@@ -56,6 +56,51 @@ class ProfileTests(unittest.TestCase):
         self.assertEqual(reopened.learned, ("roll",))
         self.assertTrue(reopened.shell_known)
 
+    def test_route_snapshots_are_ordered_and_close_waits_for_the_last(self):
+        store = ProfileStore(self.root, background_lessons=True)
+        entered, release = Event(), Event()
+        path = self.root / "last-route.json"
+        def slow_write(target, data):
+            if target == path:
+                entered.set()
+                if not release.wait(5):
+                    raise RuntimeError("restart blocked on the previous route")
+            atomic_write(target, data)
+        try:
+            with patch("game.profile.atomic_write", side_effect=slow_write):
+                record = {"seed": 17, "templates": ["gallery-west"]}
+                store.record_route(record)
+                self.assertTrue(entered.wait(5))
+                store.remember({"roll"})
+                record["seed"] = 6108
+                store.record_route(record)
+                record["templates"].clear()
+                store.poll()
+                self.assertFalse(path.exists())
+                release.set()
+                store.close()
+        finally:
+            release.set()
+            store.close()
+        self.assertEqual(json.loads(path.read_bytes()), {"seed": 6108, "templates": ["gallery-west"]})
+        self.assertEqual(ProfileStore(self.root).data.learned, ("roll",))
+
+    def test_failed_route_write_preserves_last_good_route_and_retries_on_exit(self):
+        store = ProfileStore(self.root, background_lessons=True)
+        path = self.root / "last-route.json"
+        try:
+            store.record_route({"seed": 17})
+            store.poll(wait=True)
+            with patch("game.profile.atomic_write", side_effect=OSError):
+                store.record_route({"seed": 6108})
+                store.poll(wait=True)
+                self.assertTrue(store.route_notice)
+                self.assertEqual(json.loads(path.read_bytes()), {"seed": 17})
+        finally:
+            store.close()
+        self.assertFalse(store.route_notice)
+        self.assertEqual(json.loads(path.read_bytes()), {"seed": 6108})
+
     def test_two_windows_merge_updates_and_backup_recovers(self):
         first, second = ProfileStore(self.root), ProfileStore(self.root)
         first.update(unlock=True)

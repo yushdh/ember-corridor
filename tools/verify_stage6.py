@@ -86,6 +86,7 @@ class SeedTrip(Route):
         if w.mode == "play":
             saved = w.store.directory / "last-route.json"
             if self.room_snapshot is not w.combat:
+                w.store.poll(wait=True)
                 assert json.loads(saved.read_text(encoding="utf8")) == self.first
                 self.room_snapshot = w.combat
 
