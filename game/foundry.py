@@ -166,6 +166,7 @@ class FoundryEncounter(Encounter):
         self.valve_open = room.valve is None
         self.cast_age = -1
         self.flame = FlameCut()
+        self.flame_roll_direction = 0
         self.cooldown = 0
         self.wave_length = 0
         self.loadout = last.loadout if last else Loadout(shell_known)
@@ -181,6 +182,10 @@ class FoundryEncounter(Encounter):
 
     def melee_damage(self, base):
         return self.loadout.melee_damage(base)
+
+    def pause(self):
+        super().pause()
+        self.flame_roll_direction = 0
 
     def incoming_damage(self, base):
         return max(1, base - self.loadout.damage_reduction)
@@ -248,7 +253,13 @@ class FoundryEncounter(Encounter):
 
     def step(self, w, axis, *, skill=False, flame_press=False, flame_hold=False, **moves):
         if self.hp and not self.freeze:
+            if self.flame.finishing and moves.get("roll") and w.support and not w.recharge:
+                self.flame_roll_direction = axis or w.facing
             self.flame.update(self, w, axis, flame_press, flame_hold)
+            if self.flame_roll_direction and not self.flame.busy:
+                axis = axis or self.flame_roll_direction
+                moves["roll"] = True
+                self.flame_roll_direction = 0
             self.cooldown = max(0, self.cooldown - 1)
             if self.cast_age >= 0:
                 self.cast_age += 1
@@ -268,6 +279,7 @@ class FoundryEncounter(Encounter):
             moves.update(attack=False, jump=False, roll=False, slot=None, drop=False)
         super().step(w, axis, **moves)
         if self.hurt or not self.hp:
+            self.flame_roll_direction = 0
             self.cast_age = -1
             self.flame.reset()
 

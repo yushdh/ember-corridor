@@ -6,7 +6,7 @@
 
 [五间厂房的动态实景与同机位前后对照](docs/verification/harbour/comparison.gif) · [开发日志](docs/DEVLOG.md)
 
-[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-crossfire/EmberCorridor-Windows-x64.zip) · [回钩与弩箭交叉的改前改后实机片段](docs/verification/crossfire/README.md) · [回链绞工单独交锋](docs/verification/return-chain/README.md) · [炉件装配预览与实测](docs/verification/forge-preview/README.md) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
+[下载 Windows 试玩包](https://github.com/yushdh/ember-corridor/raw/refs/tags/playtest-flame-crossfire/EmberCorridor-Windows-x64.zip) · [蓄焰斩下的双敌预警与收招实机对照](docs/verification/flame-crossfire/README.md) · [回钩与弩箭交叉](docs/verification/crossfire/README.md) · [回链绞工单独交锋](docs/verification/return-chain/README.md) · [炉件装配预览与实测](docs/verification/forge-preview/README.md) · [手工五室短刃折返验收](docs/verification/stage4-detour/README.md)
 
 [栈板下穿、头顶血条与新版刀锤试听](docs/verification/deck-foley/README.md) · [蓄满提示与敌方预警](docs/verification/charge-signal/README.md) · [持械动作与近战命中](docs/verification/quay-strike/README.md)
 

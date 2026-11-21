@@ -201,13 +201,17 @@ def sweep(d, i, rng):
             fill=(255, 236, 161, round(245 * fade)),
             width=2,
         )
-    # Two long air gaps break the inner band while the cutting edge stays unbroken.
-    for lo, hi in ((0.22, 0.48), (0.57, 0.78)):
-        sliver = list(range(round(lo*(n-1)), round(hi*(n-1))+1))
-        if len(sliver) > 2:
-            d.polygon([pt(j, 0.85) for j in sliver] +
-                      [pt(j, 0.85 - 0.059 * math.sin(math.pi*k/(len(sliver)-1)))
-                       for k,j in reversed(list(enumerate(sliver)))], fill=(0, 0, 0, 0))
+    # Open the wake *inside* the orange band, tapering each hole at both ends.
+    # The leading edge at the blade tip stays continuous as the cut turns downward.
+    for lo, hi in ((0.15, 0.52), (0.57, 0.96)):
+        first, last = round(lo*(n-1)), round(hi*(n-1))
+        outer, inner = [], []
+        for j in range(first, last+1):
+            taper = math.sin(math.pi * (j-first) / max(1, last-first))
+            lip = 0.943 + 0.014 * math.sin(12*j/(n-1) + i)
+            outer.append(pt(j, lip))
+            inner.append(pt(j, lip - taper * (0.12 if i < 10 else 0.16)))
+        d.polygon(outer + inner[::-1], fill=(0,0,0,0))
     for radius in (0.68, 1.06):
         for j in range(0, n - 3, 9):
             d.line(
@@ -225,7 +229,7 @@ def impact(i):
     d = ImageDraw.Draw(im)
     x, y = 28, 34
     # A compressed contact flash splits into a rim and forward-flying slag.
-    for length, dy in ((27, -20), (31, 3), (23, 17), (-12, -14), (-15, 8), (4, -25)):
+    for length, dy in ((26, -21), (27, -6), (18, 16), (-8, -14), (6, -25)):
         k = (0.54, 0.77, 1, 1.17)[i]
         tip = (x + round(length * k), y + round(dy * k))
         base = (x + round(length * 0.19 * i), y + round(dy * 0.19 * i))
@@ -241,20 +245,22 @@ def impact(i):
         fill=("#fff9cf", "#ffd993", "#f49e59", "#c97449")[i],
         width=3 if i < 2 else 1,
     )
-    if i < 2:
+    if i == 0:
         d.polygon(
             [
-                (x - 12, y),
+                (x - 7, y),
                 (x - 2, y - 2),
                 (x, y - 11),
                 (x + 3, y - 3),
-                (x + 14, y),
+                (x + 9, y),
                 (x + 3, y + 2),
                 (x, y + 8),
                 (x - 2, y + 2),
             ],
             fill="#fff8db",
         )
+    elif i == 1:
+        d.line([(x+1,y-4),(x+5,y-2),(x+7,y+1)], fill="#ffe29b", width=2)
     return im, (x, y)
 
 

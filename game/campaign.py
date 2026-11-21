@@ -7,7 +7,7 @@ import arcade
 from PIL import Image
 
 from .attacks import STRIKES
-from .battle_view import position
+from .battle_view import flame_coverage, position
 from .foundry import Bellkeeper, ENTRY, FoundryEncounter, RELEASE, ROOMS
 from .gear import INSERTS
 from .motion import STEP, Walker
@@ -279,11 +279,10 @@ class CampaignWindow(QuayWindow):
 
     def clear_input(self):
         super().clear_input()
-        if (
-            isinstance(getattr(self, "combat", None), FoundryEncounter)
-            and self.combat.flame.charge >= 0
-        ):
-            self.combat.flame.reset()
+        if isinstance(getattr(self, "combat", None), FoundryEncounter):
+            self.combat.flame_roll_direction = 0
+            if self.combat.flame.charge >= 0:
+                self.combat.flame.reset()
 
     def step_encounter(self, axis, moves, slot):
         self.combat.step(
@@ -317,6 +316,7 @@ class CampaignWindow(QuayWindow):
 
     def draw_weapon_glow(self, scroll, lift):
         flame = self.combat.flame
+        self.battle_view.flame_mask = None
         if not flame.busy:
             return
         clip, index = flame.light_pose(self.battle_view.levels[1])
@@ -326,6 +326,7 @@ class CampaignWindow(QuayWindow):
         ax, ay = frame.anchor
         x = round(w.x) - (ax if w.facing > 0 else tex.width - ax)
         y = round(w.y) + ay - tex.height
+        self.battle_view.flame_mask = (flame_coverage(frame.right), x-scroll, y+tex.height-lift, w.facing)
         rect = arcade.LBWH(x - scroll, y - lift, tex.width, tex.height)
         # Slice the native-pixel glow at solid faces. A raised platform only
         # masks the band it occupies, leaving flames above its top visible.

@@ -31,6 +31,7 @@ RECOVERY_FRAME = 10
 READY_TICKS = DURATIONS[3:RELEASE_FRAME]
 IGNITION_TICKS = sum(READY_TICKS)
 SWING_ENDS = tuple(accumulate(DURATIONS[RELEASE_FRAME:]))
+ROLL_BUFFER_TICKS = 6
 
 
 def ray(frame, fraction):
@@ -61,6 +62,10 @@ class FlameCut:
     def reset(self):
         self.charge = self.swing = -1
         self.victims.clear()
+
+    @property
+    def finishing(self):
+        return SWING_ENDS[-1] - ROLL_BUFFER_TICKS <= self.swing < SWING_ENDS[-1]
 
     def light_pose(self, flashes):
         age = self.charge - FULL_CHARGE

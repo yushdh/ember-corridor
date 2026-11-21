@@ -1,5 +1,5 @@
 {
-  "version": 16,
+  "version": 17,
   "assets": [
     {
       "path": "assets/quay/atmosphere.png",
@@ -435,7 +435,7 @@
     },
     {
       "path": "assets/foundry/firelight.png",
-      "purpose": "与腕部轨迹对齐的蓄能刃芯、回卷焰舌和收势余焰",
+      "purpose": "与腕部轨迹对齐的蓄能刃芯、回卷焰舌与收势余焰，挥斩橙色内弧留有两段随角度变化的透空",
       "source": "tools/draw_flame.py，由 tools/draw_foundry.py 导出",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",
@@ -453,7 +453,7 @@
     },
     {
       "path": "assets/foundry/fire-impact.png",
-      "purpose": "接触点四帧定向爆火",
+      "purpose": "接触点四帧定向爆火，首帧白热短闪随后裂为前扬的弧光和熔屑",
       "source": "tools/draw_flame.py，由 tools/draw_foundry.py 导出",
       "author": "本项目，Codex 按项目设定编写 Python 绘制与导出程序",
       "license_basis": "按委托为本项目生成，可随项目使用。未引用外部图像，未指定对外开放许可。",

@@ -5,7 +5,7 @@ import math
 import random
 
 import arcade
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 from .attacks import STRIKES
 from .combat import BOLT_LIFE, BOLT_SPEED, CHAIN_HEIGHT, CHAIN_OPEN, CHAIN_REST, FORK_HEIGHT, FORK_REACH, MAX_HP, TYPES, chain_tip, wall_entry
@@ -209,6 +209,31 @@ def rivet_sector(dx, dy):
     return round(math.atan2(dy, dx) * 32 / math.tau) % 32
 
 
+@lru_cache(maxsize=24)
+def flame_coverage(texture):
+    # Eight-pixel cells include the immediate neighbourhood of the painted edge.
+    alpha = texture.image.getchannel("A")
+    cells = alpha.resize((texture.width // 8, texture.height // 8), Image.Resampling.BOX)
+    return cells.point(lambda a: 255 if a >= 20 else 0).filter(ImageFilter.MaxFilter(3))
+
+
+@lru_cache(maxsize=96)
+def fire_outline(texture):
+    """A die-cut ink rim leaves clear space around the cue, including its inner notch."""
+    src = texture.image
+    pad = 4
+    size = (src.width + 2*pad, src.height + 2*pad)
+    mask = Image.new("L", size)
+    mask.paste(src.getchannel("A"), (pad,pad))
+    im = Image.new("RGBA", size, (25,34,46))
+    im.putalpha(mask.filter(ImageFilter.MaxFilter(5)).point(lambda a: a//3))
+    inset = Image.new("RGBA", size, (26,37,48))
+    inset.putalpha(mask.filter(ImageFilter.MaxFilter(3)))
+    im.alpha_composite(inset)
+    im.alpha_composite(src, (pad,pad))
+    return arcade.Texture(im)
+
+
 @lru_cache(maxsize=32)
 def rivet_marks(sector):
     """Bake pointed sights and a fletched bolt on the same integer-pixel bearing."""
@@ -248,6 +273,23 @@ class BattleView:
         self.marks = {kind: warning_marks(kind) for kind in TYPES}
         self.warning_list = arcade.SpriteList()
         self.chain_link, self.chain_heads, self.chain_collar = chain_hardware()
+        # Leave the ends clear so a neighbouring link cannot paint over its hinge.
+        link = Image.new("RGBA", (6,6))
+        link.paste((31,42,51,195), (0,0,6,6))
+        link.alpha_composite(self.chain_link.image, (0,1))
+        ImageDraw.Draw(link).line((2,2,4,2), fill="#d8c49e")
+        self.ink_link = arcade.Texture(link)
+        self.ink_heads = []
+        for opened, (right, _) in enumerate(self.chain_heads):
+            im = right.image.copy()
+            if opened:
+                # Bare steel inside the jaw, copper on its hinge.
+                draw = ImageDraw.Draw(im)
+                draw.line((2,2,7,4), fill="#d7eddd", width=2)
+                draw.line((2,12,6,10), fill="#cee0d4", width=2)
+                draw.point((10,7), fill="#f7c987")
+            rim = fire_outline(arcade.Texture(im))
+            self.ink_heads.append((rim,rim.flip_left_right()))
         self.warning_count = 0
         self.warning_badges = []
         self.health_bars = []
@@ -286,6 +328,8 @@ class BattleView:
         self.shake = 0
         self.shake_size = 0
         self.fire_impacts = {}
+        self.flame_mask = None
+        self.hot_contacts = []
         self.last_impact = None
         self.kick_direction = 1
         self.flash = {}
@@ -558,21 +602,42 @@ class BattleView:
         length = math.hypot(tx - sx, ty - sy)
         links = math.ceil(length / 5)
         opened = e.state == "active" or e.age >= CHAIN_OPEN
+        crossing = False
         for n in range(links):
             u = n / links
             sag = 0 if opened else 3 * math.sin(math.pi * u)
-            self.place_warning(self.chain_link, round(sx + u*(tx-sx)) - scroll,
-                               round(sy + u*(ty-sy) - sag) - lift)
+            x = round(sx + u*(tx-sx)) - scroll
+            y = round(sy + u*(ty-sy) - sag) - lift
+            hot = self.over_fire(x,y)
+            crossing |= hot
+            self.place_warning(self.ink_link if hot else self.chain_link, x, y)
         if opened and e.state == "warn":
             # The brake collar slides toward the glove while the open jaw holds still.
             progress = (e.age - CHAIN_OPEN) / (e.spec.windup - CHAIN_OPEN)
             back = min(length, 8 + 16 * progress)
-            self.place_warning(self.chain_collar, round(tx - e.facing*back)-scroll, round(ty)-lift)
-        return self.chain_heads[opened][e.facing < 0], round(tx)-scroll, round(ty)-lift
+            collar = fire_outline(self.chain_collar) if crossing else self.chain_collar
+            self.place_warning(collar, round(tx - e.facing*back)-scroll, round(ty)-lift)
+        x,y = round(tx)-scroll, round(ty)-lift
+        head = self.chain_heads[opened][e.facing < 0]
+        if crossing or self.over_fire(x,y):
+            head = self.ink_heads[opened][e.facing < 0]
+        return head, x, y
+
+    def over_fire(self, x, y):
+        if self.flame_mask:
+            mask, left, top, facing = self.flame_mask
+            col, row = (x-left)//8, (top-1-y)//8
+            if facing < 0:
+                col = mask.width-1-col
+            if 0 <= col < mask.width and 0 <= row < mask.height and mask.getpixel((col,row)):
+                return True
+        return any(abs(x-cx) <= 34 and abs(y-cy) <= 27 for cx,cy in self.hot_contacts)
 
     def warnings(self, c, scroll, lift, walker=None):
         self.warning_count = 0
         placed = []
+        self.hot_contacts = [(round(p.x)-scroll, round(p.y)-lift) for p in self.particles
+                             if p.animation and any(p.animation is frames for frames in self.fire_impacts.values())]
         hook_heads = [self.place_chain(e, c.surfaces, scroll, lift) for e in c.foes
                       if e.hp and e.kind == "chain" and e.state in ("warn", "active")]
         self.warning_badges.clear()
@@ -609,7 +674,7 @@ class BattleView:
             icon = icons[int(e.age * 3 >= e.spec.windup * 2)]
             dash = right if e.facing > 0 else left
             top = bottom + texture.height + 10
-            self.warning_badges.append((icon, x, top))
+            self.warning_badges.append((fire_outline(icon) if self.over_fire(x,top) else icon, x, top))
             if e.kind == "rivet":
                 muzzle = (e.x + e.facing * 21, e.y + 30)
                 reach = BOLT_SPEED * BOLT_LIFE
@@ -635,7 +700,7 @@ class BattleView:
                         face_y = round(walker.y) - lift + 50
                         if abs(px - face_x) < 16 and abs(py - face_y) < 12:
                             continue
-                    self.place_warning(sight, px, py)
+                    self.place_warning(fire_outline(sight) if self.over_fire(px,py) else sight, px, py)
             elif e.kind == "chain":
                 continue  # The chain and open teeth already mark the exact return lane.
             elif e.kind == "fork":
@@ -663,7 +728,7 @@ class BattleView:
         for tex, x, y in self.health_bars:
             arcade.draw_texture_rect(tex, arcade.LBWH(x, y, tex.width, tex.height), pixelated=True)
         for icon, x, y in self.warning_badges:
-            arcade.draw_texture_rect(icon, arcade.LBWH(x - 8, y - 8, 16, 16), pixelated=True)
+            arcade.draw_texture_rect(icon, arcade.LBWH(x-icon.width//2, y-icon.height//2, icon.width, icon.height), pixelated=True)
 
     def place_warning(self, texture, x, y):
         if self.warning_count == len(self.warning_list):

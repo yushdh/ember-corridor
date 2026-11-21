@@ -1,7 +1,7 @@
 import unittest
 
 from game.combat import Enemy
-from game.flame import FULL_CHARGE, RELEASE_FRAME, RECOVERY_FRAME
+from game.flame import FULL_CHARGE, RELEASE_FRAME, RECOVERY_FRAME, SWING_ENDS, ROLL_BUFFER_TICKS
 from game.foundry import FoundryEncounter, ROOMS
 from game.motion import Walker
 from game.terrain import FLOOR, Surface
@@ -71,6 +71,36 @@ class FlameCutTests(unittest.TestCase):
         while c.flame.busy:
             c.step(w, 0)
         self.assertEqual(e.hp, 62)
+
+    def test_last_six_recovery_steps_remember_one_roll_direction(self):
+        for remaining in (1, 4, ROLL_BUFFER_TICKS, ROLL_BUFFER_TICKS+1):
+            with self.subTest(remaining=remaining):
+                c, w, _ = self.make()
+                c.flame.swing = SWING_ENDS[-1] - remaining
+                for n in range(remaining):
+                    c.step(w, -1 if n == 0 else 0, roll=n == 0)
+                    if c.flame.busy:
+                        self.assertEqual(w.roll_age, -1)
+                queued = remaining <= ROLL_BUFFER_TICKS
+                self.assertEqual(w.roll_age, 0 if queued else -1)
+                if queued:
+                    self.assertEqual(w.facing, -1)
+                self.assertEqual(c.flame_roll_direction, 0)
+
+    def test_pending_flame_roll_clears_on_pause_or_damage(self):
+        for interruption in ("pause", "hurt"):
+            with self.subTest(interruption=interruption):
+                c, w, e = self.make()
+                c.flame.swing = SWING_ENDS[-1] - 5
+                c.step(w, -1, roll=True)
+                if interruption == "pause":
+                    c.pause()
+                else:
+                    c.damage_player(w, e, w.x, w.y)
+                for _ in range(30):
+                    c.step(w, 0)
+                    self.assertEqual(w.roll_age, -1)
+                self.assertEqual(c.flame_roll_direction, 0)
 
     def test_heavy_weapon_and_air_cannot_start_charge(self):
         c, w, e = self.make()
